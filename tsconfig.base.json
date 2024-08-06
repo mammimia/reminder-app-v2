@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@mammimia/ui": ["ui/src/index.ts"],
+      "@mammimia/ui/server": ["ui/src/server.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
