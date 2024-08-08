@@ -62,3 +62,6 @@ cache/
 
 # Temporary
 tools/
+
+# Environment variables
+.env
