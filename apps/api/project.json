@@ -21,6 +21,34 @@
           "buildTarget": "api:build:production"
         }
       }
+    },
+    "prisma": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "command": "prisma"
+      }
+    },
+    "prisma-init": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "command": "prisma init"
+      }
+    },
+    "prisma-migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "command": "prisma migrate dev"
+      }
+    },
+    "prisma-generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "command": "prisma generate"
+      }
     }
   }
 }
