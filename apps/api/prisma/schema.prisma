@@ -32,8 +32,8 @@ model Folder {
     deletedAt DateTime?
     name      String 
     color     String @default("#000000") @db.VarChar(7)
-    categoryId String @unique
-    category  Category @relation(fields: [categoryId], references: [id])
+    categoryId String? 
+    category   Category? @relation(fields: [categoryId], references: [id])
     reminders Reminder[]
 
     @@map("folders")
