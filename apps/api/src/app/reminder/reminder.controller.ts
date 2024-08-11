@@ -8,8 +8,10 @@ import {
   Param,
   Post,
   Put,
+  UsePipes,
 } from '@nestjs/common';
 import { Reminder } from '@prisma/client';
+import { ZodValidationPipe } from '../pipes/validation.pipe';
 import { CreateReminderDto, UpdateReminderDto } from './reminder.dto';
 import { ReminderService } from './reminder.service';
 
@@ -32,12 +34,14 @@ export class ReminderController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @UsePipes(new ZodValidationPipe(CreateReminderDto))
   async create(@Body() createDto: CreateReminderDto): Promise<Reminder> {
     const reminder = await this.reminderService.create(createDto);
     return reminder;
   }
 
   @Put(':id')
+  @UsePipes(new ZodValidationPipe(UpdateReminderDto))
   async update(
     @Param('id') id: string,
     @Body() updateDto: UpdateReminderDto
@@ -47,6 +51,7 @@ export class ReminderController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id') id: string): Promise<void> {
     await this.reminderService.delete(id);
   }
