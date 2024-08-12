@@ -6,9 +6,9 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
-  UsePipes,
 } from '@nestjs/common';
 import { ZodValidationPipe } from '../pipes/validation.pipe';
 import { CreateFolderDto, UpdateFolderDto } from './folder.dto';
@@ -25,7 +25,7 @@ export class FolderController {
   }
 
   @Get(':id')
-  async get(@Param('id') id: string) {
+  async get(@Param('id', ParseUUIDPipe) id: string) {
     const folder = await this.folderService.get(id);
 
     return folder;
@@ -33,22 +33,25 @@ export class FolderController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @UsePipes(new ZodValidationPipe(CreateFolderDto))
-  async create(@Body() createDto: CreateFolderDto) {
+  async create(
+    @Body(new ZodValidationPipe(CreateFolderDto)) createDto: CreateFolderDto
+  ) {
     const folder = await this.folderService.create(createDto);
     return folder;
   }
 
   @Put(':id')
-  @UsePipes(new ZodValidationPipe(UpdateFolderDto))
-  async update(@Param('id') id: string, @Body() updateDto: UpdateFolderDto) {
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body(new ZodValidationPipe(CreateFolderDto)) updateDto: UpdateFolderDto
+  ) {
     const folder = await this.folderService.update(id, updateDto);
     return folder;
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async delete(@Param('id') id: string) {
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
     await this.folderService.delete(id);
   }
 }
