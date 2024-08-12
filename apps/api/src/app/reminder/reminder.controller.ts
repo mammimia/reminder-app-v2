@@ -6,9 +6,9 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
-  UsePipes,
 } from '@nestjs/common';
 import { Reminder } from '@prisma/client';
 import { ZodValidationPipe } from '../pipes/validation.pipe';
@@ -26,7 +26,7 @@ export class ReminderController {
   }
 
   @Get(':id')
-  async get(@Param('id') id: string): Promise<Reminder | null> {
+  async get(@Param('id', ParseUUIDPipe) id: string): Promise<Reminder | null> {
     const reminder = await this.reminderService.get(id);
 
     return reminder;
@@ -34,16 +34,16 @@ export class ReminderController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @UsePipes(new ZodValidationPipe(CreateReminderDto))
-  async create(@Body() createDto: CreateReminderDto): Promise<Reminder> {
+  async create(
+    @Body(new ZodValidationPipe(CreateReminderDto)) createDto: CreateReminderDto
+  ): Promise<Reminder> {
     const reminder = await this.reminderService.create(createDto);
     return reminder;
   }
 
   @Put(':id')
-  @UsePipes(new ZodValidationPipe(UpdateReminderDto))
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateDto: UpdateReminderDto
   ): Promise<Reminder> {
     const reminder = await this.reminderService.update(id, updateDto);
@@ -52,7 +52,7 @@ export class ReminderController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async delete(@Param('id') id: string): Promise<void> {
+  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     await this.reminderService.delete(id);
   }
 }
