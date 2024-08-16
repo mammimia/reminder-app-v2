@@ -8,13 +8,20 @@ export class ReminderService {
   constructor(private prisma: PrismaService) {}
 
   async getAll(): Promise<Reminder[]> {
-    const reminders = await this.prisma.reminder.findMany();
+    const reminders = await this.prisma.reminder.findMany({
+      include: {
+        folder: true,
+      },
+    });
     return reminders;
   }
 
-  async get(id: string): Promise<Reminder | null> {
+  async get(id: string): Promise<Reminder> {
     const reminder = await this.prisma.reminder.findUnique({
       where: { id: id },
+      include: {
+        folder: true,
+      },
     });
 
     if (!reminder) {

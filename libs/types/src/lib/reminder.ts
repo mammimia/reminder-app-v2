@@ -15,7 +15,7 @@ export const ReminderDto = z.object({
   content: z.string(),
   expiresAt: z.string().optional(),
   status: z.nativeEnum(ReminderStatus),
-  folder: FolderDto.optional(),
+  folder: FolderDto.optional().nullable(),
 });
 
 export const CreateReminderDto = z.object({

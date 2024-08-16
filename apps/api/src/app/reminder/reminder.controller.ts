@@ -12,42 +12,49 @@ import {
 } from '@nestjs/common';
 import { Reminder } from '@prisma/client';
 import { ZodValidationPipe } from '../pipes/validation.pipe';
-import { CreateReminderDto, UpdateReminderDto } from '@mammimia/types';
+import {
+  CreateReminderDto,
+  ReminderDto,
+  UpdateReminderDto,
+} from '@mammimia/types';
 import { ReminderService } from './reminder.service';
+import { ReminderAdapter } from './reminder.adapter';
 
 @Controller('reminders')
 export class ReminderController {
   constructor(private readonly reminderService: ReminderService) {}
 
   @Get()
-  async getAll(): Promise<Reminder[]> {
+  async getAll(): Promise<ReminderDto[]> {
     const reminders = await this.reminderService.getAll();
-    return reminders;
+    return ReminderAdapter.toDtoArray(reminders);
   }
 
   @Get(':id')
-  async get(@Param('id', ParseUUIDPipe) id: string): Promise<Reminder | null> {
+  async get(
+    @Param('id', ParseUUIDPipe) id: string
+  ): Promise<ReminderDto | null> {
     const reminder = await this.reminderService.get(id);
 
-    return reminder;
+    return ReminderAdapter.toDto(reminder);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(
     @Body(new ZodValidationPipe(CreateReminderDto)) createDto: CreateReminderDto
-  ): Promise<Reminder> {
+  ): Promise<ReminderDto> {
     const reminder = await this.reminderService.create(createDto);
-    return reminder;
+    return ReminderAdapter.toDto(reminder);
   }
 
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateDto: UpdateReminderDto
-  ): Promise<Reminder> {
+  ): Promise<ReminderDto> {
     const reminder = await this.reminderService.update(id, updateDto);
-    return reminder;
+    return ReminderAdapter.toDto(reminder);
   }
 
   @Delete(':id')
