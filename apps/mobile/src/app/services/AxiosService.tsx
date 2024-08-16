@@ -25,8 +25,7 @@ class AxiosService {
           status: error.response?.status ?? 500,
           message:
             (error.response?.data as { message?: string })?.message ||
-            'Something went wrong. Please try again. Base URL: ' +
-              process.env.API_BASE_URL,
+            'Something went wrong. Please try again.',
         };
         return Promise.reject(customError);
       }
@@ -37,8 +36,6 @@ class AxiosService {
     url: string,
     params?: Record<string, unknown>
   ): Promise<AxiosResponse<T>> {
-    console.log('API_BASE_URL', API_BASE_URL);
-    console.log(url);
     return this.apiClient.get<T>(url, { params });
   }
 
