@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Reminder } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import type { CreateReminderDto, UpdateReminderDto } from './reminder.dto';
+import type { CreateReminderDto, UpdateReminderDto } from '@mammimia/types';
 
 @Injectable()
 export class ReminderService {

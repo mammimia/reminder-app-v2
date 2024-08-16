@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { Reminder } from '@prisma/client';
 import { ZodValidationPipe } from '../pipes/validation.pipe';
-import { CreateReminderDto, UpdateReminderDto } from './reminder.dto';
+import { CreateReminderDto, UpdateReminderDto } from '@mammimia/types';
 import { ReminderService } from './reminder.service';
 
 @Controller('reminders')

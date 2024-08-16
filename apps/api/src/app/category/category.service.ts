@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Category } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import type { CreateCategoryDto, UpdateCategoryDto } from './category.dto';
+import type { CreateCategoryDto, UpdateCategoryDto } from '@mammimia/types';
 
 @Injectable()
 export class CategoryService {

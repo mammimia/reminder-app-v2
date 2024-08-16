@@ -12,8 +12,8 @@ import {
 } from '@nestjs/common';
 import { Category } from '@prisma/client';
 import { ZodValidationPipe } from '../pipes/validation.pipe';
-import { CreateCategoryDto, UpdateCategoryDto } from './category.dto';
 import { CategoryService } from './category.service';
+import { CreateCategoryDto, UpdateCategoryDto } from '@mammimia/types';
 
 @Controller('categories')
 export class CategoryController {

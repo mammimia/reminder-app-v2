@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateFolderDto, UpdateFolderDto } from './folder.dto';
+import { CreateFolderDto, UpdateFolderDto } from '@mammimia/types';
 
 @Injectable()
 export class FolderService {

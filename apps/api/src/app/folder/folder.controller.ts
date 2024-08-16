@@ -11,7 +11,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ZodValidationPipe } from '../pipes/validation.pipe';
-import { CreateFolderDto, UpdateFolderDto } from './folder.dto';
+import { CreateFolderDto, UpdateFolderDto } from '@mammimia/types';
 import { FolderService } from './folder.service';
 
 @Controller('folders')
