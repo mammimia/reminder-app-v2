@@ -12,7 +12,7 @@ export class CategoryService {
     return categories;
   }
 
-  async get(id: string): Promise<Category | null> {
+  async get(id: string): Promise<Category> {
     const category = await this.prisma.category.findUnique({
       where: { id },
     });
