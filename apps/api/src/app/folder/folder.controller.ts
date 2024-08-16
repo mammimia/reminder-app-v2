@@ -1,3 +1,4 @@
+import { CreateFolderDto, FolderDto, UpdateFolderDto } from '@mammimia/types';
 import {
   Body,
   Controller,
@@ -11,7 +12,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ZodValidationPipe } from '../pipes/validation.pipe';
-import { CreateFolderDto, UpdateFolderDto } from '@mammimia/types';
+import { FolderAdapter } from './folder.adapter';
 import { FolderService } from './folder.service';
 
 @Controller('folders')
@@ -19,34 +20,34 @@ export class FolderController {
   constructor(private readonly folderService: FolderService) {}
 
   @Get()
-  async getAll() {
+  async getAll(): Promise<FolderDto[]> {
     const folders = await this.folderService.getAll();
-    return folders;
+    return FolderAdapter.toDtoArray(folders);
   }
 
   @Get(':id')
-  async get(@Param('id', ParseUUIDPipe) id: string) {
+  async get(@Param('id', ParseUUIDPipe) id: string): Promise<FolderDto> {
     const folder = await this.folderService.get(id);
 
-    return folder;
+    return FolderAdapter.toDto(folder);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(
     @Body(new ZodValidationPipe(CreateFolderDto)) createDto: CreateFolderDto
-  ) {
+  ): Promise<FolderDto> {
     const folder = await this.folderService.create(createDto);
-    return folder;
+    return FolderAdapter.toDto(folder);
   }
 
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body(new ZodValidationPipe(CreateFolderDto)) updateDto: UpdateFolderDto
-  ) {
+  ): Promise<FolderDto> {
     const folder = await this.folderService.update(id, updateDto);
-    return folder;
+    return FolderAdapter.toDto(folder);
   }
 
   @Delete(':id')

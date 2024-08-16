@@ -5,7 +5,7 @@ export const FolderDto = z.object({
   id: z.string(),
   name: z.string(),
   color: z.string().optional(),
-  category: CategoryDto.optional(),
+  category: CategoryDto.optional().nullable(),
 });
 
 export const CreateFolderDto = z.object({
