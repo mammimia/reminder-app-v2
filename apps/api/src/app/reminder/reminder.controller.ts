@@ -1,4 +1,9 @@
 import {
+  CreateReminderDto,
+  ReminderDto,
+  UpdateReminderDto,
+} from '@mammimia/types';
+import {
   Body,
   Controller,
   Delete,
@@ -10,15 +15,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { Reminder } from '@prisma/client';
 import { ZodValidationPipe } from '../pipes/validation.pipe';
-import {
-  CreateReminderDto,
-  ReminderDto,
-  UpdateReminderDto,
-} from '@mammimia/types';
-import { ReminderService } from './reminder.service';
 import { ReminderAdapter } from './reminder.adapter';
+import { ReminderService } from './reminder.service';
 
 @Controller('reminders')
 export class ReminderController {
@@ -31,9 +30,7 @@ export class ReminderController {
   }
 
   @Get(':id')
-  async get(
-    @Param('id', ParseUUIDPipe) id: string
-  ): Promise<ReminderDto | null> {
+  async get(@Param('id', ParseUUIDPipe) id: string): Promise<ReminderDto> {
     const reminder = await this.reminderService.get(id);
 
     return ReminderAdapter.toDto(reminder);
