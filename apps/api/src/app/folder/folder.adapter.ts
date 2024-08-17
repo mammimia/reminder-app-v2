@@ -4,6 +4,9 @@ import { CategoryAdapter } from '../category/category.adapter';
 
 export type FolderWithCategory = Folder & {
   category?: Category | null;
+  _count?: {
+    reminders: number;
+  };
 };
 
 const toDto = (folder: FolderWithCategory): FolderDto => {
@@ -12,6 +15,7 @@ const toDto = (folder: FolderWithCategory): FolderDto => {
     name: folder.name,
     color: folder.color,
     category: folder.category ? CategoryAdapter.toDto(folder.category) : null,
+    reminderCount: folder._count?.reminders,
   };
 
   return FolderDto.parse(dto);

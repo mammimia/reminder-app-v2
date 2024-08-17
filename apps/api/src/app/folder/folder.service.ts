@@ -12,6 +12,11 @@ export class FolderService {
     const folders = await this.prisma.folder.findMany({
       include: {
         category: true,
+        _count: {
+          select: {
+            reminders: true,
+          },
+        },
       },
     });
 
