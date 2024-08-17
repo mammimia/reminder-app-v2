@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
+import { FolderDto, ReminderDto } from '@mammimia/types';
 import React, { useEffect, useState } from 'react';
 import {
   FlatList,
@@ -9,21 +10,14 @@ import {
   Text,
   View,
 } from 'react-native';
+import FolderSliderItem from './folders/FolderSliderItem';
 import AxiosService from './services/AxiosService';
-import { CategoryDto, FolderDto, ReminderDto } from '@mammimia/types';
 
 export const App = () => {
-  const [categories, setCategories] = useState<CategoryDto[]>([]);
   const [folders, setFolders] = useState<FolderDto[]>([]);
   const [reminders, setReminders] = useState<ReminderDto[]>([]);
 
   useEffect(() => {
-    AxiosService.get<CategoryDto[]>('categories')
-      .then((response) => setCategories(response.data))
-      .catch((error) => {
-        console.error(error);
-      });
-
     AxiosService.get<FolderDto[]>('folders')
       .then((response) => setFolders(response.data))
       .catch((error) => {
@@ -46,22 +40,12 @@ export const App = () => {
         }}
       >
         <View style={styles.container}>
-          <Text>Categories</Text>
-          <FlatList
-            data={categories}
-            renderItem={({ item }) => <Text key={item.id}>{item.name}</Text>}
-            keyExtractor={(item) => item.id.toString()}
-          />
-
           <Text>Folders</Text>
           <FlatList
             data={folders}
-            renderItem={({ item }) => (
-              <Text key={item.id}>
-                {item.category?.name || 'General Category'} - {item.name}
-              </Text>
-            )}
-            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <FolderSliderItem folder={item} />}
+            keyExtractor={(item) => item.id}
+            horizontal
           />
 
           <Text>Reminders</Text>
@@ -73,7 +57,7 @@ export const App = () => {
                 {item.content}
               </Text>
             )}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id}
           />
         </View>
         <ScrollView></ScrollView>
