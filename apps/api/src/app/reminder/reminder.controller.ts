@@ -2,6 +2,7 @@ import {
   CreateReminderDto,
   ReminderDto,
   UpdateReminderDto,
+  ReminderFilterDto,
 } from '@mammimia/types';
 import {
   Body,
@@ -14,6 +15,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ZodValidationPipe } from '../pipes/validation.pipe';
 import { ReminderAdapter } from './reminder.adapter';
@@ -24,8 +26,8 @@ export class ReminderController {
   constructor(private readonly reminderService: ReminderService) {}
 
   @Get()
-  async getAll(): Promise<ReminderDto[]> {
-    const reminders = await this.reminderService.getAll();
+  async getAll(@Query() filterDto: ReminderFilterDto): Promise<ReminderDto[]> {
+    const reminders = await this.reminderService.getAll(filterDto);
     return ReminderAdapter.toDtoArray(reminders);
   }
 

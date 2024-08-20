@@ -1,14 +1,28 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Reminder } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import type { CreateReminderDto, UpdateReminderDto } from '@mammimia/types';
+import {
+  CreateReminderDto,
+  ReminderFilterDto,
+  UpdateReminderDto,
+} from '@mammimia/types';
+import { prismaUtils } from '../utils/prisma.utils';
 
 @Injectable()
 export class ReminderService {
   constructor(private prisma: PrismaService) {}
 
-  async getAll(): Promise<Reminder[]> {
+  async getAll(filterDto: ReminderFilterDto): Promise<Reminder[]> {
+    const { where, take, skip, orderBy } =
+      prismaUtils.buildQueryOptionsWithPagination(filterDto, ReminderFilterDto);
+
+    console.log(take, skip, orderBy);
+
     const reminders = await this.prisma.reminder.findMany({
+      where,
+      take,
+      skip,
+      orderBy,
       include: {
         folder: true,
       },

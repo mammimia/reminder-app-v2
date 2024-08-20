@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { FolderDto } from './folder';
+import { PaginationDto } from './base';
 
 export enum ReminderStatus {
   TODO = 'TODO',
@@ -33,6 +34,14 @@ export const UpdateReminderDto = z.object({
   folderId: z.string().optional(),
 });
 
+export const ReminderFilterDto = PaginationDto.extend({
+  title: z.string().optional(),
+  content: z.string().optional(),
+  status: z.nativeEnum(ReminderStatus).optional(),
+  folderId: z.string().optional(),
+});
+
 export type ReminderDto = z.infer<typeof ReminderDto>;
 export type CreateReminderDto = z.infer<typeof CreateReminderDto>;
 export type UpdateReminderDto = z.infer<typeof UpdateReminderDto>;
+export type ReminderFilterDto = z.infer<typeof ReminderFilterDto>;
