@@ -59,13 +59,9 @@ export const buildQueryOptionsWithPagination = <T>(
   const take = Number(limit ?? PAGE_SIZE);
   const skip = page ? Number(page) * take ?? PAGE_SIZE : 0;
 
-  let orderBy = undefined;
-
-  if (sortBy) {
-    orderBy = {
-      [sortBy as keyof T]: sortOrder ?? DEFAULT_SORT_ORDER,
-    };
-  }
+  const orderBy = sortBy
+    ? { [sortBy]: sortOrder ?? DEFAULT_SORT_ORDER }
+    : undefined;
 
   return { where, take, skip, orderBy };
 };
