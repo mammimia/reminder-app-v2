@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
-import { API_BASE_URL } from '@env';
+import { API_BASE_URL, API_ANDROID_BASE_URL } from '@env';
+import { Platform } from 'react-native';
 
 interface CustomError {
   status: number;
@@ -11,7 +12,7 @@ class AxiosService {
 
   constructor() {
     this.apiClient = axios.create({
-      baseURL: API_BASE_URL,
+      baseURL: Platform.OS === 'android' ? API_ANDROID_BASE_URL : API_BASE_URL,
       timeout: 10000, // 10 seconds timeout
       headers: {
         'Content-Type': 'application/json',
