@@ -16,8 +16,6 @@ export class ReminderService {
     const { where, take, skip, orderBy } =
       prismaUtils.buildQueryOptionsWithPagination(filterDto, ReminderFilterDto);
 
-    console.log(take, skip, orderBy);
-
     const reminders = await this.prisma.reminder.findMany({
       where,
       take,
