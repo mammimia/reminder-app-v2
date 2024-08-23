@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import FolderSliderItem from './folders/FolderSliderItem';
 import AxiosService from './services/AxiosService';
+import ReminderItem from './reminders/ReminderItem';
 
 export const App = () => {
   const [folders, setFolders] = useState<FolderDto[]>([]);
@@ -51,12 +52,7 @@ export const App = () => {
           <Text>Reminders</Text>
           <FlatList
             data={reminders}
-            renderItem={({ item }) => (
-              <Text key={item.id}>
-                {item.folder?.name || 'General Folder'} - {item.title} -{' '}
-                {item.content}
-              </Text>
-            )}
+            renderItem={({ item }) => <ReminderItem reminder={item} />}
             keyExtractor={(item) => item.id}
           />
         </View>
