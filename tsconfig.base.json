@@ -16,8 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@mammimia/types": ["libs/types/src/index.ts"],
-      "@mammimia/ui": ["ui/src/index.ts"],
-      "@mammimia/ui/server": ["ui/src/server.ts"]
+      "@mammimia/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
