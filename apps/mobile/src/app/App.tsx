@@ -1,39 +1,13 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import { FolderDto, ReminderDto } from '@mammimia/types';
-import React, { useEffect, useState } from 'react';
-import {
-  FlatList,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import FolderSliderItem from './folders/FolderSliderItem';
-import AxiosService from './services/AxiosService';
-import ReminderItem from './reminders/ReminderItem';
+import React from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
+import Reminders from './reminders/Reminders';
+import Folders from './folders/Folders';
 
 export const App = () => {
-  const [folders, setFolders] = useState<FolderDto[]>([]);
-  const [reminders, setReminders] = useState<ReminderDto[]>([]);
-
-  useEffect(() => {
-    AxiosService.get<FolderDto[]>('folders')
-      .then((response) => setFolders(response.data))
-      .catch((error) => {
-        console.error(error);
-      });
-
-    AxiosService.get<ReminderDto[]>('reminders')
-      .then((response) => setReminders(response.data))
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
   return (
-    <>
+    <PaperProvider>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView
         style={{
@@ -41,29 +15,16 @@ export const App = () => {
         }}
       >
         <View style={styles.container}>
-          <Text>Folders</Text>
-          <FlatList
-            data={folders}
-            renderItem={({ item }) => <FolderSliderItem folder={item} />}
-            keyExtractor={(item) => item.id}
-            horizontal
-          />
-
-          <Text>Reminders</Text>
-          <FlatList
-            data={reminders}
-            renderItem={({ item }) => <ReminderItem reminder={item} />}
-            keyExtractor={(item) => item.id}
-          />
+          <Folders />
+          <Reminders />
         </View>
       </SafeAreaView>
-    </>
+    </PaperProvider>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 10,
   },
 });
 
