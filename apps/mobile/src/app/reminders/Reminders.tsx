@@ -4,9 +4,11 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import AxiosService from '../services/AxiosService';
 import ReminderAddButton from './ReminderAddButton';
 import ReminderItem from './ReminderItem';
+import ReminderEditorModal from './ReminderEditorModal';
 
 const Reminders = () => {
   const [reminders, setReminders] = useState<ReminderDto[]>([]);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     AxiosService.get<ReminderDto[]>('reminders')
@@ -17,15 +19,21 @@ const Reminders = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Reminders</Text>
-      <FlatList
-        data={reminders}
-        renderItem={({ item }) => <ReminderItem reminder={item} />}
-        keyExtractor={(item) => item.id}
+    <>
+      <View style={styles.container}>
+        <Text>Reminders</Text>
+        <FlatList
+          data={reminders}
+          renderItem={({ item }) => <ReminderItem reminder={item} />}
+          keyExtractor={(item) => item.id}
+        />
+        <ReminderAddButton openModal={() => setModalVisible(true)} />
+      </View>
+      <ReminderEditorModal
+        visible={modalVisible}
+        hideModal={() => setModalVisible(false)}
       />
-      <ReminderAddButton />
-    </View>
+    </>
   );
 };
 

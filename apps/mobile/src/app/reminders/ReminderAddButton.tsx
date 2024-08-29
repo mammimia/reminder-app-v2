@@ -2,14 +2,16 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
 
-const ReminderAddButton = () => {
-  return (
-    <FAB
-      style={styles.container}
-      icon="plus"
-      onPress={() => console.log('Pressed')}
-    />
-  );
+type Props = {
+  openModal: () => void;
+};
+
+const ReminderAddButton = ({ openModal }: Props) => {
+  const handlePress = () => {
+    openModal();
+  };
+
+  return <FAB style={styles.container} icon="plus" onPress={handlePress} />;
 };
 
 export default ReminderAddButton;
