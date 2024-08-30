@@ -9,6 +9,8 @@ import ReminderEditorModal from './ReminderEditorModal';
 const Reminders = () => {
   const [reminders, setReminders] = useState<ReminderDto[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedReminder, setSelectedReminder] =
+    useState<ReminderDto | null>();
 
   useEffect(() => {
     AxiosService.get<ReminderDto[]>('reminders')
@@ -24,14 +26,26 @@ const Reminders = () => {
         <Text>Reminders</Text>
         <FlatList
           data={reminders}
-          renderItem={({ item }) => <ReminderItem reminder={item} />}
+          renderItem={({ item }) => (
+            <ReminderItem
+              reminder={item}
+              openEditModal={(reminder: ReminderDto) => {
+                setSelectedReminder(reminder);
+                setModalVisible(true);
+              }}
+            />
+          )}
           keyExtractor={(item) => item.id}
         />
         <ReminderAddButton openModal={() => setModalVisible(true)} />
       </View>
       <ReminderEditorModal
         visible={modalVisible}
-        hideModal={() => setModalVisible(false)}
+        hideModal={() => {
+          setModalVisible(false);
+          setSelectedReminder(null);
+        }}
+        defaultValues={selectedReminder}
       />
     </>
   );

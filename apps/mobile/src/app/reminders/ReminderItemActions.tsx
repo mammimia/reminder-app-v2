@@ -13,6 +13,7 @@ type Props = {
     height: number;
   };
   itemStatus: ReminderStatus;
+  openEditModal: () => void;
 };
 
 const ReminderItemActions = ({
@@ -20,7 +21,13 @@ const ReminderItemActions = ({
   closeMenu,
   anchor,
   itemStatus,
+  openEditModal,
 }: Props) => {
+  const handlePress = (callback: () => void) => {
+    callback();
+    closeMenu();
+  };
+
   return (
     <Menu visible={visible} onDismiss={closeMenu} anchor={anchor}>
       {itemStatus === ReminderStatus.TODO && (
@@ -33,7 +40,7 @@ const ReminderItemActions = ({
         <Menu.Item onPress={() => {}} title="Cancel" />
       )}
       <Divider />
-      <Menu.Item onPress={() => {}} title="Edit" />
+      <Menu.Item onPress={() => handlePress(openEditModal)} title="Edit" />
     </Menu>
   );
 };
