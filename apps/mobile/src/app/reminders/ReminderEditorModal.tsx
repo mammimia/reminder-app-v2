@@ -1,11 +1,11 @@
-import { CreateReminderDto } from '@mammimia/types';
+import { CreateReminderDto, ReminderDto } from '@mammimia/types';
 import { Formik } from 'formik';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Modal, Text, TextInput } from 'react-native-paper';
 
 type Props = {
-  defaultValues?: CreateReminderDto;
+  defaultValues?: ReminderDto | null;
   visible: boolean;
   hideModal: () => void;
 };
