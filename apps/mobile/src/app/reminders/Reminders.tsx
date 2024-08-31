@@ -1,10 +1,10 @@
 import { ReminderDto } from '@mammimia/types';
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import AxiosService from '../services/AxiosService';
+import ReminderService from '../services/ReminderService';
 import ReminderAddButton from './ReminderAddButton';
-import ReminderItem from './ReminderItem';
 import ReminderEditorModal from './ReminderEditorModal';
+import ReminderItem from './ReminderItem';
 
 const Reminders = () => {
   const [reminders, setReminders] = useState<ReminderDto[]>([]);
@@ -13,7 +13,7 @@ const Reminders = () => {
     useState<ReminderDto | null>();
 
   useEffect(() => {
-    AxiosService.get<ReminderDto[]>('reminders')
+    ReminderService.get()
       .then((response) => setReminders(response.data))
       .catch((error) => {
         console.error(error);
