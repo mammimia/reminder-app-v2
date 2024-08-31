@@ -1,8 +1,13 @@
-import { CreateReminderDto, ReminderDto } from '@mammimia/types';
+import {
+  CreateReminderDto,
+  ReminderDto,
+  UpdateReminderDto,
+} from '@mammimia/types';
 import { Formik } from 'formik';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Modal, Text, TextInput } from 'react-native-paper';
+import ReminderService from '../services/ReminderService';
 
 type Props = {
   defaultValues?: ReminderDto | null;
@@ -12,10 +17,32 @@ type Props = {
 
 const ReminderEditorModal = ({ defaultValues, visible, hideModal }: Props) => {
   const containerStyle = { backgroundColor: 'white', padding: 20 };
+  const isEditing = !!defaultValues;
 
-  const handleSubmit = (values: CreateReminderDto) => {
-    const parsedValues = CreateReminderDto.parse(values);
-    console.log(parsedValues);
+  const handleCreate = (values: CreateReminderDto) => {
+    try {
+      const parsedValues = CreateReminderDto.parse(values);
+      ReminderService.create(parsedValues);
+      hideModal();
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  };
+
+  const handleEdit = (values: UpdateReminderDto) => {
+    if (!defaultValues) {
+      return;
+    }
+
+    try {
+      const parsedValues = UpdateReminderDto.parse(values);
+      ReminderService.update(defaultValues.id, parsedValues);
+      hideModal();
+    } catch (error) {
+      console.error(error);
+      return;
+    }
   };
 
   return (
@@ -27,7 +54,7 @@ const ReminderEditorModal = ({ defaultValues, visible, hideModal }: Props) => {
       <Text style={styles.formTitle}>Reminder Editor</Text>
       <Formik
         initialValues={defaultValues || { title: '', content: '' }}
-        onSubmit={handleSubmit}
+        onSubmit={isEditing ? handleEdit : handleCreate}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={styles.formContainer}>
@@ -43,7 +70,9 @@ const ReminderEditorModal = ({ defaultValues, visible, hideModal }: Props) => {
               onBlur={handleBlur('content')}
               value={values.content}
             />
-            <Button onPress={handleSubmit}>Submit</Button>
+            <Button onPress={handleSubmit}>
+              {isEditing ? 'Edit' : 'Create'} Reminder
+            </Button>
           </View>
         )}
       </Formik>
