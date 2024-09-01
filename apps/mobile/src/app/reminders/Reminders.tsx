@@ -7,17 +7,26 @@ import ReminderEditorModal from './ReminderEditorModal';
 import ReminderItem from './ReminderItem';
 
 const Reminders = () => {
+  const [isFetching, setIsFetching] = useState<boolean>(false);
   const [reminders, setReminders] = useState<ReminderDto[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedReminder, setSelectedReminder] =
     useState<ReminderDto | null>();
 
+  const getReminders = async () => {
+    setIsFetching(true);
+    try {
+      const response = await ReminderService.get();
+      setReminders(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
   useEffect(() => {
-    ReminderService.get()
-      .then((response) => setReminders(response.data))
-      .catch((error) => {
-        console.error(error);
-      });
+    getReminders();
   }, []);
 
   return (
@@ -26,6 +35,8 @@ const Reminders = () => {
         <Text>Reminders</Text>
         <FlatList
           data={reminders}
+          refreshing={isFetching}
+          onRefresh={getReminders}
           renderItem={({ item }) => (
             <ReminderItem
               reminder={item}
