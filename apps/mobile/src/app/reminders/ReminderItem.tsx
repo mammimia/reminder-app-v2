@@ -50,11 +50,12 @@ const ReminderItem = ({ reminder, openEditModal }: Props) => {
       </TouchableOpacity>
       {anchorPosition && (
         <ReminderItemActions
+          reminder={reminder}
           visible={isMenuVisible}
           closeMenu={() => setVisibility(false)}
           anchor={anchorPosition}
           itemStatus={reminder.status}
-          openEditModal={() => openEditModal(reminder)}
+          openEditModal={openEditModal}
         />
       )}
     </>
