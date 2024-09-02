@@ -1,6 +1,5 @@
 import { ReminderDto, ReminderStatus } from '@mammimia/types';
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { Divider, Menu } from 'react-native-paper';
 import ReminderService from '../services/ReminderService';
 
@@ -16,6 +15,7 @@ type Props = {
   };
   itemStatus: ReminderStatus;
   openEditModal: (reminder: ReminderDto) => void;
+  refetchReminders: () => void;
 };
 
 const ReminderItemActions = ({
@@ -25,20 +25,23 @@ const ReminderItemActions = ({
   anchor,
   itemStatus,
   openEditModal,
+  refetchReminders,
 }: Props) => {
   const handlePress = (callback: () => void) => {
     callback();
     closeMenu();
   };
 
-  const updateStatus = (status: ReminderStatus) => {
+  const handleUpdateStatus = (status: ReminderStatus) => {
     ReminderService.update(reminder.id, { status })
-      .then(() => {
-        console.log('Reminder status updated');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      .then(() => refetchReminders())
+      .catch((error) => console.error(error));
+  };
+
+  const handleDelete = () => {
+    ReminderService.remove(reminder.id)
+      .then(() => refetchReminders())
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -46,21 +49,23 @@ const ReminderItemActions = ({
       {itemStatus === ReminderStatus.TODO && (
         <Menu.Item
           onPress={() =>
-            handlePress(() => updateStatus(ReminderStatus.IN_PROGRESS))
+            handlePress(() => handleUpdateStatus(ReminderStatus.IN_PROGRESS))
           }
           title="Start"
         />
       )}
       {itemStatus === ReminderStatus.IN_PROGRESS && (
         <Menu.Item
-          onPress={() => handlePress(() => updateStatus(ReminderStatus.DONE))}
+          onPress={() =>
+            handlePress(() => handleUpdateStatus(ReminderStatus.DONE))
+          }
           title="Complete"
         />
       )}
       {itemStatus !== ReminderStatus.CANCELED && (
         <Menu.Item
           onPress={() =>
-            handlePress(() => updateStatus(ReminderStatus.CANCELED))
+            handlePress(() => handleUpdateStatus(ReminderStatus.CANCELED))
           }
           title="Cancel"
         />
@@ -70,10 +75,9 @@ const ReminderItemActions = ({
         onPress={() => handlePress(() => openEditModal(reminder))}
         title="Edit"
       />
+      <Menu.Item onPress={() => handlePress(handleDelete)} title="Delete" />
     </Menu>
   );
 };
 
 export default ReminderItemActions;
-
-const styles = StyleSheet.create({});

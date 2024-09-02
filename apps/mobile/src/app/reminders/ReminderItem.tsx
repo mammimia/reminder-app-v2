@@ -6,9 +6,10 @@ import ReminderItemActions from './ReminderItemActions';
 type Props = {
   reminder: ReminderDto;
   openEditModal: (reminder: ReminderDto) => void;
+  refetchReminders: () => void;
 };
 
-const ReminderItem = ({ reminder, openEditModal }: Props) => {
+const ReminderItem = ({ reminder, openEditModal, refetchReminders }: Props) => {
   const itemRef = useRef<TouchableOpacity>(null);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [anchorPosition, setAnchorPosition] = useState<{
@@ -56,6 +57,7 @@ const ReminderItem = ({ reminder, openEditModal }: Props) => {
           anchor={anchorPosition}
           itemStatus={reminder.status}
           openEditModal={openEditModal}
+          refetchReminders={refetchReminders}
         />
       )}
     </>

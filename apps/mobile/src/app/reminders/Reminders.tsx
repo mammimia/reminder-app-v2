@@ -46,6 +46,7 @@ const Reminders = () => {
                   setSelectedReminder(reminder);
                   setModalVisible(true);
                 }}
+                refetchReminders={getReminders}
               />
             )}
             keyExtractor={(item) => item.id}
