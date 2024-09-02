@@ -1,31 +1,27 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
-import Reminders from './reminders/Reminders';
 import Folders from './folders/Folders';
+import Reminders from './reminders/Reminders';
+import RemindersHome from './reminders/RemindersHome';
+
+const Tab = createBottomTabNavigator();
 
 export const App = () => {
   return (
-    <PaperProvider>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView
-        style={{
-          flex: 1,
-        }}
-      >
-        <View style={styles.container}>
-          <Folders />
-          <Reminders />
-        </View>
-      </SafeAreaView>
-    </PaperProvider>
+    <NavigationContainer>
+      <PaperProvider>
+        <StatusBar barStyle="dark-content" />
+        <Tab.Navigator>
+          <Tab.Screen name="Reminders" component={RemindersHome} />
+          <Tab.Screen name="Folders" component={Folders} />
+        </Tab.Navigator>
+      </PaperProvider>
+    </NavigationContainer>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
