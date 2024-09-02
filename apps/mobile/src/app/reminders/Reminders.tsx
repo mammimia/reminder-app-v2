@@ -5,7 +5,7 @@ import ReminderService from '../services/ReminderService';
 import ReminderAddButton from './ReminderAddButton';
 import ReminderEditorModal from './ReminderEditorModal';
 import ReminderItem from './ReminderItem';
-import ActivityIndicator from '../../components/ActivityIndicator';
+import ActivityOverlay from '../../components/ActivityIndicator';
 
 const Reminders = () => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
@@ -34,7 +34,7 @@ const Reminders = () => {
     <>
       <View style={styles.container}>
         <Text>Reminders</Text>
-        <ActivityIndicator isLoading={isFetching}>
+        <ActivityOverlay isLoading={isFetching}>
           <FlatList
             data={reminders}
             refreshing={isFetching}
@@ -50,7 +50,7 @@ const Reminders = () => {
             )}
             keyExtractor={(item) => item.id}
           />
-        </ActivityIndicator>
+        </ActivityOverlay>
         <ReminderAddButton openModal={() => setModalVisible(true)} />
       </View>
       <ReminderEditorModal

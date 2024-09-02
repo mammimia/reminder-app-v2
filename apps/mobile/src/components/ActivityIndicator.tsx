@@ -7,7 +7,7 @@ type Props = {
   size?: 'small' | 'large' | number;
 };
 
-const ActivityIndicator = ({ children, isLoading, size = 'large' }: Props) => {
+const ActivityOverlay = ({ children, isLoading, size = 'large' }: Props) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const onLayout = (event: LayoutChangeEvent) => {
@@ -32,7 +32,7 @@ const ActivityIndicator = ({ children, isLoading, size = 'large' }: Props) => {
   return children;
 };
 
-export default ActivityIndicator;
+export default ActivityOverlay;
 
 const styles = StyleSheet.create({
   container: {
