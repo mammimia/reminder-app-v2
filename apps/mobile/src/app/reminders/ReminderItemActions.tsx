@@ -46,20 +46,23 @@ const ReminderItemActions = ({
 
   return (
     <Menu visible={visible} onDismiss={closeMenu} anchor={anchor}>
-      {itemStatus === ReminderStatus.TODO && (
-        <Menu.Item
-          onPress={() =>
-            handlePress(() => handleUpdateStatus(ReminderStatus.IN_PROGRESS))
-          }
-          title="Start"
-        />
-      )}
+      {itemStatus === ReminderStatus.TODO ||
+        (itemStatus === ReminderStatus.CANCELED && (
+          <Menu.Item
+            onPress={() =>
+              handlePress(() => handleUpdateStatus(ReminderStatus.IN_PROGRESS))
+            }
+            title="Start"
+            leadingIcon="play"
+          />
+        ))}
       {itemStatus === ReminderStatus.IN_PROGRESS && (
         <Menu.Item
           onPress={() =>
             handlePress(() => handleUpdateStatus(ReminderStatus.DONE))
           }
           title="Complete"
+          leadingIcon="check"
         />
       )}
       {itemStatus !== ReminderStatus.CANCELED && (
@@ -68,14 +71,20 @@ const ReminderItemActions = ({
             handlePress(() => handleUpdateStatus(ReminderStatus.CANCELED))
           }
           title="Cancel"
+          leadingIcon="cancel"
         />
       )}
       <Divider />
       <Menu.Item
         onPress={() => handlePress(() => openEditModal(reminder))}
         title="Edit"
+        leadingIcon="pencil"
       />
-      <Menu.Item onPress={() => handlePress(handleDelete)} title="Delete" />
+      <Menu.Item
+        onPress={() => handlePress(handleDelete)}
+        title="Delete"
+        leadingIcon="delete"
+      />
     </Menu>
   );
 };
