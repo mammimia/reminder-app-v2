@@ -4,7 +4,7 @@ import {
   UpdateReminderDto,
 } from '@mammimia/types';
 import { Formik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Modal, Text, TextInput } from 'react-native-paper';
 import ReminderService from '../services/ReminderService';
@@ -13,35 +13,49 @@ type Props = {
   defaultValues?: ReminderDto | null;
   visible: boolean;
   hideModal: () => void;
+  refetchReminders: () => void;
 };
 
-const ReminderEditorModal = ({ defaultValues, visible, hideModal }: Props) => {
+const ReminderEditorModal = ({
+  defaultValues,
+  visible,
+  hideModal,
+  refetchReminders,
+}: Props) => {
+  const [isOperating, setIsOperating] = useState(false);
   const containerStyle = { backgroundColor: 'white', padding: 20 };
   const isEditing = !!defaultValues;
 
   const handleCreate = (values: CreateReminderDto) => {
+    setIsOperating(true);
     try {
       const parsedValues = CreateReminderDto.parse(values);
-      ReminderService.create(parsedValues);
-      hideModal();
+      ReminderService.create(parsedValues).then(() => {
+        hideModal();
+        refetchReminders();
+        setIsOperating(false);
+      });
     } catch (error) {
       console.error(error);
-      return;
+      setIsOperating(false);
     }
   };
 
   const handleEdit = (values: UpdateReminderDto) => {
-    if (!defaultValues) {
-      return;
-    }
+    if (!defaultValues) return;
+
+    setIsOperating(true);
 
     try {
       const parsedValues = UpdateReminderDto.parse(values);
-      ReminderService.update(defaultValues.id, parsedValues);
-      hideModal();
+      ReminderService.update(defaultValues.id, parsedValues).then(() => {
+        hideModal();
+        refetchReminders();
+        setIsOperating(false);
+      });
     } catch (error) {
       console.error(error);
-      return;
+      setIsOperating(false);
     }
   };
 
@@ -70,7 +84,11 @@ const ReminderEditorModal = ({ defaultValues, visible, hideModal }: Props) => {
               onBlur={handleBlur('content')}
               value={values.content}
             />
-            <Button onPress={handleSubmit}>
+            <Button
+              onPress={handleSubmit}
+              loading={isOperating}
+              disabled={isOperating}
+            >
               {isEditing ? 'Edit' : 'Create'} Reminder
             </Button>
           </View>

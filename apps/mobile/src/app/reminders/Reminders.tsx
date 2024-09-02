@@ -5,6 +5,7 @@ import ReminderService from '../services/ReminderService';
 import ReminderAddButton from './ReminderAddButton';
 import ReminderEditorModal from './ReminderEditorModal';
 import ReminderItem from './ReminderItem';
+import ActivityIndicator from '../../components/ActivityIndicator';
 
 const Reminders = () => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
@@ -33,21 +34,23 @@ const Reminders = () => {
     <>
       <View style={styles.container}>
         <Text>Reminders</Text>
-        <FlatList
-          data={reminders}
-          refreshing={isFetching}
-          onRefresh={getReminders}
-          renderItem={({ item }) => (
-            <ReminderItem
-              reminder={item}
-              openEditModal={(reminder: ReminderDto) => {
-                setSelectedReminder(reminder);
-                setModalVisible(true);
-              }}
-            />
-          )}
-          keyExtractor={(item) => item.id}
-        />
+        <ActivityIndicator isLoading={isFetching}>
+          <FlatList
+            data={reminders}
+            refreshing={isFetching}
+            onRefresh={getReminders}
+            renderItem={({ item }) => (
+              <ReminderItem
+                reminder={item}
+                openEditModal={(reminder: ReminderDto) => {
+                  setSelectedReminder(reminder);
+                  setModalVisible(true);
+                }}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </ActivityIndicator>
         <ReminderAddButton openModal={() => setModalVisible(true)} />
       </View>
       <ReminderEditorModal
@@ -57,6 +60,7 @@ const Reminders = () => {
           setSelectedReminder(null);
         }}
         defaultValues={selectedReminder}
+        refetchReminders={getReminders}
       />
     </>
   );
