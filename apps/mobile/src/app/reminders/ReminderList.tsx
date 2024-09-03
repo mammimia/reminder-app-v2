@@ -8,7 +8,7 @@ type Props = {
   reminders: ReminderDto[];
   isFetching: boolean;
   onRefresh: () => void;
-  openEditModal: (reminder: ReminderDto) => void;
+  openEditModal?: (reminder: ReminderDto) => void;
 };
 
 const ReminderList = ({

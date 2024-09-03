@@ -1,11 +1,13 @@
 import {
   CreateReminderDto,
   ReminderDto,
+  ReminderFilterDto,
   UpdateReminderDto,
 } from '@mammimia/types';
 import AxiosService from './AxiosService';
 
-const get = async () => AxiosService.get<ReminderDto[]>('reminders');
+const get = async (params?: ReminderFilterDto) =>
+  AxiosService.get<ReminderDto[]>('reminders', params);
 const create = async (reminder: CreateReminderDto) =>
   AxiosService.post<ReminderDto>('reminders', reminder);
 const update = async (id: string, reminder: UpdateReminderDto) =>

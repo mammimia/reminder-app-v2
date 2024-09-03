@@ -5,7 +5,7 @@ import ReminderItemActions from './ReminderItemActions';
 
 type Props = {
   reminder: ReminderDto;
-  openEditModal: (reminder: ReminderDto) => void;
+  openEditModal?: (reminder: ReminderDto) => void;
   refetchReminders: () => void;
 };
 

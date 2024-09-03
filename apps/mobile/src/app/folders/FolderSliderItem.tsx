@@ -14,7 +14,10 @@ const FolderSliderItem = ({ folder }: Props) => {
       style={styles.container}
       activeOpacity={0.6}
       onPress={() => {
-        navigation.navigate('FolderDetails', { folderId: folder.id });
+        navigation.navigate('FolderDetails', {
+          folderId: folder.id,
+          folderName: folder.name,
+        });
       }}
     >
       <Text style={styles.folderName}>{folder.name}</Text>

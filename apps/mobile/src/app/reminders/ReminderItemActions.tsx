@@ -14,7 +14,7 @@ type Props = {
     height: number;
   };
   itemStatus: ReminderStatus;
-  openEditModal: (reminder: ReminderDto) => void;
+  openEditModal?: (reminder: ReminderDto) => void;
   refetchReminders: () => void;
 };
 
@@ -76,7 +76,7 @@ const ReminderItemActions = ({
       )}
       <Divider />
       <Menu.Item
-        onPress={() => handlePress(() => openEditModal(reminder))}
+        onPress={() => handlePress(() => openEditModal?.(reminder))}
         title="Edit"
         leadingIcon="pencil"
       />
