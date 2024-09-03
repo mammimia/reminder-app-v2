@@ -1,6 +1,7 @@
 import { ReminderDto } from '@mammimia/types';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ReminderList from '../reminders/ReminderList';
 import ReminderService from '../services/ReminderService';
 
@@ -14,6 +15,7 @@ type Props = {
 };
 
 const FolderDetails = ({ route }: Props) => {
+  const navigation = useNavigation();
   const { folderId, folderName } = route.params;
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
@@ -35,11 +37,11 @@ const FolderDetails = ({ route }: Props) => {
 
   useEffect(() => {
     getReminders();
+    navigation.setOptions({ title: `${folderName} Folder` });
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>{folderName} Folder</Text>
       <ReminderList
         reminders={reminders}
         isFetching={isFetching}
