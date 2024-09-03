@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
+import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
@@ -27,8 +28,41 @@ export const App = () => {
       <PaperProvider>
         <StatusBar barStyle="dark-content" />
         <Tab.Navigator screenOptions={{ headerShown: false }}>
-          <Tab.Screen name="ReminderStack" component={ReminderStackScreen} />
-          <Tab.Screen name="Folders" component={Folders} />
+          <Tab.Screen
+            name="Reminder"
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={!focused ? 'fish' : 'fish-outline'}
+                  color={color}
+                  size={size}
+                />
+              ),
+            }}
+            component={ReminderStackScreen}
+          />
+          <Tab.Screen
+            name="Expense"
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <Ionicons name="cash-outline" color={color} size={size} />
+              ),
+            }}
+            component={Folders}
+          />
+          <Tab.Screen
+            name="Daily Routine"
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={!focused ? 'calendar' : 'calendar-outline'}
+                  color={color}
+                  size={size}
+                />
+              ),
+            }}
+            component={Folders}
+          />
         </Tab.Navigator>
       </PaperProvider>
     </NavigationContainer>
