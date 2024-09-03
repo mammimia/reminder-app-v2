@@ -1,6 +1,6 @@
 import { ReminderDto } from '@mammimia/types';
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 import ActivityOverlay from '../../components/ActivityIndicator';
 import ReminderItem from './ReminderItem';
 
@@ -31,9 +31,21 @@ const ReminderList = ({
           />
         )}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={() => (
+          <Text style={styles.listEmptyComponent}>No reminders</Text>
+        )}
       />
     </ActivityOverlay>
   );
 };
 
 export default ReminderList;
+
+const styles = StyleSheet.create({
+  listEmptyComponent: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'gray',
+    marginTop: 20,
+  },
+});

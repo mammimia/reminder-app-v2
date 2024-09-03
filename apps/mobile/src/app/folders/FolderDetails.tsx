@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
 import { ReminderDto } from '@mammimia/types';
-import ReminderService from '../services/ReminderService';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import ReminderList from '../reminders/ReminderList';
+import ReminderService from '../services/ReminderService';
 
 type Props = {
   route: {
@@ -38,7 +38,7 @@ const FolderDetails = ({ route }: Props) => {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>{folderName} Folder</Text>
       <ReminderList
         reminders={reminders}
@@ -51,4 +51,8 @@ const FolderDetails = ({ route }: Props) => {
 
 export default FolderDetails;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
