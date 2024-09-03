@@ -1,11 +1,10 @@
 import { ReminderDto } from '@mammimia/types';
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import ReminderService from '../services/ReminderService';
 import ReminderAddButton from './ReminderAddButton';
 import ReminderEditorModal from './ReminderEditorModal';
-import ReminderItem from './ReminderItem';
-import ActivityOverlay from '../../components/ActivityIndicator';
+import ReminderList from './ReminderList';
 
 const Reminders = () => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
@@ -34,24 +33,15 @@ const Reminders = () => {
     <>
       <View style={styles.container}>
         <Text>Reminders</Text>
-        <ActivityOverlay isLoading={isFetching}>
-          <FlatList
-            data={reminders}
-            refreshing={isFetching}
-            onRefresh={getReminders}
-            renderItem={({ item }) => (
-              <ReminderItem
-                reminder={item}
-                openEditModal={(reminder: ReminderDto) => {
-                  setSelectedReminder(reminder);
-                  setModalVisible(true);
-                }}
-                refetchReminders={getReminders}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        </ActivityOverlay>
+        <ReminderList
+          reminders={reminders}
+          isFetching={isFetching}
+          onRefresh={getReminders}
+          openEditModal={(reminder: ReminderDto) => {
+            setSelectedReminder(reminder);
+            setModalVisible(true);
+          }}
+        />
         <ReminderAddButton openModal={() => setModalVisible(true)} />
       </View>
       <ReminderEditorModal
