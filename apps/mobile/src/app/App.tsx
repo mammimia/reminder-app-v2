@@ -2,19 +2,35 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import Folders from './folders/Folders';
 import RemindersHome from './reminders/RemindersHome';
+import FolderDetails from './folders/FolderDetails';
 
-const ReminderDrawer = createDrawerNavigator();
+const ReminderStack = createStackNavigator();
 
 function ReminderStackScreen() {
   return (
+    <ReminderStack.Navigator initialRouteName="Home">
+      <ReminderStack.Screen name="Home" component={RemindersHome} />
+      <ReminderStack.Screen name="FolderDetails" component={FolderDetails} />
+    </ReminderStack.Navigator>
+  );
+}
+
+const ReminderDrawer = createDrawerNavigator();
+
+function ReminderDrawerScreen() {
+  return (
     <ReminderDrawer.Navigator initialRouteName="Home">
-      <ReminderDrawer.Screen name="Home" component={RemindersHome} />
+      <ReminderDrawer.Screen
+        name="ReminderStackScreen"
+        component={ReminderStackScreen}
+      />
       <ReminderDrawer.Screen name="Details" component={RemindersHome} />
     </ReminderDrawer.Navigator>
   );
@@ -39,12 +55,12 @@ export const App = () => {
                 />
               ),
             }}
-            component={ReminderStackScreen}
+            component={ReminderDrawerScreen}
           />
           <Tab.Screen
             name="Expense"
             options={{
-              tabBarIcon: ({ focused, color, size }) => (
+              tabBarIcon: ({ color, size }) => (
                 <Ionicons name="cash-outline" color={color} size={size} />
               ),
             }}

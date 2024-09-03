@@ -1,14 +1,22 @@
 import { FolderDto } from '@mammimia/types';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 type Props = {
   folder: FolderDto;
 };
 
 const FolderSliderItem = ({ folder }: Props) => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      activeOpacity={0.6}
+      onPress={() => {
+        navigation.navigate('FolderDetails', { folderId: folder.id });
+      }}
+    >
       <Text style={styles.folderName}>{folder.name}</Text>
       <Text style={styles.reminderCount}>
         {folder.reminderCount || 0} reminders
@@ -16,7 +24,7 @@ const FolderSliderItem = ({ folder }: Props) => {
       <Text style={styles.categoryText}>
         {folder.category?.name || 'General'}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
