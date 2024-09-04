@@ -1,28 +1,44 @@
 import { FolderDto } from '@mammimia/types';
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import AxiosService from '../services/AxiosService';
+import FolderService from '../services/FolderService';
 import FolderSliderItem from './FolderSliderItem';
 
-const FolderList = () => {
-  const [folders, setFolders] = useState<FolderDto[]>([]);
+type Props = {
+  horizontal?: boolean;
+  flatListStyle?: object;
+};
 
+const FolderList = ({ horizontal = true, flatListStyle }: Props) => {
+  const [folders, setFolders] = useState<FolderDto[]>([]);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const getFolders = async () => {
+    setIsFetching(true);
+    try {
+      const response = await FolderService.get();
+      setFolders(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
   useEffect(() => {
-    AxiosService.get<FolderDto[]>('folders')
-      .then((response) => setFolders(response.data))
-      .catch((error) => {
-        console.error(error);
-      });
+    getFolders();
   }, []);
 
   return (
     <View style={styles.container}>
       <Text>Folders</Text>
       <FlatList
+        style={flatListStyle}
         data={folders}
         renderItem={({ item }) => <FolderSliderItem folder={item} />}
         keyExtractor={(item) => item.id}
-        horizontal
+        horizontal={horizontal}
+        onRefresh={getFolders}
+        refreshing={isFetching}
       />
     </View>
   );
