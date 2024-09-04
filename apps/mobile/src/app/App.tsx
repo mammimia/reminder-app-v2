@@ -11,6 +11,7 @@ import FolderList from './folders/FolderList';
 import RemindersHome from './reminders/RemindersHome';
 import FolderDetails from './folders/FolderDetails';
 import Folders from './folders/Folders';
+import Categories from './ categories/Categories';
 
 const ReminderStack = createStackNavigator();
 
@@ -33,6 +34,7 @@ function ReminderDrawerScreen() {
         component={ReminderStackScreen}
       />
       <ReminderDrawer.Screen name="Folders" component={Folders} />
+      <ReminderDrawer.Screen name="Categories" component={Categories} />
     </ReminderDrawer.Navigator>
   );
 }
