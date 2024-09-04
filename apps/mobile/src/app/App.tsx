@@ -7,9 +7,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
-import Folders from './folders/Folders';
+import FolderList from './folders/FolderList';
 import RemindersHome from './reminders/RemindersHome';
 import FolderDetails from './folders/FolderDetails';
+import Folders from './folders/Folders';
 
 const ReminderStack = createStackNavigator();
 
@@ -31,7 +32,7 @@ function ReminderDrawerScreen() {
         name="ReminderStackScreen"
         component={ReminderStackScreen}
       />
-      <ReminderDrawer.Screen name="Details" component={RemindersHome} />
+      <ReminderDrawer.Screen name="Folders" component={Folders} />
     </ReminderDrawer.Navigator>
   );
 }
@@ -64,7 +65,7 @@ export const App = () => {
                 <Ionicons name="cash-outline" color={color} size={size} />
               ),
             }}
-            component={Folders}
+            component={FolderList}
           />
           <Tab.Screen
             name="Daily Routine"
@@ -77,7 +78,7 @@ export const App = () => {
                 />
               ),
             }}
-            component={Folders}
+            component={FolderList}
           />
         </Tab.Navigator>
       </PaperProvider>

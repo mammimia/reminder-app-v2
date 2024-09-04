@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Folders from '../folders/Folders';
+import FolderList from '../folders/FolderList';
 import Reminders from './Reminders';
 
 const RemindersHome = () => {
   return (
     <View style={styles.container}>
-      <Folders />
+      <FolderList />
       <Reminders />
     </View>
   );
