@@ -7,9 +7,14 @@ import FolderSliderItem from './FolderSliderItem';
 type Props = {
   horizontal?: boolean;
   flatListStyle?: object;
+  folderItemStyle?: object;
 };
 
-const FolderList = ({ horizontal = true, flatListStyle }: Props) => {
+const FolderList = ({
+  horizontal = true,
+  flatListStyle,
+  folderItemStyle,
+}: Props) => {
   const [folders, setFolders] = useState<FolderDto[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
@@ -34,7 +39,9 @@ const FolderList = ({ horizontal = true, flatListStyle }: Props) => {
       <FlatList
         style={flatListStyle}
         data={folders}
-        renderItem={({ item }) => <FolderSliderItem folder={item} />}
+        renderItem={({ item }) => (
+          <FolderSliderItem folder={item} style={folderItemStyle} />
+        )}
         keyExtractor={(item) => item.id}
         horizontal={horizontal}
         onRefresh={getFolders}

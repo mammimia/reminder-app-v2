@@ -10,4 +10,7 @@ export default Folders;
 
 const styles = StyleSheet.create({
   flatListStyle: {},
+  folderItemStyle: {
+    flex: 1,
+  },
 });

@@ -6,7 +6,7 @@ import Reminders from './Reminders';
 const RemindersHome = () => {
   return (
     <View style={styles.container}>
-      <FolderList />
+      <FolderList folderItemStyle={styles.folderItemStyle} />
       <Reminders />
     </View>
   );
@@ -17,5 +17,8 @@ export default RemindersHome;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  folderItemStyle: {
+    width: 150,
   },
 });
