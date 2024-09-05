@@ -5,13 +5,14 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 type Props = {
   folder: FolderDto;
+  style?: object;
 };
 
-const FolderSliderItem = ({ folder }: Props) => {
+const FolderSliderItem = ({ folder, style }: Props) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container, { backgroundColor: folder.color }, style]}
       activeOpacity={0.6}
       onPress={() => {
         navigation.navigate('FolderDetails', {
@@ -46,7 +47,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 10,
     height: 100,
-    width: 150,
   },
   folderName: {
     fontSize: 14,
