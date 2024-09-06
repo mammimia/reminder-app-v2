@@ -12,6 +12,7 @@ import RemindersHome from './reminders/RemindersHome';
 import FolderDetails from './folders/FolderDetails';
 import Folders from './folders/Folders';
 import Categories from './ categories/Categories';
+import { ThemeProvider } from '@mammimia/ui';
 
 const ReminderStack = createStackNavigator();
 
@@ -45,44 +46,46 @@ export const App = () => {
   return (
     <NavigationContainer>
       <PaperProvider>
-        <StatusBar barStyle="dark-content" />
-        <Tab.Navigator screenOptions={{ headerShown: false }}>
-          <Tab.Screen
-            name="Reminder"
-            options={{
-              tabBarIcon: ({ focused, color, size }) => (
-                <Ionicons
-                  name={!focused ? 'fish' : 'fish-outline'}
-                  color={color}
-                  size={size}
-                />
-              ),
-            }}
-            component={ReminderDrawerScreen}
-          />
-          <Tab.Screen
-            name="Expense"
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="cash-outline" color={color} size={size} />
-              ),
-            }}
-            component={FolderList}
-          />
-          <Tab.Screen
-            name="Daily Routine"
-            options={{
-              tabBarIcon: ({ focused, color, size }) => (
-                <Ionicons
-                  name={!focused ? 'calendar' : 'calendar-outline'}
-                  color={color}
-                  size={size}
-                />
-              ),
-            }}
-            component={FolderList}
-          />
-        </Tab.Navigator>
+        <ThemeProvider>
+          <StatusBar barStyle="dark-content" />
+          <Tab.Navigator screenOptions={{ headerShown: false }}>
+            <Tab.Screen
+              name="Reminder"
+              options={{
+                tabBarIcon: ({ focused, color, size }) => (
+                  <Ionicons
+                    name={!focused ? 'fish' : 'fish-outline'}
+                    color={color}
+                    size={size}
+                  />
+                ),
+              }}
+              component={ReminderDrawerScreen}
+            />
+            <Tab.Screen
+              name="Expense"
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="cash-outline" color={color} size={size} />
+                ),
+              }}
+              component={FolderList}
+            />
+            <Tab.Screen
+              name="Daily Routine"
+              options={{
+                tabBarIcon: ({ focused, color, size }) => (
+                  <Ionicons
+                    name={!focused ? 'calendar' : 'calendar-outline'}
+                    color={color}
+                    size={size}
+                  />
+                ),
+              }}
+              component={FolderList}
+            />
+          </Tab.Navigator>
+        </ThemeProvider>
       </PaperProvider>
     </NavigationContainer>
   );
