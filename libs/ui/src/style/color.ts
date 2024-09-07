@@ -7,6 +7,7 @@ export type ColorTheme = {
   primary: string;
   secondary: string;
   accent: string;
+  text: string;
   background: string;
   surface: string;
   error: string;
@@ -29,6 +30,7 @@ const Colors: ColorPalettes = {
     primary: '#6200ee',
     secondary: '#03dac6',
     accent: '#03dac6',
+    text: '#000000',
     background: '#f6f6f6',
     surface: '#ffffff',
     error: '#b00020',
@@ -41,6 +43,7 @@ const Colors: ColorPalettes = {
     primary: '#bb86fc',
     secondary: '#03dac6',
     accent: '#03dac6',
+    text: '#ffffff',
     background: '#121212',
     surface: '#121212',
     error: '#cf6679',
