@@ -29,6 +29,7 @@ const FolderList = ({
       setIsFetching(false);
     }
   };
+
   useEffect(() => {
     getFolders();
   }, []);
