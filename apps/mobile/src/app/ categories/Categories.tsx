@@ -1,14 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import CategoriesList from './CategoriesList';
 
 const Categories = () => {
-  return (
-    <View>
-      <Text>Categories</Text>
-    </View>
-  );
+  return <CategoriesList />;
 };
 
 export default Categories;
-
-const styles = StyleSheet.create({});
