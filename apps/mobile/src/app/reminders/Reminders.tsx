@@ -1,42 +1,28 @@
 import { ReminderDto } from '@mammimia/types';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import useFetchData from '../../hooks/useFetchData';
 import ReminderService from '../services/ReminderService';
 import ReminderAddButton from './ReminderAddButton';
 import ReminderEditorModal from './ReminderEditorModal';
 import ReminderList from './ReminderList';
 
 const Reminders = () => {
-  const [isFetching, setIsFetching] = useState<boolean>(false);
-  const [reminders, setReminders] = useState<ReminderDto[]>([]);
+  const { data, isFetching, refetch } = useFetchData<ReminderDto>({
+    fetchMethod: ReminderService.get,
+  });
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedReminder, setSelectedReminder] =
     useState<ReminderDto | null>();
-
-  const getReminders = async () => {
-    setIsFetching(true);
-    try {
-      const response = await ReminderService.get();
-      setReminders(response.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsFetching(false);
-    }
-  };
-
-  useEffect(() => {
-    getReminders();
-  }, []);
 
   return (
     <>
       <View style={styles.container}>
         <Text>Reminders</Text>
         <ReminderList
-          reminders={reminders}
+          reminders={data}
           isFetching={isFetching}
-          onRefresh={getReminders}
+          onRefresh={refetch}
           openEditModal={(reminder: ReminderDto) => {
             setSelectedReminder(reminder);
             setModalVisible(true);
@@ -51,7 +37,7 @@ const Reminders = () => {
           setSelectedReminder(null);
         }}
         defaultValues={selectedReminder}
-        refetchReminders={getReminders}
+        refetchReminders={refetch}
       />
     </>
   );
