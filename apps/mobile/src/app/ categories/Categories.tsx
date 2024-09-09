@@ -1,8 +1,8 @@
 import React from 'react';
-import CategoriesList from './CategoriesList';
+import CategoryList from './CategoryList';
 
 const Categories = () => {
-  return <CategoriesList />;
+  return <CategoryList />;
 };
 
 export default Categories;

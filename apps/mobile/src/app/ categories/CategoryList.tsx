@@ -5,7 +5,7 @@ import useFetchData from '../../hooks/useFetchData';
 import CategoryService from '../services/CategoryService';
 import CategorySliderItem from './CategorySliderItem';
 
-const CategoriesList = () => {
+const CategoryList = () => {
   const { data, isFetching, refetch } = useFetchData<CategoryDto>({
     fetchMethod: CategoryService.get,
   });
@@ -23,7 +23,7 @@ const CategoriesList = () => {
   );
 };
 
-export default CategoriesList;
+export default CategoryList;
 
 const styles = StyleSheet.create({
   container: {
