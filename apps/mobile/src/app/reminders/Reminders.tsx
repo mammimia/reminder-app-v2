@@ -1,9 +1,9 @@
 import { ReminderDto } from '@mammimia/types';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import AddFab from '../../components/AddFab';
 import useFetchData from '../../hooks/useFetchData';
 import ReminderService from '../services/ReminderService';
-import ReminderAddButton from './ReminderAddButton';
 import ReminderEditorModal from './ReminderEditorModal';
 import ReminderList from './ReminderList';
 
@@ -28,7 +28,7 @@ const Reminders = () => {
             setModalVisible(true);
           }}
         />
-        <ReminderAddButton openModal={() => setModalVisible(true)} />
+        <AddFab onPress={() => setModalVisible(true)} />
       </View>
       <ReminderEditorModal
         visible={modalVisible}
