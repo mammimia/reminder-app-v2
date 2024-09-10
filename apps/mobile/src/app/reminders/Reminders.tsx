@@ -1,7 +1,8 @@
 import { ReminderDto } from '@mammimia/types';
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AddFab from '../../components/AddFab';
+import useEditModal from '../../hooks/useEditModal';
 import useFetchData from '../../hooks/useFetchData';
 import ReminderService from '../services/ReminderService';
 import ReminderEditorModal from './ReminderEditorModal';
@@ -11,9 +12,8 @@ const Reminders = () => {
   const { data, isFetching, refetch } = useFetchData<ReminderDto>({
     fetchMethod: ReminderService.get,
   });
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [selectedReminder, setSelectedReminder] =
-    useState<ReminderDto | null>();
+  const { modalVisible, selectedItem, hideModal, openEditModal } =
+    useEditModal<ReminderDto>();
 
   return (
     <>
@@ -23,20 +23,14 @@ const Reminders = () => {
           reminders={data}
           isFetching={isFetching}
           onRefresh={refetch}
-          openEditModal={(reminder: ReminderDto) => {
-            setSelectedReminder(reminder);
-            setModalVisible(true);
-          }}
+          openEditModal={(reminder: ReminderDto) => openEditModal(reminder)}
         />
-        <AddFab onPress={() => setModalVisible(true)} />
+        <AddFab onPress={() => openEditModal()} />
       </View>
       <ReminderEditorModal
         visible={modalVisible}
-        hideModal={() => {
-          setModalVisible(false);
-          setSelectedReminder(null);
-        }}
-        defaultValues={selectedReminder}
+        hideModal={hideModal}
+        defaultValues={selectedItem}
         refetchReminders={refetch}
       />
     </>
