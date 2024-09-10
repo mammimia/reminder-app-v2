@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useEditModal = <T,>() => {
+const useEditorModal = <T,>() => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
 
@@ -17,4 +17,4 @@ const useEditModal = <T,>() => {
   return { modalVisible, selectedItem, hideModal, openEditModal };
 };
 
-export default useEditModal;
+export default useEditorModal;
