@@ -2,7 +2,7 @@ import { ReminderDto } from '@mammimia/types';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AddFab from '../../components/AddFab';
-import useEditorModal from '../../hooks/useEditModal';
+import useEditorModal from '../../hooks/useEditorModal';
 import useFetchData from '../../hooks/useFetchData';
 import ReminderService from '../services/ReminderService';
 import ReminderEditorModal from './ReminderEditorModal';

@@ -4,9 +4,10 @@ import {
   UpdateReminderDto,
 } from '@mammimia/types';
 import { Formik } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Modal, Text, TextInput } from 'react-native-paper';
+import useEditorModalActions from '../../hooks/useEditorModalActions';
 import ReminderService from '../services/ReminderService';
 
 type Props = {
@@ -22,42 +23,16 @@ const ReminderEditorModal = ({
   hideModal,
   refetchReminders,
 }: Props) => {
-  const [isOperating, setIsOperating] = useState(false);
+  const { isOperating, isEditing, handleFormSubmit } = useEditorModalActions({
+    service: ReminderService,
+    refetch: refetchReminders,
+    hideModal,
+    defaultValues,
+    createSchema: CreateReminderDto,
+    updateSchema: UpdateReminderDto,
+  });
+
   const containerStyle = { backgroundColor: 'white', padding: 20 };
-  const isEditing = !!defaultValues;
-
-  const handleCreate = (values: CreateReminderDto) => {
-    setIsOperating(true);
-    try {
-      const parsedValues = CreateReminderDto.parse(values);
-      ReminderService.create(parsedValues).then(() => {
-        hideModal();
-        refetchReminders();
-        setIsOperating(false);
-      });
-    } catch (error) {
-      console.error(error);
-      setIsOperating(false);
-    }
-  };
-
-  const handleEdit = (values: UpdateReminderDto) => {
-    if (!defaultValues) return;
-
-    setIsOperating(true);
-
-    try {
-      const parsedValues = UpdateReminderDto.parse(values);
-      ReminderService.update(defaultValues.id, parsedValues).then(() => {
-        hideModal();
-        refetchReminders();
-        setIsOperating(false);
-      });
-    } catch (error) {
-      console.error(error);
-      setIsOperating(false);
-    }
-  };
 
   return (
     <Modal
@@ -68,7 +43,7 @@ const ReminderEditorModal = ({
       <Text style={styles.formTitle}>Reminder Editor</Text>
       <Formik
         initialValues={defaultValues || { title: '', content: '' }}
-        onSubmit={isEditing ? handleEdit : handleCreate}
+        onSubmit={handleFormSubmit}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={styles.formContainer}>
