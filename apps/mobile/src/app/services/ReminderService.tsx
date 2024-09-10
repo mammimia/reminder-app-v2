@@ -5,19 +5,21 @@ import {
   UpdateReminderDto,
 } from '@mammimia/types';
 import AxiosService from './AxiosService';
+import { TCrudService } from './TCrudService';
 
-const get = async (params?: ReminderFilterDto) =>
-  AxiosService.get<ReminderDto[]>('reminders', params);
-const create = async (reminder: CreateReminderDto) =>
-  AxiosService.post<ReminderDto>('reminders', reminder);
-const update = async (id: string, reminder: UpdateReminderDto) =>
-  AxiosService.put<ReminderDto>(`reminders/${id}`, reminder);
-const remove = async (id: string) =>
-  AxiosService.delete<ReminderDto>(`reminders/${id}`);
-
-export default {
-  get,
-  create,
-  update,
-  remove,
+const ReminderService: TCrudService<
+  ReminderDto,
+  CreateReminderDto,
+  UpdateReminderDto
+> = {
+  get: async (filter?: ReminderFilterDto) =>
+    AxiosService.get<ReminderDto[]>('reminders', { params: filter }),
+  create: async (dto: CreateReminderDto) =>
+    AxiosService.post<ReminderDto>('reminders', dto),
+  update: async (id: string, reminder: UpdateReminderDto) =>
+    AxiosService.put<ReminderDto>(`reminders/${id}`, reminder),
+  remove: async (id: string) =>
+    AxiosService.delete<ReminderDto>(`reminders/${id}`),
 };
+
+export default ReminderService;
