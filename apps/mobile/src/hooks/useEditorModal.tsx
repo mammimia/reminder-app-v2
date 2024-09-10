@@ -9,12 +9,12 @@ const useEditorModal = <T,>() => {
     setSelectedItem(null);
   };
 
-  const openEditModal = (item?: T) => {
+  const openModal = (item?: T) => {
     setSelectedItem(item || null);
     setModalVisible(true);
   };
 
-  return { modalVisible, selectedItem, hideModal, openEditModal };
+  return { modalVisible, selectedItem, hideModal, openModal };
 };
 
 export default useEditorModal;

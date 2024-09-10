@@ -12,7 +12,7 @@ const Reminders = () => {
   const { data, isFetching, refetch } = useFetchData<ReminderDto>({
     fetchMethod: ReminderService.get,
   });
-  const { modalVisible, selectedItem, hideModal, openEditModal } =
+  const { modalVisible, selectedItem, hideModal, openModal } =
     useEditorModal<ReminderDto>();
 
   return (
@@ -23,9 +23,9 @@ const Reminders = () => {
           reminders={data}
           isFetching={isFetching}
           onRefresh={refetch}
-          openEditModal={(reminder: ReminderDto) => openEditModal(reminder)}
+          openEditModal={(reminder: ReminderDto) => openModal(reminder)}
         />
-        <AddFab onPress={() => openEditModal()} />
+        <AddFab onPress={() => openModal()} />
       </View>
       <ReminderEditorModal
         visible={modalVisible}
