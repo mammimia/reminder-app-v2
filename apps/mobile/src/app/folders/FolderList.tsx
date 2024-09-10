@@ -1,25 +1,26 @@
 import { FolderDto } from '@mammimia/types';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import useFetchData from '../../hooks/useFetchData';
-import FolderService from '../services/FolderService';
 import FolderSliderItem from './FolderSliderItem';
 
 type Props = {
+  data: FolderDto[];
   horizontal?: boolean;
   flatListStyle?: object;
   folderItemStyle?: object;
+  isFetching: boolean;
+  onRefresh: () => void;
+  openEditModal?: (reminder: FolderDto) => void;
 };
 
 const FolderList = ({
   horizontal = true,
   flatListStyle,
   folderItemStyle,
+  data,
+  isFetching,
+  onRefresh: refetch,
 }: Props) => {
-  const { data, isFetching, refetch } = useFetchData<FolderDto>({
-    fetchMethod: FolderService.get,
-  });
-
   return (
     <View style={styles.container}>
       <Text>Folders</Text>
