@@ -18,6 +18,11 @@ export class FolderService {
           },
         },
       },
+      orderBy: {
+        reminders: {
+          _count: 'desc',
+        },
+      },
     });
 
     return folders;
