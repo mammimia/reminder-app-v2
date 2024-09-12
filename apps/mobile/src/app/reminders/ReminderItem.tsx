@@ -1,7 +1,12 @@
-import { ReminderDto } from '@mammimia/types';
-import React, { useRef, useState } from 'react';
+import { useActionSheet } from '@expo/react-native-action-sheet';
+import { ReminderDto, ReminderStatus } from '@mammimia/types';
+import React, { useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import ReminderItemActions from './ReminderItemActions';
+import ReminderService from '../services/ReminderService';
+import showCustomActionSheet, {
+  ActionSheetOption,
+} from '../../utils/showCustomActionSheet';
+import { useColors } from '@mammimia/ui';
 
 type Props = {
   reminder: ReminderDto;
@@ -11,56 +16,83 @@ type Props = {
 
 const ReminderItem = ({ reminder, openEditModal, refetchReminders }: Props) => {
   const itemRef = useRef<TouchableOpacity>(null);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const [anchorPosition, setAnchorPosition] = useState<{
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  } | null>(null);
+  const { showActionSheetWithOptions } = useActionSheet();
+  const { colors } = useColors();
 
-  const setVisibility = (visibility: boolean) => {
-    setIsMenuVisible(visibility);
+  const handleUpdateStatus = (status: ReminderStatus) => {
+    ReminderService.update(reminder.id, { status })
+      .then(() => refetchReminders())
+      .catch((error) => console.error(error));
+  };
+
+  const handleDelete = () => {
+    ReminderService.remove(reminder.id)
+      .then(() => refetchReminders())
+      .catch((error) => console.error(error));
   };
 
   const handleLongPress = () => {
-    if (!itemRef.current) {
-      return;
-    }
+    const options: ActionSheetOption[] = [
+      {
+        label: 'Start',
+        onPress: () => handleUpdateStatus(ReminderStatus.IN_PROGRESS),
+        shouldRender: () =>
+          reminder.status === ReminderStatus.TODO ||
+          reminder.status === ReminderStatus.CANCELED,
+      },
+      {
+        label: 'Complete',
+        onPress: () => handleUpdateStatus(ReminderStatus.DONE),
+        shouldRender: () => reminder.status === ReminderStatus.IN_PROGRESS,
+      },
+      {
+        label: 'Cancel',
+        onPress: () => handleUpdateStatus(ReminderStatus.CANCELED),
+        shouldRender: () => reminder.status !== ReminderStatus.CANCELED,
+      },
+      {
+        label: 'Edit',
+        onPress: () => openEditModal?.(reminder),
+      },
+      {
+        label: 'Delete',
+        onPress: () => handleDelete(),
+        isDestructive: true,
+      },
+      {
+        label: 'Close',
+        onPress: () => {
+          /* Do nothing */
+        },
+        isCancel: true,
+      },
+    ];
 
-    itemRef.current.measure((fx, fy, width, height, px, py) => {
-      setAnchorPosition({ x: px + width, y: py + height, width, height });
-      setVisibility(true);
-    });
+    showCustomActionSheet(
+      {
+        options,
+        title: 'Reminder Actions',
+        message: 'Select an option to manage your reminder.',
+        tintColor: colors.primary,
+      },
+      showActionSheetWithOptions
+    );
   };
 
   return (
-    <>
-      <TouchableOpacity
-        ref={itemRef}
-        activeOpacity={0.6}
-        onLongPress={handleLongPress}
-      >
-        <View style={styles.container}>
-          <Text>Title: {reminder.title}</Text>
-          <Text>Content: {reminder.content}</Text>
-          <Text>Due Date: {reminder.expiresAt} </Text>
-          <Text>Folder: {reminder.folder?.name}</Text>
-          <Text>Status: {reminder.status}</Text>
-        </View>
-      </TouchableOpacity>
-      {anchorPosition && (
-        <ReminderItemActions
-          reminder={reminder}
-          visible={isMenuVisible}
-          closeMenu={() => setVisibility(false)}
-          anchor={anchorPosition}
-          itemStatus={reminder.status}
-          openEditModal={openEditModal}
-          refetchReminders={refetchReminders}
-        />
-      )}
-    </>
+    <TouchableOpacity
+      ref={itemRef}
+      activeOpacity={0.6}
+      onLongPress={handleLongPress}
+    >
+      <View style={styles.container}>
+        <Text>Title: {reminder.title}</Text>
+        <Text>Content: {reminder.content}</Text>
+        <Text>Due Date: {reminder.expiresAt} </Text>
+        <Text>Folder: {reminder.folder?.name}</Text>
+        <Text>Status: {reminder.status}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
