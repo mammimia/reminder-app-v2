@@ -7,6 +7,7 @@
   "dependencies": {
     "@expo/metro-config": "~0.18.1",
     "@expo/metro-runtime": "~3.2.1",
+    "@expo/react-native-action-sheet": "^4.1.0",
     "@nestjs/common": "^10.0.2",
     "@nestjs/core": "^10.0.2",
     "@nestjs/platform-express": "^10.0.2",
