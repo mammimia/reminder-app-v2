@@ -38,7 +38,7 @@ const FolderEditorModal = ({
     >
       <Text style={styles.formTitle}>Folder Editor</Text>
       <Formik
-        initialValues={defaultValues || { title: '', content: '' }}
+        initialValues={defaultValues || { name: '', color: '' }}
         onSubmit={handleFormSubmit}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
