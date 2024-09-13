@@ -18,7 +18,12 @@ const Categories = () => {
   return (
     <>
       <View style={styles.container}>
-        <CategoryList data={data} isFetching={isFetching} onRefresh={refetch} />
+        <CategoryList
+          data={data}
+          isFetching={isFetching}
+          onRefresh={refetch}
+          openEditModal={openModal}
+        />
         <AddFab onPress={() => openModal()} />
       </View>
       <CategoryEditorModal
