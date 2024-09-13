@@ -1,21 +1,24 @@
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ReminderDto, ReminderStatus } from '@mammimia/types';
-import React, { useRef } from 'react';
+import { useColors } from '@mammimia/ui';
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import ReminderService from '../services/ReminderService';
 import showCustomActionSheet, {
   ActionSheetOption,
 } from '../../utils/showCustomActionSheet';
-import { useColors } from '@mammimia/ui';
+import ReminderService from '../services/ReminderService';
 
 type Props = {
   reminder: ReminderDto;
   openEditModal?: (reminder: ReminderDto) => void;
-  refetchReminders: () => void;
+  refetch: () => void;
 };
 
-const ReminderItem = ({ reminder, openEditModal, refetchReminders }: Props) => {
-  const itemRef = useRef<TouchableOpacity>(null);
+const ReminderItem = ({
+  reminder,
+  openEditModal,
+  refetch: refetchReminders,
+}: Props) => {
   const { showActionSheetWithOptions } = useActionSheet();
   const { colors } = useColors();
 
@@ -80,11 +83,7 @@ const ReminderItem = ({ reminder, openEditModal, refetchReminders }: Props) => {
   };
 
   return (
-    <TouchableOpacity
-      ref={itemRef}
-      activeOpacity={0.6}
-      onLongPress={handleLongPress}
-    >
+    <TouchableOpacity activeOpacity={0.6} onLongPress={handleLongPress}>
       <View style={styles.container}>
         <Text>Title: {reminder.title}</Text>
         <Text>Content: {reminder.content}</Text>

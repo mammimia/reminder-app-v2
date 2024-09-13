@@ -27,7 +27,7 @@ const ReminderList = ({
           <ReminderItem
             reminder={item}
             openEditModal={openEditModal}
-            refetchReminders={onRefresh}
+            refetch={onRefresh}
           />
         )}
         keyExtractor={(item) => item.id}
