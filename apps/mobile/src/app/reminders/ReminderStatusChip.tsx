@@ -1,11 +1,12 @@
 import { ReminderStatus } from '@mammimia/types';
 import { useColors } from '@mammimia/ui';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import StringUtils from '../../utils/StringUtils';
 
 type Props = {
-  style: any;
+  style: ViewStyle;
   status: ReminderStatus;
 };
 
@@ -33,7 +34,9 @@ const ReminderStatusChip = ({ style, status }: Props) => {
     <View style={[style, styles.container, { backgroundColor: color }]}>
       <View style={styles.container}>
         <Icon name={icon} size={16} color={colors.white} />
-        <Text style={styles.text}>{status}</Text>
+        <Text style={styles.text}>
+          {StringUtils.convertToTitleCase(status)}
+        </Text>
       </View>
     </View>
   );
