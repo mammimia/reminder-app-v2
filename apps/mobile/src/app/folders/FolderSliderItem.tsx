@@ -2,14 +2,68 @@ import { FolderDto } from '@mammimia/types';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import showCustomActionSheet, {
+  ActionSheetOption,
+} from '../../utils/showCustomActionSheet';
+import FolderService from '../services/FolderService';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 
 type Props = {
   folder: FolderDto;
   style?: object;
+  actionable?: boolean;
+  openEditModal?: (folder: FolderDto) => void;
+  refetch: () => void;
 };
 
-const FolderSliderItem = ({ folder, style }: Props) => {
+const FolderSliderItem = ({
+  folder,
+  style,
+  actionable,
+  openEditModal,
+  refetch,
+}: Props) => {
   const navigation = useNavigation();
+  const { showActionSheetWithOptions } = useActionSheet();
+
+  const handleDelete = () => {
+    FolderService.remove(folder.id)
+      .then(() => refetch())
+      .catch((error) => console.error(error));
+  };
+
+  const handleLongPress = () => {
+    if (actionable) {
+      const options: ActionSheetOption[] = [
+        {
+          label: 'Edit',
+          onPress: () => openEditModal?.(folder),
+        },
+        {
+          label: 'Delete',
+          onPress: () => handleDelete(),
+          isDestructive: true,
+        },
+        {
+          label: 'Close',
+          onPress: () => {
+            /* Do nothing */
+          },
+          isCancel: true,
+        },
+      ];
+
+      showCustomActionSheet(
+        {
+          options,
+          title: 'Folder Actions',
+          message: 'Select an option to manage the folder.',
+        },
+        showActionSheetWithOptions
+      );
+    }
+  };
+
   return (
     <TouchableOpacity
       style={[styles.container, { backgroundColor: folder.color }, style]}
@@ -20,6 +74,7 @@ const FolderSliderItem = ({ folder, style }: Props) => {
           folderName: folder.name,
         });
       }}
+      onLongPress={handleLongPress}
     >
       <Text style={styles.folderName}>{folder.name}</Text>
       <Text style={styles.reminderCount}>

@@ -20,15 +20,21 @@ const FolderList = ({
   data,
   isFetching,
   onRefresh: refetch,
+  openEditModal,
 }: Props) => {
   return (
     <View style={styles.container}>
-      <Text>Folders</Text>
       <FlatList
         style={flatListStyle}
         data={data}
         renderItem={({ item }) => (
-          <FolderSliderItem folder={item} style={folderItemStyle} />
+          <FolderSliderItem
+            folder={item}
+            style={folderItemStyle}
+            actionable={!horizontal}
+            openEditModal={openEditModal}
+            refetch={refetch}
+          />
         )}
         keyExtractor={(item) => item.id}
         horizontal={horizontal}
