@@ -18,7 +18,6 @@ const Reminders = () => {
   return (
     <>
       <View style={styles.container}>
-        <Text>Reminders</Text>
         <ReminderList
           reminders={data}
           isFetching={isFetching}
