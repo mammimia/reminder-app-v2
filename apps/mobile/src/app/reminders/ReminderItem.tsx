@@ -3,10 +3,12 @@ import { ReminderDto, ReminderStatus } from '@mammimia/types';
 import { useColors } from '@mammimia/ui';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import DateUtils from '../../utils/DateUtils';
 import showCustomActionSheet, {
   ActionSheetOption,
 } from '../../utils/showCustomActionSheet';
 import ReminderService from '../services/ReminderService';
+import ReminderStatusChip from './ReminderStatusChip';
 
 type Props = {
   reminder: ReminderDto;
@@ -85,11 +87,15 @@ const ReminderItem = ({
   return (
     <TouchableOpacity activeOpacity={0.6} onLongPress={handleLongPress}>
       <View style={styles.container}>
-        <Text>Title: {reminder.title}</Text>
-        <Text>Content: {reminder.content}</Text>
-        <Text>Due Date: {reminder.expiresAt} </Text>
-        <Text>Folder: {reminder.folder?.name}</Text>
-        <Text>Status: {reminder.status}</Text>
+        <View style={styles.bottomContainer}>
+          <Text style={styles.title}>{reminder.title}</Text>
+          <Text>{DateUtils.formatDate(reminder.expiresAt)}</Text>
+        </View>
+        <Text style={styles.content}>{reminder.content}</Text>
+        <View style={styles.bottomContainer}>
+          <Text>{reminder.folder?.name}</Text>
+          <ReminderStatusChip style={styles.status} status={reminder.status} />
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -102,5 +108,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightblue',
     margin: 10,
     padding: 10,
+  },
+  bottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  content: {
+    fontSize: 14,
+  },
+  status: {
+    alignSelf: 'flex-end',
   },
 });
