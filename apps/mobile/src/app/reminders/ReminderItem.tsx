@@ -1,6 +1,6 @@
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ReminderDto, ReminderStatus } from '@mammimia/types';
-import { useColors } from '@mammimia/ui';
+import { TColors, useStyles } from '@mammimia/ui';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DateUtils from '../../utils/DateUtils';
@@ -22,7 +22,7 @@ const ReminderItem = ({
   refetch: refetchReminders,
 }: Props) => {
   const { showActionSheetWithOptions } = useActionSheet();
-  const { colors } = useColors();
+  const { colors, styles } = useStyles(createStyles);
 
   const handleUpdateStatus = (status: ReminderStatus) => {
     ReminderService.update(reminder.id, { status })
@@ -89,11 +89,13 @@ const ReminderItem = ({
       <View style={styles.container}>
         <View style={styles.bottomContainer}>
           <Text style={styles.title}>{reminder.title}</Text>
-          <Text>{DateUtils.formatDate(reminder.expiresAt)}</Text>
+          <Text style={styles.content}>
+            {DateUtils.formatDate(reminder.expiresAt)}
+          </Text>
         </View>
         <Text style={styles.content}>{reminder.content}</Text>
         <View style={styles.bottomContainer}>
-          <Text>{reminder.folder?.name}</Text>
+          <Text style={styles.content}>{reminder.folder?.name}</Text>
           <ReminderStatusChip style={styles.status} status={reminder.status} />
         </View>
       </View>
@@ -103,26 +105,33 @@ const ReminderItem = ({
 
 export default ReminderItem;
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'lightblue',
-    margin: 10,
-    padding: 10,
-  },
-  bottomContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  content: {
-    fontSize: 14,
-  },
-  status: {
-    alignSelf: 'flex-end',
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: colors.gray300,
+      borderWidth: 1,
+      borderColor: colors.darkblue900,
+      borderRadius: 10,
+      margin: 10,
+      paddingHorizontal: 10,
+      paddingVertical: 10,
+    },
+    bottomContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 5,
+    },
+    title: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: colors.darkblue900,
+    },
+    content: {
+      fontSize: 14,
+      color: colors.darkblue900,
+    },
+    status: {
+      alignSelf: 'flex-end',
+    },
+  });
