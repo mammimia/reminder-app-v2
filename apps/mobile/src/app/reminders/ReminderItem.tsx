@@ -113,8 +113,9 @@ const createStyles = (colors: TColors) =>
       borderColor: colors.darkblue900,
       borderRadius: 10,
       margin: 10,
+      paddingTop: 5,
+      paddingBottom: 10,
       paddingHorizontal: 10,
-      paddingVertical: 10,
     },
     bottomContainer: {
       flexDirection: 'row',
@@ -128,7 +129,7 @@ const createStyles = (colors: TColors) =>
       color: colors.darkblue900,
     },
     content: {
-      fontSize: 14,
+      fontSize: 13,
       color: colors.darkblue900,
     },
     status: {
