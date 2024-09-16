@@ -6,9 +6,10 @@ import Reminders from './Reminders';
 import useFetchData from '../../hooks/useFetchData';
 import { FolderDto } from '@mammimia/types';
 import FolderService from '../services/FolderService';
+import ReminderHeaderBar from './ReminderHeaderBar';
 
 const RemindersHome = () => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
   const {
     data: folders,
     isFetching,
@@ -19,6 +20,7 @@ const RemindersHome = () => {
 
   return (
     <View style={styles.container}>
+      <ReminderHeaderBar />
       <FolderList
         data={folders}
         isFetching={isFetching}

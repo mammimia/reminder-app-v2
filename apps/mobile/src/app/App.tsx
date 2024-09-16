@@ -3,7 +3,6 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeProvider } from '@mammimia/ui';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
@@ -20,24 +19,17 @@ const ReminderStack = createStackNavigator();
 function ReminderStackScreen() {
   return (
     <ReminderStack.Navigator initialRouteName="Home">
-      <ReminderStack.Screen name="Home" component={RemindersHome} />
-      <ReminderStack.Screen name="FolderDetails" component={FolderDetails} />
-    </ReminderStack.Navigator>
-  );
-}
-
-const ReminderDrawer = createDrawerNavigator();
-
-function ReminderDrawerScreen() {
-  return (
-    <ReminderDrawer.Navigator initialRouteName="Home">
-      <ReminderDrawer.Screen
-        name="ReminderStackScreen"
-        component={ReminderStackScreen}
+      <ReminderStack.Screen
+        name="Home"
+        component={RemindersHome}
+        options={{
+          headerShown: false,
+        }}
       />
-      <ReminderDrawer.Screen name="Folders" component={Folders} />
-      <ReminderDrawer.Screen name="Categories" component={Categories} />
-    </ReminderDrawer.Navigator>
+      <ReminderStack.Screen name="Folders" component={Folders} />
+      <ReminderStack.Screen name="FolderDetails" component={FolderDetails} />
+      <ReminderStack.Screen name="Categories" component={Categories} />
+    </ReminderStack.Navigator>
   );
 }
 
@@ -62,7 +54,7 @@ export const App = () => {
                     />
                   ),
                 }}
-                component={ReminderDrawerScreen}
+                component={ReminderStackScreen}
               />
               <Tab.Screen
                 name="Expense"
