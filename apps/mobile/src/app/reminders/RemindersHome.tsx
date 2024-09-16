@@ -1,36 +1,72 @@
+import { FolderDto, ReminderDto } from '@mammimia/types';
 import { TColors, useStyles } from '@mammimia/ui';
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import FolderList from '../folders/FolderList';
-import Reminders from './Reminders';
-import useFetchData from '../../hooks/useFetchData';
-import { FolderDto } from '@mammimia/types';
-import FolderService from '../services/FolderService';
-import ReminderHeaderBar from './ReminderHeaderBar';
 import SearchInput from '../../components/SearchInput';
+import SectionTitle from '../../components/SectionTitle';
+import useFetchData from '../../hooks/useFetchData';
+import FolderList from '../folders/FolderList';
+import FolderService from '../services/FolderService';
+import ReminderService from '../services/ReminderService';
+import ReminderHeaderBar from './ReminderHeaderBar';
+import ReminderList from './ReminderList';
 
 const RemindersHome = () => {
+  const [searchFilter, setSearchFilter] = useState<string>('Bunu');
+  const navigation = useNavigation();
   const { styles } = useStyles(createStyles);
   const {
     data: folders,
-    isFetching,
-    refetch,
+    isFetching: isFoldersFetching,
+    refetch: refetchFolders,
   } = useFetchData<FolderDto>({
     fetchMethod: FolderService.get,
   });
-  const [searchFilter, setSearchFilter] = useState<string>('');
+
+  const {
+    data: reminders,
+    isFetching: isRemindersFetching,
+    refetch: refetchReminders,
+  } = useFetchData<ReminderDto>({
+    fetchMethod: ReminderService.get,
+    params: { title: searchFilter },
+  });
 
   return (
     <View style={styles.container}>
       <ReminderHeaderBar />
-      <SearchInput text={searchFilter} setText={setSearchFilter} />
+      <SearchInput
+        text={searchFilter}
+        setText={setSearchFilter}
+        handleEnter={() => {
+          refetchReminders();
+          refetchFolders();
+        }}
+      />
+      <SectionTitle
+        title="Folders"
+        handleSeeAll={() => {
+          navigation.navigate('Folders');
+        }}
+      />
       <FolderList
         data={folders}
-        isFetching={isFetching}
-        onRefresh={refetch}
+        isFetching={isFoldersFetching}
+        onRefresh={refetchFolders}
         folderItemStyle={styles.folderItemStyle}
       />
-      <Reminders />
+      <SectionTitle
+        title="Today's Reminders"
+        handleSeeAll={() => {
+          navigation.navigate('Reminders');
+        }}
+      />
+      <ReminderList
+        reminders={reminders}
+        isFetching={isRemindersFetching}
+        onRefresh={refetchReminders}
+      />
     </View>
   );
 };
