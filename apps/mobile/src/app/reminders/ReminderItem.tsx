@@ -95,7 +95,9 @@ const ReminderItem = ({
         </View>
         <Text style={styles.content}>{reminder.content}</Text>
         <View style={styles.bottomContainer}>
-          <Text style={styles.content}>{reminder.folder?.name}</Text>
+          <Text style={styles.content}>
+            {reminder.folder?.name || 'General'}
+          </Text>
           <ReminderStatusChip style={styles.status} status={reminder.status} />
         </View>
       </View>
