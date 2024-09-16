@@ -1,5 +1,5 @@
 import { TColors, useStyles } from '@mammimia/ui';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import FolderList from '../folders/FolderList';
 import Reminders from './Reminders';
@@ -7,6 +7,7 @@ import useFetchData from '../../hooks/useFetchData';
 import { FolderDto } from '@mammimia/types';
 import FolderService from '../services/FolderService';
 import ReminderHeaderBar from './ReminderHeaderBar';
+import SearchInput from '../../components/SearchInput';
 
 const RemindersHome = () => {
   const { styles } = useStyles(createStyles);
@@ -17,10 +18,12 @@ const RemindersHome = () => {
   } = useFetchData<FolderDto>({
     fetchMethod: FolderService.get,
   });
+  const [searchFilter, setSearchFilter] = useState<string>('');
 
   return (
     <View style={styles.container}>
       <ReminderHeaderBar />
+      <SearchInput text={searchFilter} setText={setSearchFilter} />
       <FolderList
         data={folders}
         isFetching={isFetching}
