@@ -6,9 +6,10 @@ import { StyleSheet, TextInput, View } from 'react-native';
 type Props = {
   text: string;
   setText: (text: string) => void;
+  handleEnter?: () => void;
 };
 
-const SearchInput = ({ text, setText }: Props) => {
+const SearchInput = ({ text, setText, handleEnter }: Props) => {
   const { colors, styles } = useStyles(createStyles);
   return (
     <View style={styles.container}>
@@ -19,6 +20,7 @@ const SearchInput = ({ text, setText }: Props) => {
         style={styles.input}
         value={text}
         onChangeText={setText}
+        onSubmitEditing={handleEnter}
       />
     </View>
   );
