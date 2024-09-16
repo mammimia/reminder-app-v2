@@ -1,6 +1,6 @@
 import { ReminderDto } from '@mammimia/types';
 import React from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ActivityOverlay from '../../components/ActivityIndicator';
 import ReminderItem from './ReminderItem';
 
@@ -19,22 +19,24 @@ const ReminderList = ({
 }: Props) => {
   return (
     <ActivityOverlay isLoading={isFetching}>
-      <FlatList
-        data={reminders}
-        refreshing={isFetching}
-        onRefresh={onRefresh}
-        renderItem={({ item }) => (
-          <ReminderItem
-            reminder={item}
-            openEditModal={openEditModal}
-            refetch={onRefresh}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={() => (
-          <Text style={styles.listEmptyComponent}>No reminders</Text>
-        )}
-      />
+      <View style={styles.container}>
+        <FlatList
+          data={reminders}
+          refreshing={isFetching}
+          onRefresh={onRefresh}
+          renderItem={({ item }) => (
+            <ReminderItem
+              reminder={item}
+              openEditModal={openEditModal}
+              refetch={onRefresh}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+          ListEmptyComponent={() => (
+            <Text style={styles.listEmptyComponent}>No reminders</Text>
+          )}
+        />
+      </View>
     </ActivityOverlay>
   );
 };
@@ -42,6 +44,10 @@ const ReminderList = ({
 export default ReminderList;
 
 const styles = StyleSheet.create({
+  container: {
+    gap: 10,
+    padding: 10,
+  },
   listEmptyComponent: {
     textAlign: 'center',
     fontSize: 20,
