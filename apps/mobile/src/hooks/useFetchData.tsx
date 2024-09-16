@@ -2,7 +2,8 @@ import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 
 type Props<T> = {
-  fetchMethod: () => Promise<AxiosResponse<T[]>>;
+  fetchMethod: (params?: any) => Promise<AxiosResponse<T[]>>;
+  params?: any;
 };
 
 type ReturnType<T> = {
@@ -11,14 +12,14 @@ type ReturnType<T> = {
   isFetching: boolean;
 };
 
-const useFetchData = <T,>({ fetchMethod }: Props<T>): ReturnType<T> => {
+const useFetchData = <T,>({ fetchMethod, params }: Props<T>): ReturnType<T> => {
   const [data, setFolders] = useState<T[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
   const getData = async () => {
     setIsFetching(true);
     try {
-      const response = await fetchMethod();
+      const response = await fetchMethod(params);
       setFolders(response.data);
     } catch (error) {
       console.error(error);

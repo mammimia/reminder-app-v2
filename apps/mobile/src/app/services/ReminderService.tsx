@@ -13,7 +13,7 @@ const ReminderService: TCrudService<
   UpdateReminderDto
 > = {
   get: async (filter?: ReminderFilterDto) =>
-    AxiosService.get<ReminderDto[]>('reminders', { params: filter }),
+    AxiosService.get<ReminderDto[]>('reminders', { ...filter }),
   create: async (dto: CreateReminderDto) =>
     AxiosService.post<ReminderDto>('reminders', dto),
   update: async (id: string, reminder: UpdateReminderDto) =>
