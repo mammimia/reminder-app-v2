@@ -13,7 +13,7 @@ import ReminderHeaderBar from './ReminderHeaderBar';
 import ReminderList from './ReminderList';
 
 const RemindersHome = () => {
-  const [searchFilter, setSearchFilter] = useState<string>('Bunu');
+  const [searchFilter, setSearchFilter] = useState<string>('');
   const navigation = useNavigation();
   const { styles } = useStyles(createStyles);
   const {
