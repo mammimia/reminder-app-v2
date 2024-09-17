@@ -56,17 +56,19 @@ const RemindersHome = () => {
         onRefresh={refetchFolders}
         folderItemStyle={styles.folderItemStyle}
       />
-      <SectionTitle
-        title="Today's Reminders"
-        handleSeeAll={() => {
-          navigation.navigate('Reminders');
-        }}
-      />
-      <ReminderList
-        reminders={reminders}
-        isFetching={isRemindersFetching}
-        onRefresh={refetchReminders}
-      />
+      <View style={styles.reminderContainer}>
+        <SectionTitle
+          title="Today's Reminders"
+          handleSeeAll={() => {
+            navigation.navigate('Reminders');
+          }}
+        />
+        <ReminderList
+          reminders={reminders}
+          isFetching={isRemindersFetching}
+          onRefresh={refetchReminders}
+        />
+      </View>
     </View>
   );
 };
@@ -81,5 +83,9 @@ const createStyles = (colors: TColors) =>
     },
     folderItemStyle: {
       width: 150,
+    },
+    reminderContainer: {
+      flex: 1,
+      marginBottom: 24,
     },
   });
