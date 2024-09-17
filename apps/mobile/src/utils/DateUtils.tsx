@@ -1,6 +1,6 @@
 import { format, parse, parseISO, isValid } from 'date-fns';
 
-const DATE_FORMAT = 'yyyy-MM-dd';
+const DATE_FORMAT = 'dd MMM yyyy';
 
 const formatDate = (
   dateStr?: string,
