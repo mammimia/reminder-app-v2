@@ -95,9 +95,19 @@ const ReminderItem = ({
         </View>
         <Text style={styles.content}>{reminder.content}</Text>
         <View style={styles.bottomContainer}>
-          <Text style={styles.content}>
-            {reminder.folder?.name || 'General'}
-          </Text>
+          <View style={styles.folder}>
+            <View
+              style={[
+                styles.folderColorCircle,
+                {
+                  backgroundColor: reminder?.folder?.color || colors.orange500,
+                },
+              ]}
+            />
+            <Text style={styles.content}>
+              {reminder.folder?.name || 'General'}
+            </Text>
+          </View>
           <ReminderStatusChip style={styles.status} status={reminder.status} />
         </View>
       </View>
@@ -136,5 +146,17 @@ const createStyles = (colors: TColors) =>
     },
     status: {
       alignSelf: 'flex-end',
+    },
+    folder: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 5,
+    },
+    folderColorCircle: {
+      width: 16,
+      height: 16,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
