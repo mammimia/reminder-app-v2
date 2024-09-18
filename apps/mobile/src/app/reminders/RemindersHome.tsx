@@ -23,7 +23,7 @@ const RemindersHome = () => {
     refetch: refetchFolders,
   } = useFetchData<FolderDto>({
     fetchMethod: FolderService.get,
-    params: { name: searchFilter },
+    params: { name: searchFilter, limit: 3 },
   });
 
   const {
@@ -31,13 +31,13 @@ const RemindersHome = () => {
     isFetching: isRemindersFetching,
     refetch: refetchReminders,
   } = useFetchData<ReminderDto>({
-    fetchMethod: ReminderService.get,
+    fetchMethod: ReminderService.getToday,
     params: { title: searchFilter },
   });
 
   return (
     <View style={styles.container}>
-      <ReminderHeaderBar />
+      <ReminderHeaderBar reminderCount={reminders.length} />
       <SearchInput
         text={searchFilter}
         setText={setSearchFilter}

@@ -3,13 +3,19 @@ import React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { Avatar } from 'react-native-paper';
 
-const ReminderHeaderBar = () => {
+type Props = {
+  reminderCount: number;
+};
+
+const ReminderHeaderBar = ({ reminderCount }: Props) => {
   const { styles } = useStyles(createStyles);
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.title}>Hi Mammimia,</Text>
-        <Text style={styles.infoText}>Today you have 1 todos.</Text>
+        <Text style={styles.infoText}>
+          Today you have {reminderCount} todos.
+        </Text>
       </View>
       <Avatar.Text style={styles.avatar} label="MA" size={36} />
     </View>
