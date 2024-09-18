@@ -22,6 +22,7 @@ const RemindersHome = () => {
     refetch: refetchFolders,
   } = useFetchData<FolderDto>({
     fetchMethod: FolderService.get,
+    params: { name: searchFilter },
   });
 
   const {
