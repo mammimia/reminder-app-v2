@@ -28,6 +28,29 @@ export class ReminderService {
     return reminders;
   }
 
+  async getToday(filterDto: ReminderFilterDto): Promise<Reminder[]> {
+    const { where, take, skip, orderBy } =
+      prismaUtils.buildQueryOptionsWithPagination(filterDto, ReminderFilterDto);
+
+    const reminders = await this.prisma.reminder.findMany({
+      take,
+      skip,
+      orderBy,
+      where: {
+        expiresAt: {
+          lte: new Date(new Date().setHours(23, 59, 59, 999)),
+          gte: new Date(new Date().setHours(0, 0, 0, 0)),
+        },
+        ...where,
+      },
+      include: {
+        folder: true,
+      },
+    });
+
+    return reminders;
+  }
+
   async get(id: string): Promise<Reminder> {
     const reminder = await this.prisma.reminder.findUnique({
       where: { id: id },
