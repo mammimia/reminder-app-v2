@@ -1,6 +1,7 @@
 import { FolderDto, ReminderDto } from '@mammimia/types';
 import { TColors, useStyles } from '@mammimia/ui';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import SearchInput from '../../components/SearchInput';
@@ -14,7 +15,7 @@ import ReminderList from './ReminderList';
 
 const RemindersHome = () => {
   const [searchFilter, setSearchFilter] = useState<string>('');
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const { styles } = useStyles(createStyles);
   const {
     data: folders,

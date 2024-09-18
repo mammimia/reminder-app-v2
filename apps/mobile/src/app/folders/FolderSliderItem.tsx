@@ -1,7 +1,8 @@
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { FolderDto } from '@mammimia/types';
 import { TColors, useStyles } from '@mammimia/ui';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import showCustomActionSheet, {
@@ -24,7 +25,7 @@ const FolderSliderItem = ({
   openEditModal,
   refetch,
 }: Props) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const { showActionSheetWithOptions } = useActionSheet();
   const { styles } = useStyles(createStyles);
 

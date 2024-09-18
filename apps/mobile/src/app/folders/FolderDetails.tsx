@@ -1,5 +1,6 @@
 import { ReminderDto } from '@mammimia/types';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import ReminderList from '../reminders/ReminderList';
@@ -15,7 +16,7 @@ type Props = {
 };
 
 const FolderDetails = ({ route }: Props) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const { folderId, folderName } = route.params;
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
