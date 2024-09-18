@@ -38,8 +38,18 @@ const isValidDate = (dateStr: string, formatStr?: string): boolean => {
   return isValid(parsedDate);
 };
 
+const getStartOfDay = (date: Date): Date => {
+  return new Date(date.setHours(0, 0, 0, 0));
+};
+
+const getEndOfDay = (date: Date): Date => {
+  return new Date(date.setHours(23, 59, 59, 999));
+};
+
 export default {
   formatDate,
   getCurrentDate,
   isValidDate,
+  getStartOfDay,
+  getEndOfDay,
 };
