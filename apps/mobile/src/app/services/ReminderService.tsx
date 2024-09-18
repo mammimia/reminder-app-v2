@@ -10,7 +10,8 @@ import { TCrudService } from './TCrudService';
 const ReminderService: TCrudService<
   ReminderDto,
   CreateReminderDto,
-  UpdateReminderDto
+  UpdateReminderDto,
+  ReminderFilterDto
 > = {
   get: async (filter?: ReminderFilterDto) =>
     AxiosService.get<ReminderDto[]>('reminders', { ...filter }),
