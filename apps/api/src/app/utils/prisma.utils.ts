@@ -28,6 +28,11 @@ const fillWhereCondition = <T>(
     }
     if (typeof value === 'string') {
       where[key as keyof T] = { contains: value, mode: 'insensitive' };
+    } else if (typeof value === 'object') {
+      if (value?.gte || value?.lte) {
+        // if it's a date range
+        where[key as keyof T] = value;
+      }
     } else {
       where[key as keyof T] = value;
     }

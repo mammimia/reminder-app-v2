@@ -31,14 +31,6 @@ export class ReminderController {
     return ReminderAdapter.toDtoArray(reminders);
   }
 
-  @Get('/today')
-  async getToday(
-    @Query() filterDto: ReminderFilterDto
-  ): Promise<ReminderDto[]> {
-    const reminders = await this.reminderService.getToday(filterDto);
-    return ReminderAdapter.toDtoArray(reminders);
-  }
-
   @Get(':id')
   async get(@Param('id', ParseUUIDPipe) id: string): Promise<ReminderDto> {
     const reminder = await this.reminderService.get(id);
