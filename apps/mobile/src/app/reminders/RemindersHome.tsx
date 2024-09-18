@@ -12,6 +12,7 @@ import FolderService from '../services/FolderService';
 import ReminderService from '../services/ReminderService';
 import ReminderHeaderBar from './ReminderHeaderBar';
 import ReminderList from './ReminderList';
+import DateUtils from '../../utils/DateUtils';
 
 const RemindersHome = () => {
   const [searchFilter, setSearchFilter] = useState<string>('');
@@ -31,8 +32,14 @@ const RemindersHome = () => {
     isFetching: isRemindersFetching,
     refetch: refetchReminders,
   } = useFetchData<ReminderDto>({
-    fetchMethod: ReminderService.getToday,
-    params: { title: searchFilter },
+    fetchMethod: ReminderService.get,
+    params: {
+      title: searchFilter,
+      expiresAt: {
+        lte: DateUtils.getEndOfDay(new Date()),
+        gte: DateUtils.getStartOfDay(new Date()),
+      },
+    },
   });
 
   return (
