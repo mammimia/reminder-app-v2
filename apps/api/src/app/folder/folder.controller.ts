@@ -1,4 +1,9 @@
-import { CreateFolderDto, FolderDto, UpdateFolderDto } from '@mammimia/types';
+import {
+  CreateFolderDto,
+  FilterFolderDto,
+  FolderDto,
+  UpdateFolderDto,
+} from '@mammimia/types';
 import {
   Body,
   Controller,
@@ -10,6 +15,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ZodValidationPipe } from '../pipes/validation.pipe';
 import { FolderAdapter } from './folder.adapter';
@@ -20,8 +26,8 @@ export class FolderController {
   constructor(private readonly folderService: FolderService) {}
 
   @Get()
-  async getAll(): Promise<FolderDto[]> {
-    const folders = await this.folderService.getAll();
+  async getAll(@Query() filterDto: FilterFolderDto): Promise<FolderDto[]> {
+    const folders = await this.folderService.getAll(filterDto);
     return FolderAdapter.toDtoArray(folders);
   }
 

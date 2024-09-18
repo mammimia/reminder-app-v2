@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { CategoryDto } from './category';
+import { PaginationDto } from './base';
 
 export const FolderDto = z.object({
   id: z.string(),
@@ -21,6 +22,12 @@ export const UpdateFolderDto = z.object({
   categoryId: z.string().optional(),
 });
 
+export const FilterFolderDto = PaginationDto.extend({
+  name: z.string().optional(),
+  categoryId: z.string().optional(),
+});
+
 export type FolderDto = z.infer<typeof FolderDto>;
 export type CreateFolderDto = z.infer<typeof CreateFolderDto>;
 export type UpdateFolderDto = z.infer<typeof UpdateFolderDto>;
+export type FilterFolderDto = z.infer<typeof FilterFolderDto>;

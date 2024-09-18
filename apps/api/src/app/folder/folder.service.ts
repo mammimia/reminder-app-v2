@@ -1,15 +1,26 @@
-import { CreateFolderDto, UpdateFolderDto } from '@mammimia/types';
+import {
+  CreateFolderDto,
+  FilterFolderDto,
+  UpdateFolderDto,
+} from '@mammimia/types';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Folder } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { FolderWithCategory } from './folder.adapter';
+import { prismaUtils } from '../utils/prisma.utils';
 
 @Injectable()
 export class FolderService {
   constructor(private prisma: PrismaService) {}
 
-  async getAll(): Promise<FolderWithCategory[]> {
+  async getAll(filterDto: FilterFolderDto): Promise<FolderWithCategory[]> {
+    const { where, take, skip, orderBy } =
+      prismaUtils.buildQueryOptionsWithPagination(filterDto, FilterFolderDto);
+
     const folders = await this.prisma.folder.findMany({
+      where,
+      take,
+      skip,
       include: {
         category: true,
         _count: {
@@ -18,7 +29,7 @@ export class FolderService {
           },
         },
       },
-      orderBy: {
+      orderBy: orderBy || {
         reminders: {
           _count: 'desc',
         },
