@@ -9,5 +9,11 @@ export const PaginationDto = z.object({
   sortOrder: SortOrder.optional(),
 });
 
+export const DateRangeDto = z.object({
+  gte: z.string().optional(),
+  lte: z.string().optional(),
+});
+
 export type PaginationDto = z.infer<typeof PaginationDto>;
 export type SortOrder = z.infer<typeof SortOrder>;
+export type DateRangeDto = z.infer<typeof DateRangeDto>;

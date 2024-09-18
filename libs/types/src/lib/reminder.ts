@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { FolderDto } from './folder';
-import { PaginationDto } from './base';
+import { DateRangeDto, PaginationDto } from './base';
 
 export enum ReminderStatus {
   TODO = 'TODO',
@@ -38,6 +38,7 @@ export const ReminderFilterDto = PaginationDto.extend({
   title: z.string().optional(),
   content: z.string().optional(),
   status: z.nativeEnum(ReminderStatus).optional(),
+  expiresAt: DateRangeDto.optional(),
   folderId: z.string().optional(),
 });
 
