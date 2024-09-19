@@ -2,22 +2,26 @@ import { TColors, useStyles } from '@mammimia/ui';
 import React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { Avatar } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 
 type Props = {
   reminderCount: number;
 };
 
 const ReminderHeaderBar = ({ reminderCount }: Props) => {
-  const { styles } = useStyles(createStyles);
+  const { styles, colors } = useStyles(createStyles);
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Hi Mammimia,</Text>
-        <Text style={styles.infoText}>
-          Today you have {reminderCount} todos.
-        </Text>
+      <View style={styles.avatarContainer}>
+        <Avatar.Text style={styles.avatar} label="MA" size={36} />
+        <View>
+          <Text style={styles.title}>Hi Mammimia,</Text>
+          <Text style={styles.infoText}>
+            Today you have {reminderCount} todos.
+          </Text>
+        </View>
       </View>
-      <Avatar.Text style={styles.avatar} label="MA" size={36} />
+      <Ionicons name="calendar-outline" size={30} color={colors.primary} />
     </View>
   );
 };
@@ -44,6 +48,11 @@ const createStyles = (colors: TColors) =>
       fontSize: 14,
       color: colors.primary,
       opacity: 0.7,
+    },
+    avatarContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 16,
     },
     avatar: {
       backgroundColor: colors.primary,
