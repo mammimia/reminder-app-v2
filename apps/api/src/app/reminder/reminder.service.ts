@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Reminder } from '@prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
 import {
   CreateReminderDto,
   ReminderFilterDto,
   UpdateReminderDto,
 } from '@mammimia/types';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Reminder, ReminderStatus } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
 import { prismaUtils } from '../utils/prisma.utils';
 
 @Injectable()
@@ -25,7 +25,22 @@ export class ReminderService {
         folder: true,
       },
     });
-    return reminders;
+
+    return this.sortRemindersByStatus(reminders);
+  }
+
+  private sortRemindersByStatus(reminders: Reminder[]): Reminder[] {
+    const statusOrder: Record<ReminderStatus, number> = {
+      TODO: 1,
+      IN_PROGRESS: 2,
+      PENDING: 3,
+      DONE: 4,
+      CANCELED: 5,
+    };
+
+    return reminders.sort(
+      (a, b) => statusOrder[a.status] - statusOrder[b.status]
+    );
   }
 
   async get(id: string): Promise<Reminder> {
