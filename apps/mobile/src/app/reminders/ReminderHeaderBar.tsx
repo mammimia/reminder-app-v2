@@ -1,8 +1,16 @@
-import { TColors, useStyles } from '@mammimia/ui';
-import React from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-import { Avatar } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import { TColors, useStyles } from '@mammimia/ui';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React from 'react';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { Avatar } from 'react-native-paper';
 
 type Props = {
   reminderCount: number;
@@ -10,6 +18,8 @@ type Props = {
 
 const ReminderHeaderBar = ({ reminderCount }: Props) => {
   const { styles, colors } = useStyles(createStyles);
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
@@ -21,7 +31,13 @@ const ReminderHeaderBar = ({ reminderCount }: Props) => {
           </Text>
         </View>
       </View>
-      <Ionicons name="calendar-outline" size={30} color={colors.primary} />
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('ReminderCalendar');
+        }}
+      >
+        <Ionicons name="calendar-outline" size={30} color={colors.primary} />
+      </TouchableOpacity>
     </View>
   );
 };
