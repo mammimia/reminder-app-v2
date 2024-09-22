@@ -12,7 +12,9 @@ type Props = {
 };
 
 const DateTimePicker = ({ value, label, onChange }: Props) => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>(
+    value ? new Date(value) : new Date()
+  );
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const { styles } = useStyles(createStyles);
