@@ -9,6 +9,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Modal, Text, TextInput } from 'react-native-paper';
 import useEditorModalActions from '../../hooks/useEditorModalActions';
 import ReminderService from '../services/ReminderService';
+import DateTimePicker from '../../components/DateTimePicker';
 
 type Props = {
   defaultValues?: ReminderDto | null;
@@ -42,7 +43,13 @@ const ReminderEditorModal = ({
     >
       <Text style={styles.formTitle}>Reminder Editor</Text>
       <Formik
-        initialValues={defaultValues || { title: '', content: '' }}
+        initialValues={
+          defaultValues || {
+            title: '',
+            content: '',
+            expiresAt: new Date().toISOString(),
+          }
+        }
         onSubmit={handleFormSubmit}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -59,6 +66,12 @@ const ReminderEditorModal = ({
               onBlur={handleBlur('content')}
               value={values.content}
             />
+            <DateTimePicker
+              value={values.expiresAt}
+              label="Expires At"
+              onChange={handleChange('expiresAt')}
+            />
+
             <Button
               onPress={handleSubmit}
               loading={isOperating}
