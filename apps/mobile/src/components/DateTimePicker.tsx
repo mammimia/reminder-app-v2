@@ -8,7 +8,7 @@ import DateUtils from '../utils/DateUtils';
 type Props = {
   value: string | undefined;
   onChange: (value: string) => void;
-  children: React.ReactNode;
+  children?: (props: { onPress: () => void; value: string }) => React.ReactNode;
 };
 
 const DateTimePicker = ({ children, value, onChange }: Props) => {
@@ -51,21 +51,19 @@ const DateTimePicker = ({ children, value, onChange }: Props) => {
 
   return (
     <>
-      {React.Children.map(children, (child) =>
-        React.cloneElement(child as React.ReactElement, {
-          value: DateUtils.formatDate(date?.toISOString()),
+      {children &&
+        children({
           onPress: toggleDatePicker,
-        })
-      )}
+          value: date ? DateUtils.formatDate(date?.toISOString()) ?? '' : '',
+        })}
       {showDatePicker && (
         <DateTimePickerComponent
           mode="date"
-          display="spinner"
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           value={date || new Date()}
           onChange={handleChange}
         />
       )}
-
       {showDatePicker && Platform.OS === 'ios' && (
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={handleIOSConfirm}>

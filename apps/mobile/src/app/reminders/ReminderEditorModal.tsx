@@ -5,11 +5,11 @@ import {
 } from '@mammimia/types';
 import { Formik } from 'formik';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Button, Modal, Text, TextInput } from 'react-native-paper';
+import DateTimePicker from '../../components/DateTimePicker';
 import useEditorModalActions from '../../hooks/useEditorModalActions';
 import ReminderService from '../services/ReminderService';
-import DateTimePicker from '../../components/DateTimePicker';
 
 type Props = {
   defaultValues?: ReminderDto | null;
@@ -70,11 +70,16 @@ const ReminderEditorModal = ({
               value={values.expiresAt}
               onChange={handleChange('expiresAt')}
             >
-              <TextInput
-                label="Expires At"
-                value={values.expiresAt}
-                editable={false}
-              />
+              {({ onPress, value }) => (
+                <Pressable onPress={onPress}>
+                  <TextInput
+                    label="Expires At"
+                    value={value}
+                    editable={false}
+                    onPressIn={onPress}
+                  />
+                </Pressable>
+              )}
             </DateTimePicker>
 
             <Button
