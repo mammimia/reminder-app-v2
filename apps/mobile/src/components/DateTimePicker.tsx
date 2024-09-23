@@ -2,16 +2,17 @@ import { TColors, useStyles } from '@mammimia/ui';
 import DateTimePickerComponent from '@react-native-community/datetimepicker';
 import React, { useState } from 'react';
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import DateUtils from '../utils/DateUtils';
 
 type Props = {
   value: string | undefined;
   label: string;
   onChange: (value: string) => void;
+  children: React.ReactNode;
 };
 
-const DateTimePicker = ({ value, label, onChange }: Props) => {
+const DateTimePicker = ({ children, value, label, onChange }: Props) => {
   const [date, setDate] = useState<Date | undefined>(
     value ? new Date(value) : new Date()
   );
@@ -51,14 +52,12 @@ const DateTimePicker = ({ value, label, onChange }: Props) => {
 
   return (
     <>
-      <TextInput
-        onPress={toggleDatePicker}
-        value={
-          date
-            ? DateUtils.formatDate(date.toISOString()) || undefined
-            : undefined
-        }
-      />
+      {React.Children.map(children, (child) =>
+        React.cloneElement(child as React.ReactElement, {
+          value: DateUtils.formatDate(date?.toISOString()),
+          onPress: toggleDatePicker,
+        })
+      )}
       {showDatePicker && (
         <DateTimePickerComponent
           mode="date"
