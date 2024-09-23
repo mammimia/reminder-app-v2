@@ -1,6 +1,18 @@
-import { format, parse, parseISO, isValid } from 'date-fns';
+import {
+  addDays,
+  format,
+  isValid,
+  parse,
+  parseISO,
+  startOfWeek,
+} from 'date-fns';
 
 const DATE_FORMAT = 'dd MMM yyyy';
+
+type DayWithDate = {
+  date: string;
+  dayOfWeek: string;
+};
 
 const formatDate = (
   dateStr?: string,
@@ -46,10 +58,60 @@ const getEndOfDay = (date: Date): Date => {
   return new Date(date.setHours(23, 59, 59, 999));
 };
 
+const getDayOfWeek = (date: string): string => {
+  return format(parseISO(date), 'EEEE');
+};
+
+const getWeek = (date: string | Date): DayWithDate[] => {
+  const inputDate = typeof date === 'string' ? parseISO(date) : date;
+
+  const monday = startOfWeek(inputDate, { weekStartsOn: 1 });
+
+  const week: DayWithDate[] = [];
+  for (let i = 0; i < 7; i++) {
+    const currentDate = addDays(monday, i);
+
+    week.push({
+      date: format(currentDate, 'dd'),
+      dayOfWeek: format(currentDate, 'EEE'),
+    });
+  }
+
+  return week;
+};
+
+const getSurroundingWeek = (
+  date: string | Date,
+  days: number
+): DayWithDate[] => {
+  if (!date) {
+    return [];
+  }
+
+  const result: DayWithDate[] = [];
+
+  const inputDate = typeof date === 'string' ? parseISO(date) : date;
+
+  // Loop to get 3 days before, the current day, and 3 days after
+  for (let i = -days; i <= days; i++) {
+    const currentDate = addDays(inputDate, i);
+
+    result.push({
+      date: format(currentDate, 'dd'),
+      dayOfWeek: format(currentDate, 'EEE'),
+    });
+  }
+
+  return result;
+};
+
 export default {
   formatDate,
   getCurrentDate,
   isValidDate,
   getStartOfDay,
   getEndOfDay,
+  getDayOfWeek,
+  getWeek,
+  getSurroundingWeek,
 };
