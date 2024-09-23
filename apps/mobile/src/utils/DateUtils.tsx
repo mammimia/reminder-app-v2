@@ -105,6 +105,13 @@ const getSurroundingWeek = (
   return result;
 };
 
+const isSameDay = (date1: string, date2: string): boolean => {
+  return (
+    format(parseISO(date1), 'yyyy-MM-dd') ===
+    format(parseISO(date2), 'yyyy-MM-dd')
+  );
+};
+
 export default {
   formatDate,
   getCurrentDate,
@@ -114,4 +121,5 @@ export default {
   getDayOfWeek,
   getWeek,
   getSurroundingWeek,
+  isSameDay,
 };
