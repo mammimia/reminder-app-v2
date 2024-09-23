@@ -1,7 +1,14 @@
 import { TColors, useStyles } from '@mammimia/ui';
 import DateTimePickerComponent from '@react-native-community/datetimepicker';
 import React, { useState } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  Platform,
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { Button } from 'react-native-paper';
 import DateUtils from '../utils/DateUtils';
 
@@ -9,9 +16,15 @@ type Props = {
   value: string | undefined;
   onChange: (value: string) => void;
   children?: (props: { onPress: () => void; value: string }) => React.ReactNode;
+  datePickerStyle?: StyleProp<ViewStyle>;
 };
 
-const DateTimePicker = ({ children, value, onChange }: Props) => {
+const DateTimePicker = ({
+  children,
+  value,
+  onChange,
+  datePickerStyle,
+}: Props) => {
   const [date, setDate] = useState<Date | undefined>(
     value ? new Date(value) : new Date()
   );
@@ -56,24 +69,28 @@ const DateTimePicker = ({ children, value, onChange }: Props) => {
           onPress: toggleDatePicker,
           value: date ? DateUtils.formatDate(date?.toISOString()) ?? '' : '',
         })}
-      {showDatePicker && (
-        <DateTimePickerComponent
-          mode="date"
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-          value={date || new Date()}
-          onChange={handleChange}
-        />
-      )}
-      {showDatePicker && Platform.OS === 'ios' && (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={handleIOSConfirm}>
-            <Button style={[styles.button]}>Done</Button>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleIosCancel}>
-            <Button style={[styles.button]}>Cancel</Button>
-          </TouchableOpacity>
-        </View>
-      )}
+      <View
+        style={[datePickerStyle, { display: showDatePicker ? 'flex' : 'none' }]}
+      >
+        {showDatePicker && (
+          <DateTimePickerComponent
+            mode="date"
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            value={date || new Date()}
+            onChange={handleChange}
+          />
+        )}
+        {showDatePicker && Platform.OS === 'ios' && (
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={handleIOSConfirm}>
+              <Button style={[styles.button]}>Done</Button>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleIosCancel}>
+              <Button style={[styles.button]}>Cancel</Button>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
     </>
   );
 };
