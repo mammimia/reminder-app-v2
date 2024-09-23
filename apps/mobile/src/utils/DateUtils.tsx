@@ -72,7 +72,7 @@ const getWeek = (date: string | Date): DayWithDate[] => {
     const currentDate = addDays(monday, i);
 
     week.push({
-      date: format(currentDate, 'dd'),
+      date: currentDate.toISOString(),
       dayOfWeek: format(currentDate, 'EEE'),
     });
   }
@@ -97,7 +97,7 @@ const getSurroundingWeek = (
     const currentDate = addDays(inputDate, i);
 
     result.push({
-      date: format(currentDate, 'dd'),
+      date: currentDate.toISOString(),
       dayOfWeek: format(currentDate, 'EEE'),
     });
   }
