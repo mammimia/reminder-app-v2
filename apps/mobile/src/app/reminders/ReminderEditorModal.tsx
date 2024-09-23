@@ -68,9 +68,14 @@ const ReminderEditorModal = ({
             />
             <DateTimePicker
               value={values.expiresAt}
-              label="Expires At"
               onChange={handleChange('expiresAt')}
-            />
+            >
+              <TextInput
+                label="Expires At"
+                value={values.expiresAt}
+                editable={false}
+              />
+            </DateTimePicker>
 
             <Button
               onPress={handleSubmit}

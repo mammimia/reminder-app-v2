@@ -7,12 +7,11 @@ import DateUtils from '../utils/DateUtils';
 
 type Props = {
   value: string | undefined;
-  label: string;
   onChange: (value: string) => void;
   children: React.ReactNode;
 };
 
-const DateTimePicker = ({ children, value, label, onChange }: Props) => {
+const DateTimePicker = ({ children, value, onChange }: Props) => {
   const [date, setDate] = useState<Date | undefined>(
     value ? new Date(value) : new Date()
   );
