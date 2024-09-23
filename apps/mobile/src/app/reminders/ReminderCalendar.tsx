@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Ionicons } from '@expo/vector-icons';
+import { ReminderDto } from '@mammimia/types';
 import { TColors, useStyles } from '@mammimia/ui';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -9,10 +11,22 @@ import {
   View,
 } from 'react-native';
 import DateTimePicker from '../../components/DateTimePicker';
+import useFetchData from '../../hooks/useFetchData';
 import DateUtils from '../../utils/DateUtils';
+import ReminderService from '../services/ReminderService';
+import ReminderList from './ReminderList';
 
 const ReminderCalendar = () => {
   const [date, setDate] = useState<string>(new Date().toISOString());
+  const { data, isFetching, refetch } = useFetchData<ReminderDto>({
+    fetchMethod: ReminderService.get,
+    params: {
+      expiresAt: {
+        lte: DateUtils.getEndOfDay(new Date(date)),
+        gte: DateUtils.getStartOfDay(new Date(date)),
+      },
+    },
+  });
 
   const { styles, colors } = useStyles(createStyles);
 
@@ -22,6 +36,10 @@ const ReminderCalendar = () => {
     setDate(day);
   };
 
+  useEffect(() => {
+    refetch();
+  }, [date]);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -29,7 +47,7 @@ const ReminderCalendar = () => {
           <Text style={styles.header}>
             {DateUtils.formatDate(date, 'dd MMM yyyy, EEEE')}
           </Text>
-          <Text style={styles.infoText}>10 tasks</Text>
+          <Text style={styles.infoText}>{data.length} tasks</Text>
         </View>
         <DateTimePicker
           value={date}
@@ -45,8 +63,8 @@ const ReminderCalendar = () => {
           )}
         </DateTimePicker>
       </View>
-
       <FlatList
+        style={styles.flatList}
         contentContainerStyle={styles.dayContainer}
         data={week}
         keyExtractor={(item) => item.date}
@@ -77,6 +95,11 @@ const ReminderCalendar = () => {
         }}
         horizontal
       />
+      <ReminderList
+        reminders={data}
+        isFetching={isFetching}
+        onRefresh={refetch}
+      />
     </View>
   );
 };
@@ -88,7 +111,6 @@ const createStyles = (colors: TColors) =>
     container: {
       flex: 1,
       padding: 20,
-      position: 'relative',
     },
     headerContainer: {
       flexDirection: 'row',
@@ -110,17 +132,20 @@ const createStyles = (colors: TColors) =>
       padding: 10,
       borderRadius: 50,
     },
+    flatList: {
+      flexGrow: 0,
+    },
     dayContainer: {
       flex: 1,
       justifyContent: 'space-between',
       marginHorizontal: 10,
-      height: 50,
+      height: 60,
     },
     dayItem: {
       justifyContent: 'center',
       alignItems: 'center',
       width: 45,
-      padding: 5,
+      paddingVertical: 8,
     },
     dayItemText: {
       color: colors.text,
