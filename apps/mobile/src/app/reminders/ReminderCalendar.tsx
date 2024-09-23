@@ -3,9 +3,12 @@ import { TColors, useStyles } from '@mammimia/ui';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DateUtils from '../../utils/DateUtils';
+import DateTimePicker from '../../components/DateTimePicker';
 
 const ReminderCalendar = () => {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState<string | undefined>(
+    new Date().toISOString()
+  );
 
   const { styles, colors } = useStyles(createStyles);
 
@@ -13,14 +16,26 @@ const ReminderCalendar = () => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View>
-          <Text style={styles.header}>
-            {DateUtils.formatDate(date.toISOString())}
-          </Text>
+          <Text style={styles.header}>{DateUtils.formatDate(date)}</Text>
           <Text style={styles.infoText}>10 tasks</Text>
         </View>
-        <TouchableOpacity style={styles.calendarButton}>
-          <Ionicons name="calendar" size={24} color={colors.white} />
-        </TouchableOpacity>
+        <DateTimePicker
+          value={date}
+          onChange={(d) => setDate(d)}
+          datePickerStyle={{
+            position: 'absolute',
+            top: 50,
+            left: 0,
+            right: 0,
+            backgroundColor: colors.white,
+          }}
+        >
+          {({ onPress }) => (
+            <TouchableOpacity style={styles.calendarButton} onPress={onPress}>
+              <Ionicons name="calendar" size={24} color={colors.background} />
+            </TouchableOpacity>
+          )}
+        </DateTimePicker>
       </View>
     </View>
   );
@@ -33,12 +48,13 @@ const createStyles = (colors: TColors) =>
     container: {
       flex: 1,
       padding: 20,
-      backgroundColor: colors.background,
+      position: 'relative',
     },
     headerContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      position: 'relative',
     },
     header: {
       fontSize: 24,
