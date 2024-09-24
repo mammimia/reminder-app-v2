@@ -9,7 +9,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { Button, Portal } from 'react-native-paper';
+import { Button, Portal, Text } from 'react-native-paper';
 import DateUtils from '../utils/DateUtils';
 
 type Props = {
@@ -87,10 +87,14 @@ const DateTimePicker = ({
             {Platform.OS === 'ios' && (
               <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={handleIOSConfirm}>
-                  <Button style={[styles.button]}>Done</Button>
+                  <Button style={[styles.button]}>
+                    <Text style={styles.successButtonText}>Done</Text>
+                  </Button>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleIosCancel}>
-                  <Button style={[styles.button]}>Cancel</Button>
+                  <Button style={[styles.button]}>
+                    <Text style={styles.cancelButtonText}>Cancel</Text>
+                  </Button>
                 </TouchableOpacity>
               </View>
             )}
@@ -115,10 +119,17 @@ const createStyles = (colors: TColors) =>
       borderRadius: 50,
       margin: 5,
     },
+    successButtonText: {
+      color: colors.text,
+    },
+    cancelButtonText: {
+      color: colors.text,
+    },
     iosDatePickerContainer: {
       position: 'absolute',
       bottom: 0,
-      backgroundColor: colors.white,
+      color: colors.text,
+      backgroundColor: colors.yellow500,
       width: '100%',
     },
   });
