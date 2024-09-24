@@ -9,7 +9,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, Portal } from 'react-native-paper';
 import DateUtils from '../utils/DateUtils';
 
 type Props = {
@@ -69,28 +69,34 @@ const DateTimePicker = ({
           onPress: toggleDatePicker,
           value: date ? DateUtils.formatDate(date?.toISOString()) ?? '' : '',
         })}
-      <View
-        style={[datePickerStyle, { display: showDatePicker ? 'flex' : 'none' }]}
-      >
-        {showDatePicker && (
-          <DateTimePickerComponent
-            mode="date"
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            value={date || new Date()}
-            onChange={handleChange}
-          />
-        )}
-        {showDatePicker && Platform.OS === 'ios' && (
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={handleIOSConfirm}>
-              <Button style={[styles.button]}>Done</Button>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleIosCancel}>
-              <Button style={[styles.button]}>Cancel</Button>
-            </TouchableOpacity>
+      {showDatePicker && (
+        <Portal>
+          <View
+            style={[
+              datePickerStyle,
+              { display: showDatePicker ? 'flex' : 'none' },
+              Platform.OS === 'ios' && styles.iosDatePickerContainer,
+            ]}
+          >
+            <DateTimePickerComponent
+              mode="date"
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              value={date || new Date()}
+              onChange={handleChange}
+            />
+            {Platform.OS === 'ios' && (
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity onPress={handleIOSConfirm}>
+                  <Button style={[styles.button]}>Done</Button>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleIosCancel}>
+                  <Button style={[styles.button]}>Cancel</Button>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
-        )}
-      </View>
+        </Portal>
+      )}
     </>
   );
 };
@@ -108,5 +114,11 @@ const createStyles = (colors: TColors) =>
       padding: 5,
       borderRadius: 50,
       margin: 5,
+    },
+    iosDatePickerContainer: {
+      position: 'absolute',
+      bottom: 0,
+      backgroundColor: colors.white,
+      width: '100%',
     },
   });
