@@ -56,6 +56,7 @@ const ReminderEditorModal = ({
             title: '',
             content: '',
             expiresAt: new Date().toISOString(),
+            folderId: data?.[0]?.id || '',
           }
         }
         onSubmit={handleFormSubmit}
