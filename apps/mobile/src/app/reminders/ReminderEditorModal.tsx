@@ -1,5 +1,6 @@
 import {
   CreateReminderDto,
+  FolderDto,
   ReminderDto,
   UpdateReminderDto,
 } from '@mammimia/types';
@@ -8,7 +9,10 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Button, Modal, Text, TextInput } from 'react-native-paper';
 import DateTimePicker from '../../components/DateTimePicker';
+import Picker from '../../components/Picker';
 import useEditorModalActions from '../../hooks/useEditorModalActions';
+import useFetchData from '../../hooks/useFetchData';
+import FolderService from '../services/FolderService';
 import ReminderService from '../services/ReminderService';
 
 type Props = {
@@ -31,6 +35,10 @@ const ReminderEditorModal = ({
     defaultValues,
     createSchema: CreateReminderDto,
     updateSchema: UpdateReminderDto,
+  });
+
+  const { data } = useFetchData<FolderDto>({
+    fetchMethod: FolderService.get,
   });
 
   const containerStyle = { backgroundColor: 'white', padding: 20 };
@@ -81,6 +89,15 @@ const ReminderEditorModal = ({
                 </Pressable>
               )}
             </DateTimePicker>
+
+            <Picker
+              value={values.folderId}
+              items={data?.map((folder) => ({
+                label: folder.name,
+                value: folder.id,
+              }))}
+              handleChange={handleChange('folderId')}
+            />
 
             <Button
               onPress={handleSubmit}
