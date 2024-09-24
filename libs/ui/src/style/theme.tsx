@@ -1,5 +1,6 @@
 import { createContext, FC, useState } from 'react';
 import Colors, { TColors } from './color';
+import { Appearance } from 'react-native';
 
 type ThemeContextType = {
   colors: TColors;
@@ -13,7 +14,9 @@ type Props = {
 };
 
 const ThemeProvider: FC<Props> = ({ children }) => {
-  const [colors, setColors] = useState(Colors.light);
+  const colorScheme = Appearance.getColorScheme();
+  const isDarkMode = colorScheme === 'dark';
+  const [colors, setColors] = useState(isDarkMode ? Colors.dark : Colors.light);
 
   const applyColors = (colorTheme: TColors) => {
     setColors(colorTheme);
