@@ -13,6 +13,9 @@ import { prismaUtils } from '../utils/prisma.utils';
 export class FolderService {
   constructor(private prisma: PrismaService) {}
 
+  private readonly DEFAULT_FOLDER_NAME = 'General';
+  private readonly DEFAULT_FOLDER_COLOR = '#e85c0d';
+
   async getAll(filterDto: FilterFolderDto): Promise<FolderWithCategory[]> {
     const { where, take, skip, orderBy } =
       prismaUtils.buildQueryOptionsWithPagination(filterDto, FilterFolderDto);
@@ -81,5 +84,18 @@ export class FolderService {
         id,
       },
     });
+  }
+
+  async getDefaultFolderId(): Promise<string> {
+    const folder =
+      (await this.prisma.folder.findFirst({
+        where: { name: this.DEFAULT_FOLDER_NAME },
+      })) ??
+      (await this.create({
+        name: this.DEFAULT_FOLDER_NAME,
+        color: this.DEFAULT_FOLDER_COLOR,
+      }));
+
+    return folder.id;
   }
 }

@@ -7,10 +7,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Reminder, ReminderStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { prismaUtils } from '../utils/prisma.utils';
+import { FolderService } from '../folder/folder.service';
 
 @Injectable()
 export class ReminderService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private folderService: FolderService
+  ) {}
 
   async getAll(filterDto: ReminderFilterDto): Promise<Reminder[]> {
     const { where, take, skip, orderBy } =
@@ -59,6 +63,17 @@ export class ReminderService {
   }
 
   async create(data: CreateReminderDto): Promise<Reminder> {
+    if (data.folderId) {
+      const folder = await this.folderService.get(data.folderId);
+      if (!folder) {
+        throw new NotFoundException(
+          `Folder with ID ${data.folderId} not found`
+        );
+      }
+    } else {
+      data.folderId = await this.folderService.getDefaultFolderId();
+    }
+
     const reminder = await this.prisma.reminder.create({
       data,
     });
