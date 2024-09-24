@@ -100,13 +100,11 @@ const ReminderItem = ({
               style={[
                 styles.folderColorCircle,
                 {
-                  backgroundColor: reminder?.folder?.color || colors.orange500,
+                  backgroundColor: reminder?.folder?.color,
                 },
               ]}
             />
-            <Text style={styles.content}>
-              {reminder.folder?.name || 'General'}
-            </Text>
+            <Text style={styles.content}>{reminder.folder?.name}</Text>
           </View>
           <ReminderStatusChip style={styles.status} status={reminder.status} />
         </View>

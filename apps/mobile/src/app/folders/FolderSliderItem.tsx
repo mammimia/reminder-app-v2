@@ -92,9 +92,7 @@ const FolderSliderItem = ({
         <Text style={styles.reminderCount}>
           {folder.reminderCount || 0} reminders
         </Text>
-        <Text style={styles.categoryText}>
-          {folder.category?.name || 'General'}
-        </Text>
+        <Text style={styles.categoryText}>{folder.category?.name}</Text>
       </View>
     </TouchableOpacity>
   );
