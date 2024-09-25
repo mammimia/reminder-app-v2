@@ -1,9 +1,17 @@
-import { CreateFolderDto, FolderDto, UpdateFolderDto } from '@mammimia/types';
+import {
+  CategoryDto,
+  CreateFolderDto,
+  FolderDto,
+  UpdateFolderDto,
+} from '@mammimia/types';
 import { Formik } from 'formik';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Modal, Text, TextInput } from 'react-native-paper';
+import Picker from '../../components/Picker';
 import useEditorModalActions from '../../hooks/useEditorModalActions';
+import useFetchData from '../../hooks/useFetchData';
+import CategoryService from '../services/CategoryService';
 import FolderService from '../services/FolderService';
 
 type Props = {
@@ -28,6 +36,10 @@ const FolderEditorModal = ({
     updateSchema: UpdateFolderDto,
   });
 
+  const { data } = useFetchData<CategoryDto>({
+    fetchMethod: CategoryService.get,
+  });
+
   const containerStyle = { backgroundColor: 'white', padding: 20 };
 
   return (
@@ -38,7 +50,13 @@ const FolderEditorModal = ({
     >
       <Text style={styles.formTitle}>Folder Editor</Text>
       <Formik
-        initialValues={defaultValues || { name: '', color: '' }}
+        initialValues={
+          defaultValues || {
+            name: '',
+            color: '',
+            categoryId: null,
+          }
+        }
         onSubmit={handleFormSubmit}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -54,6 +72,15 @@ const FolderEditorModal = ({
               onChangeText={handleChange('color')}
               onBlur={handleBlur('color')}
               value={values.color}
+            />
+            <Picker
+              label="Category"
+              value={values.categoryId}
+              items={data?.map((category) => ({
+                label: category.name,
+                value: category.id,
+              }))}
+              handleChange={handleChange('categoryId')}
             />
             <Button
               onPress={handleSubmit}
