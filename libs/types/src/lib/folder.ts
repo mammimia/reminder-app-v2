@@ -13,13 +13,13 @@ export const FolderDto = z.object({
 export const CreateFolderDto = z.object({
   name: z.string().min(1, 'Name is required'),
   color: z.string().length(7, "Color must be in '#000000' format").optional(),
-  categoryId: z.string().optional(),
+  categoryId: z.string().optional().nullable(),
 });
 
 export const UpdateFolderDto = z.object({
   name: z.string().optional(),
   color: z.string().length(7, "Color must be in '#000000' format").optional(),
-  categoryId: z.string().optional(),
+  categoryId: z.string().optional().nullable(),
 });
 
 export const FilterFolderDto = PaginationDto.extend({
