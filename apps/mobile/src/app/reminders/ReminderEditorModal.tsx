@@ -92,6 +92,7 @@ const ReminderEditorModal = ({
             </DateTimePicker>
 
             <Picker
+              label="Folder"
               value={values.folderId}
               items={data?.map((folder) => ({
                 label: folder.name,

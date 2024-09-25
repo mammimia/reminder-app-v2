@@ -11,18 +11,20 @@ type PickerItem = {
 };
 
 type Props = {
+  label: string;
   handleChange: (e: string | ChangeEvent<any> | null) => void;
   items: PickerItem[];
   value: string | undefined;
 };
 
-const Picker = ({ value, items, handleChange }: Props) => {
+const Picker = ({ label, value, items, handleChange }: Props) => {
   const { styles } = useStyles(createStyles);
 
   if (Platform.OS === 'ios') {
     const selectedValue = items.find((item) => item.value === value);
     return (
       <IOSPicker
+        label={label}
         value={selectedValue?.label || ''}
         items={items}
         handleChange={handleChange}
@@ -44,12 +46,13 @@ const Picker = ({ value, items, handleChange }: Props) => {
 };
 
 type IOSPickerProps = {
+  label: string;
   value: string;
   items: PickerItem[];
   handleChange: (value: string | null) => void;
 };
 
-const IOSPicker = ({ value, items, handleChange }: IOSPickerProps) => {
+const IOSPicker = ({ label, value, items, handleChange }: IOSPickerProps) => {
   const { styles } = useStyles(createStyles);
   const [visible, setVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
@@ -66,7 +69,7 @@ const IOSPicker = ({ value, items, handleChange }: IOSPickerProps) => {
   return (
     <>
       <TextInput
-        label="Folder"
+        label={label}
         editable={false}
         onPress={() => setVisible(true)}
         value={value}
