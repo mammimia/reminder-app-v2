@@ -4,3 +4,4 @@ export * from './lib/category';
 export * from './lib/folder';
 export * from './lib/reminder';
 export * from './lib/payment';
+export * from './lib/transaction';
