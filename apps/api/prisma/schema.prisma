@@ -62,3 +62,52 @@ model Reminder {
     @@map("reminders")
 }
 
+enum PaymentPeriod {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+  ONE_TIME
+}
+
+enum ExpenseType {
+  INCOME
+  EXPENSE
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+  name      String
+  color     String @default("#000000") @db.VarChar(7)
+  period    PaymentPeriod @default(ONE_TIME)
+
+  Expense Expense[]
+
+  @@map("payments")
+}
+
+model Expense {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime? @updatedAt
+  deletedAt     DateTime?
+  title         String
+  description   String?
+  amount        Float
+  type          ExpenseType @default(EXPENSE)
+  date          DateTime
+  paymentMethod PaymentMethod
+  paymentId     String?
+  payment       Payment? @relation(fields: [paymentId], references: [id])
+  expenseDate   DateTime
+
+  @@map("expenses")
+}
