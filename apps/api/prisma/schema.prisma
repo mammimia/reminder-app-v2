@@ -70,7 +70,7 @@ enum PaymentPeriod {
   ONE_TIME
 }
 
-enum ExpenseType {
+enum TransactionType {
   INCOME
   EXPENSE
 }
@@ -89,12 +89,12 @@ model Payment {
   color     String @default("#000000") @db.VarChar(7)
   period    PaymentPeriod @default(ONE_TIME)
 
-  Expense Expense[]
+  Expense Transaction[]
 
   @@map("payments")
 }
 
-model Expense {
+model Transaction {
   id            String   @id @default(uuid())
   createdAt     DateTime @default(now())
   updatedAt     DateTime? @updatedAt
@@ -102,12 +102,11 @@ model Expense {
   title         String
   description   String?
   amount        Float
-  type          ExpenseType @default(EXPENSE)
+  type          TransactionType @default(EXPENSE)
   date          DateTime
   paymentMethod PaymentMethod
-  paymentId     String?
-  payment       Payment? @relation(fields: [paymentId], references: [id])
-  expenseDate   DateTime
+  paymentId     String
+  payment       Payment @relation(fields: [paymentId], references: [id])
 
-  @@map("expenses")
+  @@map("transactions")
 }
