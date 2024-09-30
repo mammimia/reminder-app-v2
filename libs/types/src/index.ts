@@ -5,3 +5,4 @@ export * from './lib/folder';
 export * from './lib/reminder';
 export * from './lib/payment';
 export * from './lib/transaction';
+export * from './lib/balance';
