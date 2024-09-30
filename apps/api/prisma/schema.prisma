@@ -110,3 +110,19 @@ model Transaction {
 
   @@map("transactions")
 }
+
+enum Currency {
+  TL
+  USD
+}
+
+model Balance {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+  amount    Float
+  currency  Currency @default(TL) @unique
+
+  @@map("balances")
+}
