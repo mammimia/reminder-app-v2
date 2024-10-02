@@ -1,9 +1,9 @@
 import { TransactionDto } from '@mammimia/types';
-import { Payment, Transaction } from '@prisma/client';
-import { PaymentAdapter } from '../payment/payment.adapter';
+import { PaymentType, Transaction } from '@prisma/client';
+import { PaymentTypeAdapter } from '../payment-type/payment-type.adapter';
 
 export type TransactionWithPayment = Transaction & {
-  payment?: Payment | null;
+  paymentType?: PaymentType | null;
 };
 
 const toDto = (transaction: TransactionWithPayment): TransactionDto => {
@@ -15,8 +15,8 @@ const toDto = (transaction: TransactionWithPayment): TransactionDto => {
     type: transaction.type,
     date: transaction.date?.toISOString(),
     paymentMethod: transaction.paymentMethod,
-    payment: transaction.payment
-      ? PaymentAdapter.toDto(transaction.payment)
+    payment: transaction.paymentType
+      ? PaymentTypeAdapter.toDto(transaction.paymentType)
       : null,
   };
 

@@ -8,25 +8,25 @@ export enum PaymentPeriod {
   ONE_TIME = 'ONE_TIME',
 }
 
-export const PaymentDto = z.object({
+export const PaymentTypeDto = z.object({
   id: z.string(),
   name: z.string(),
   color: z.string(),
   period: z.nativeEnum(PaymentPeriod),
 });
 
-export const CreatePaymentDto = z.object({
+export const CreatePaymentTypeDto = z.object({
   name: z.string(),
   color: z.string(),
   period: z.nativeEnum(PaymentPeriod),
 });
 
-export const UpdatePaymentDto = z.object({
+export const UpdatePaymentTypeDto = z.object({
   name: z.string(),
   color: z.string(),
   period: z.nativeEnum(PaymentPeriod),
 });
 
-export type PaymentDto = z.infer<typeof PaymentDto>;
-export type CreatePaymentDto = z.infer<typeof CreatePaymentDto>;
-export type UpdatePaymentDto = z.infer<typeof UpdatePaymentDto>;
+export type PaymentTypeDto = z.infer<typeof PaymentTypeDto>;
+export type CreatePaymentTypeDto = z.infer<typeof CreatePaymentTypeDto>;
+export type UpdatePaymentTypeDto = z.infer<typeof UpdatePaymentTypeDto>;

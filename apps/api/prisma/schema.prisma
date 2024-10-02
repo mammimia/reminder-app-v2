@@ -80,7 +80,7 @@ enum PaymentMethod {
   CARD
 }
 
-model Payment {
+model PaymentType {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
@@ -91,13 +91,13 @@ model Payment {
 
   Expense Transaction[]
 
-  @@map("payments")
+  @@map("payment-types")
 }
 
 model Transaction {
-  id            String   @id @default(uuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime? @updatedAt
+  id            String         @id @default(uuid())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime?      @updatedAt
   deletedAt     DateTime?
   title         String
   description   String?
@@ -105,8 +105,8 @@ model Transaction {
   type          TransactionType @default(EXPENSE)
   date          DateTime
   paymentMethod PaymentMethod
-  paymentId     String
-  payment       Payment @relation(fields: [paymentId], references: [id])
+  paymentTypeId String
+  paymentType   PaymentType @relation(fields: [paymentTypeId], references: [id])
 
   @@map("transactions")
 }

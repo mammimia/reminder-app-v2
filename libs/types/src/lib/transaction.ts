@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PaymentDto } from './payment';
+import { PaymentTypeDto } from './payment-type';
 
 export enum TransactionType {
   INCOME = 'INCOME',
@@ -19,7 +19,7 @@ export const TransactionDto = z.object({
   type: z.nativeEnum(TransactionType),
   date: z.string(),
   paymentMethod: z.nativeEnum(PaymentMethod),
-  payment: PaymentDto.optional().nullable(),
+  payment: PaymentTypeDto.optional().nullable(),
 });
 
 export const CreateTransactionDto = z.object({
@@ -29,7 +29,7 @@ export const CreateTransactionDto = z.object({
   type: z.nativeEnum(TransactionType).default(TransactionType.EXPENSE),
   date: z.string().default(new Date().toISOString()),
   paymentMethod: z.nativeEnum(PaymentMethod).default(PaymentMethod.CASH),
-  paymentId: z.string(),
+  paymentTypeId: z.string(),
 });
 
 export const UpdateTransactionDto = z.object({
@@ -39,7 +39,7 @@ export const UpdateTransactionDto = z.object({
   type: z.nativeEnum(TransactionType).optional(),
   date: z.string().optional(),
   paymentMethod: z.nativeEnum(PaymentMethod).optional(),
-  paymentId: z.string().optional(),
+  paymentTypeId: z.string().optional(),
 });
 
 export type TransactionDto = z.infer<typeof TransactionDto>;

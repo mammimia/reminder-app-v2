@@ -1,20 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { Transaction } from '@prisma/client';
 import { CreateTransactionDto, UpdateTransactionDto } from '@mammimia/types';
-import { PaymentService } from '../payment/payment.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Transaction } from '@prisma/client';
+import { PaymentTypeService } from '../payment-type/payment-type.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class TransactionService {
   constructor(
     private prisma: PrismaService,
-    private paymentService: PaymentService
+    private paymentTypeService: PaymentTypeService
   ) {}
 
   async getAll(): Promise<Transaction[]> {
     const transactions = await this.prisma.transaction.findMany({
       include: {
-        payment: true,
+        paymentType: true,
       },
     });
 
@@ -25,7 +25,7 @@ export class TransactionService {
     const transaction = await this.prisma.transaction.findUnique({
       where: { id: id },
       include: {
-        payment: true,
+        paymentType: true,
       },
     });
 
@@ -37,8 +37,8 @@ export class TransactionService {
   }
 
   async create(data: CreateTransactionDto): Promise<Transaction> {
-    if (data.paymentId) {
-      await this.paymentService.get(data.paymentId); // Ensure payment exists
+    if (data.paymentTypeId) {
+      await this.paymentTypeService.get(data.paymentTypeId); // Ensure payment exists
     }
 
     const transaction = await this.prisma.transaction.create({
@@ -51,8 +51,8 @@ export class TransactionService {
   async update(id: string, data: UpdateTransactionDto): Promise<Transaction> {
     await this.get(id);
 
-    if (data.paymentId) {
-      await this.paymentService.get(data.paymentId); // Ensure payment exists
+    if (data.paymentTypeId) {
+      await this.paymentTypeService.get(data.paymentTypeId); // Ensure payment exists
     }
 
     const transaction = await this.prisma.transaction.update({
