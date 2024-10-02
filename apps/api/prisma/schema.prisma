@@ -89,26 +89,27 @@ model PaymentType {
   color     String @default("#000000") @db.VarChar(7)
   period    PaymentPeriod @default(ONE_TIME)
 
-  Expense Transaction[]
+  Payment Payment[]
 
   @@map("payment-types")
 }
 
-model Transaction {
-  id            String         @id @default(uuid())
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime?      @updatedAt
-  deletedAt     DateTime?
-  title         String
-  description   String?
-  amount        Float
-  type          TransactionType @default(EXPENSE)
-  date          DateTime
-  paymentMethod PaymentMethod
-  paymentTypeId String
-  paymentType   PaymentType @relation(fields: [paymentTypeId], references: [id])
-
-  @@map("transactions")
+model Payment {
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime? @updatedAt
+  deletedAt       DateTime?
+  title           String
+  description     String?
+  amount          Float
+  currency        Currency @default(TL)
+  transactionType TransactionType @default(EXPENSE)
+  date            DateTime
+  method          PaymentMethod @default(CASH)
+  typeId          String?
+  type            PaymentType? @relation(fields: [typeId], references: [id])
+  
+  @@map("payments")
 }
 
 enum Currency {

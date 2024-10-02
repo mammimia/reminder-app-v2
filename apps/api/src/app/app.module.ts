@@ -6,7 +6,7 @@ import { CategoryModule } from './category/category.module';
 import { FolderModule } from './folder/folder.module';
 import { PaymentTypeModule } from './payment-type/payment-type.module';
 import { ReminderModule } from './reminder/reminder.module';
-import { TransactionModule } from './transaction/transaction.module';
+import { PaymentModule } from './payment/payment.module';
 import { BalanceModule } from './balance/balance.module';
 
 @Module({
@@ -15,7 +15,7 @@ import { BalanceModule } from './balance/balance.module';
     FolderModule,
     CategoryModule,
     PaymentTypeModule,
-    TransactionModule,
+    PaymentModule,
     BalanceModule,
   ],
   controllers: [AppController],
