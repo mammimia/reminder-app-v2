@@ -55,4 +55,10 @@ export class PaymentController {
   async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     await this.paymentService.delete(id);
   }
+
+  @Post(':id/pay')
+  async pay(@Param('id', ParseUUIDPipe) id: string): Promise<PaymentDto> {
+    const payments = await this.paymentService.pay(id);
+    return PaymentAdapter.toDto(payments);
+  }
 }
