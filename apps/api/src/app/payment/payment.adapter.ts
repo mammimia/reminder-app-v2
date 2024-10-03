@@ -14,7 +14,9 @@ const toDto = (payment: PaymentWithType): PaymentDto => {
     amount: payment.amount,
     currency: payment.currency,
     transactionType: payment.transactionType,
-    date: payment.date?.toISOString(),
+    paymentDate: payment.paymentDate?.toISOString(),
+    paidDate: payment.paidDate?.toISOString(),
+    isPaid: payment.paidDate !== null,
     method: payment.method,
     paymentType: payment.paymentType
       ? PaymentTypeAdapter.toDto(payment.paymentType)

@@ -19,7 +19,9 @@ export const PaymentDto = z.object({
   amount: z.number(),
   currency: z.nativeEnum(Currency),
   transactionType: z.nativeEnum(TransactionType),
-  date: z.string(),
+  paymentDate: z.string(),
+  paidDate: z.string().optional(),
+  isPaid: z.boolean().optional(),
   method: z.nativeEnum(PaymentMethod),
   type: PaymentTypeDto.optional().nullable(),
 });
@@ -32,7 +34,8 @@ export const CreatePaymentDto = z.object({
   transactionType: z
     .nativeEnum(TransactionType)
     .default(TransactionType.EXPENSE),
-  date: z.string().default(new Date().toISOString()),
+  paymentDate: z.string().default(new Date().toISOString()),
+  paidDate: z.string().optional(),
   method: z.nativeEnum(PaymentMethod).default(PaymentMethod.CASH),
   typeId: z.string(),
 });
@@ -43,7 +46,8 @@ export const UpdatePaymentDto = z.object({
   amount: z.number().optional(),
   currency: z.nativeEnum(Currency).optional(),
   transactionType: z.nativeEnum(TransactionType).optional(),
-  date: z.string().optional(),
+  paymentDate: z.string().optional(),
+  paidDate: z.string().optional(),
   method: z.nativeEnum(PaymentMethod).optional(),
   typeId: z.string().optional(),
 });

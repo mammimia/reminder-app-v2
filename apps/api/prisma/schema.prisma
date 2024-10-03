@@ -104,7 +104,8 @@ model Payment {
   amount          Float
   currency        Currency @default(TL)
   transactionType TransactionType @default(EXPENSE)
-  date            DateTime
+  paymentDate     DateTime
+  paidDate        DateTime?
   method          PaymentMethod @default(CASH)
   typeId          String?
   type            PaymentType? @relation(fields: [typeId], references: [id])
