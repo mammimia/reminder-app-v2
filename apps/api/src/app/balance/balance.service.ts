@@ -68,7 +68,15 @@ export class BalanceService {
   }
 
   async reduceBalance(id: string, amount: number): Promise<Balance> {
-    const balance = await this.prisma.balance.update({
+    const balance = await this.get(id);
+
+    if (balance.amount < amount) {
+      throw new ConflictException(
+        `Balance with currency ${balance.currency} does not have enough amount`
+      );
+    }
+
+    await this.prisma.balance.update({
       where: { id: id },
       data: {
         amount: {
