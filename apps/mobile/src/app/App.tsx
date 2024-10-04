@@ -15,6 +15,7 @@ import Folders from './folders/Folders';
 import ReminderCalendar from './reminders/ReminderCalendar';
 import Reminders from './reminders/Reminders';
 import RemindersHome from './reminders/RemindersHome';
+import ExpenseHome from './expenses/ExpenseHome';
 
 const ReminderStack = createStackNavigator();
 
@@ -61,6 +62,22 @@ function ReminderStackScreen() {
   );
 }
 
+const ExpenseStack = createStackNavigator();
+
+function ExpenseStackScreen() {
+  return (
+    <ExpenseStack.Navigator>
+      <ExpenseStack.Screen
+        name="Expenses"
+        component={ExpenseHome}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </ExpenseStack.Navigator>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
 export const App = () => {
@@ -91,7 +108,7 @@ export const App = () => {
                     <Ionicons name="cash-outline" color={color} size={size} />
                   ),
                 }}
-                component={FolderList}
+                component={ExpenseStackScreen}
               />
               <Tab.Screen
                 name="Daily Routine"
