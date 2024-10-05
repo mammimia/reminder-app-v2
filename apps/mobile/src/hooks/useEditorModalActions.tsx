@@ -46,11 +46,13 @@ const useEditorModalActions = <T, CreateDto, UpdateDto>({
   const handleEdit = (values: UpdateDto) => {
     if (!defaultValues) return;
 
+    if (service.update === undefined) return;
+
     setIsOperating(true);
 
     try {
       const parsedValues = updateSchema.parse(values);
-      service.update(defaultValues.id, parsedValues).then(() => {
+      service.update(defaultValues?.id, parsedValues).then(() => {
         hideModal();
         refetch();
         setIsOperating(false);
