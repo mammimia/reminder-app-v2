@@ -60,6 +60,13 @@ class AxiosService {
   ): Promise<AxiosResponse<T>> {
     return this.apiClient.delete<T>(url, { params });
   }
+
+  patch<T>(
+    url: string,
+    data?: Record<string, unknown>
+  ): Promise<AxiosResponse<T>> {
+    return this.apiClient.patch<T>(url, data);
+  }
 }
 
 export default new AxiosService();
