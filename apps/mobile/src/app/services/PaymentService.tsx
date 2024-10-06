@@ -11,7 +11,7 @@ interface ExtendedCrudService<T, C, U> extends TCrudService<T, C, U> {
   pay: (id: string) => Promise<AxiosResponse<T>>;
 }
 
-const BalanceService: ExtendedCrudService<
+const PaymentService: ExtendedCrudService<
   PaymentDto,
   CreatePaymentDto,
   UpdatePaymentDto
@@ -27,4 +27,4 @@ const BalanceService: ExtendedCrudService<
     AxiosService.post<PaymentDto>(`payments/${id}/pay`),
 };
 
-export default BalanceService;
+export default PaymentService;
