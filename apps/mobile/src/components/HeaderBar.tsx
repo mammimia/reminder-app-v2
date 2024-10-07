@@ -15,8 +15,8 @@ type IoniconsName = keyof typeof Ionicons.glyphMap;
 type Props = {
   mainText: string;
   subText: string;
-  handlePress: () => void;
-  icon: IoniconsName;
+  icon?: IoniconsName;
+  handlePress?: () => void;
 };
 
 const HeaderBar = ({
