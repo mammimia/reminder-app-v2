@@ -1,7 +1,6 @@
 import { TColors, useStyles } from '@mammimia/ui';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import HeaderBar from '../../components/HeaderBar';
 import Balances from './Balances';
 import Payments from './Payments';
 
@@ -9,7 +8,6 @@ const ExpenseHome = () => {
   const { styles } = useStyles(createStyles);
   return (
     <View style={styles.container}>
-      <HeaderBar mainText="Hi Mammimia," subText="Here is your expenses" />
       <Balances />
       <Payments />
     </View>
