@@ -2,16 +2,17 @@ import { BalanceDto, Currency } from '@mammimia/types';
 import { TColors, useStyles } from '@mammimia/ui';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button, Divider } from 'react-native-paper';
+import { Button } from 'react-native-paper';
+import HeaderBar from '../../components/HeaderBar';
 import useFetchData from '../../hooks/useFetchData';
+import { DollarRateStorage } from '../../storages/DollarRateStorage';
 import AmountUtils from '../../utils/AmountUtils';
 import BalanceService from '../services/BalanceService';
-import { DollarRateStorage } from '../../storages/DollarRateStorage';
 
 const Balances = () => {
   const [dollarRate, setDollarRate] = useState<number>(0);
   const [totalBalance, setTotalBalance] = useState<number>(0);
-  const { styles } = useStyles(createStyles);
+  const { styles, colors } = useStyles(createStyles);
   const { data } = useFetchData<BalanceDto>({
     fetchMethod: BalanceService.get,
   });
@@ -34,42 +35,70 @@ const Balances = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.balanceText}>Total Balance</Text>
-      <Text style={styles.balanceText}>
-        {AmountUtils.format(totalBalance, Currency.TL)}
-      </Text>
-      <Divider />
-      <Text style={styles.balanceText}>Balances</Text>
-      <View style={styles.balancesContainer}>
-        {data.map((balance) => (
-          <View key={balance.id} style={styles.balanceContainer}>
-            <View style={[styles.balanceContainer]}>
-              <Text style={styles.balanceText}>
-                {AmountUtils.format(balance.amount, balance.currency)}
-              </Text>
-            </View>
-          </View>
+      <HeaderBar
+        mainText="Hi Mammimia,"
+        subText="Here is your expenses"
+        bgColor={colors.blue500}
+        textColor={colors.white}
+      />
+      <View style={styles.innerContainer}>
+        <BalanceItem
+          title="Total Balance"
+          amount={totalBalance}
+          currency={Currency.TL}
+          isBold
+        />
+        {data?.map((balance) => (
+          <BalanceItem
+            key={balance.id}
+            title={balance.currency}
+            amount={balance.amount}
+            currency={balance.currency}
+          />
         ))}
-      </View>
-      <Divider />
-      <View>
-        <Text style={styles.balanceText}>Current Dollar Rate</Text>
-        <Text style={styles.balanceText}>
-          {AmountUtils.format(dollarRate, Currency.USD)}
+
+        <Button
+          onPress={() => {
+            const newRate = parseFloat(
+              (Math.random() * (40 - 30) + 30).toFixed(2)
+            );
+            DollarRateStorage.saveDollarRate(newRate);
+            setDollarRate(newRate);
+          }}
+        >
+          Save Dollar Rate
+        </Button>
+
+        <Text style={styles.dollarRateText}>
+          1 USD = {AmountUtils.format(dollarRate, Currency.TL)}
         </Text>
       </View>
+    </View>
+  );
+};
 
-      <Button
-        onPress={() => {
-          const newRate = parseFloat(
-            (Math.random() * (40 - 30) + 30).toFixed(2)
-          );
-          DollarRateStorage.saveDollarRate(newRate);
-          setDollarRate(newRate);
-        }}
+type BalanceItemProps = {
+  title: string;
+  amount: number;
+  currency: Currency;
+  isBold?: boolean;
+};
+
+const BalanceItem = ({ title, amount, currency, isBold }: BalanceItemProps) => {
+  const { styles } = useStyles(createStyles);
+
+  return (
+    <View style={styles.balanceContainer}>
+      <Text
+        style={[styles.balanceText, isBold ? { fontWeight: 'bold' } : null]}
       >
-        Save Dollar Rate
-      </Button>
+        {title}
+      </Text>
+      <Text
+        style={[styles.balanceText, isBold ? { fontWeight: 'bold' } : null]}
+      >
+        {AmountUtils.format(amount, currency)}
+      </Text>
     </View>
   );
 };
@@ -79,22 +108,29 @@ export default Balances;
 const createStyles = (colors: TColors) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.blue300,
+      backgroundColor: colors.blue500,
+      borderBottomLeftRadius: 5,
+      borderBottomRightRadius: 5,
+    },
+    innerContainer: {
       gap: 10,
       padding: 10,
       marginHorizontal: 20,
-      borderRadius: 10,
-    },
-    balancesContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+      marginBottom: 10,
     },
     balanceContainer: {
       flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     balanceText: {
+      fontSize: 18,
       color: colors.white,
-      fontSize: 20,
+    },
+    dollarRateText: {
+      fontSize: 12,
+      fontStyle: 'italic',
       fontWeight: 'bold',
+      color: colors.white,
+      alignSelf: 'flex-end',
     },
   });
