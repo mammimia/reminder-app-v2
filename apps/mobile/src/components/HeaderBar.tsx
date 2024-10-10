@@ -17,6 +17,8 @@ type Props = {
   subText: string;
   icon?: IoniconsName;
   handlePress?: () => void;
+  bgColor?: string;
+  textColor?: string;
 };
 
 const HeaderBar = ({
@@ -24,16 +26,35 @@ const HeaderBar = ({
   subText,
   icon,
   handlePress,
+  bgColor,
+  textColor,
 }: Props) => {
   const { styles, colors } = useStyles(createStyles);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, bgColor ? { backgroundColor: bgColor } : null]}
+    >
       <View style={styles.avatarContainer}>
-        <Avatar.Text style={styles.avatar} label="MA" size={36} />
+        <Avatar.Text
+          style={[
+            styles.avatar,
+            textColor ? { backgroundColor: textColor } : null,
+          ]}
+          label="MA"
+          size={36}
+        />
         <View>
-          <Text style={styles.title}>{mainText}</Text>
-          {subText && <Text style={styles.infoText}>{subText}</Text>}
+          <Text style={[styles.title, textColor ? { color: textColor } : null]}>
+            {mainText}
+          </Text>
+          {subText && (
+            <Text
+              style={[styles.infoText, textColor ? { color: textColor } : null]}
+            >
+              {subText}
+            </Text>
+          )}
         </View>
       </View>
       {icon && (
@@ -66,7 +87,7 @@ const createStyles = (colors: TColors) =>
     infoText: {
       fontSize: 14,
       color: colors.primary,
-      opacity: 0.7,
+      opacity: 0.8,
     },
     avatarContainer: {
       flexDirection: 'row',
