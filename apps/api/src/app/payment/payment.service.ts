@@ -18,6 +18,9 @@ export class PaymentService {
       include: {
         type: true,
       },
+      orderBy: {
+        paymentDate: 'desc',
+      },
     });
 
     return payments;
