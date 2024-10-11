@@ -25,13 +25,13 @@ const ReminderItem = ({
   const { colors, styles } = useStyles(createStyles);
 
   const handleUpdateStatus = (status: ReminderStatus) => {
-    ReminderService.update(reminder.id, { status })
+    ReminderService.update?.(reminder.id, { status })
       .then(() => refetchReminders())
       .catch((error) => console.error(error));
   };
 
   const handleDelete = () => {
-    ReminderService.remove(reminder.id)
+    ReminderService.remove?.(reminder.id)
       .then(() => refetchReminders())
       .catch((error) => console.error(error));
   };
