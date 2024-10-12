@@ -2,14 +2,22 @@ import { BalanceDto, Currency } from '@mammimia/types';
 import { TColors, useStyles } from '@mammimia/ui';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button } from 'react-native-paper';
+
 import HeaderBar from '../../components/HeaderBar';
 import useFetchData from '../../hooks/useFetchData';
 import { DollarRateStorage } from '../../storages/DollarRateStorage';
 import AmountUtils from '../../utils/AmountUtils';
 import BalanceService from '../services/BalanceService';
+import showCustomActionSheet, {
+  ActionSheetOption,
+} from '../../utils/showCustomActionSheet';
+import { useActionSheet } from '@expo/react-native-action-sheet';
+import useEditorModal from '../../hooks/useEditorModal';
+import DollarRateModal from './DollarRateModal';
 
 const Balances = () => {
+  const { showActionSheetWithOptions } = useActionSheet();
+  const { modalVisible, hideModal, openModal } = useEditorModal();
   const [dollarRate, setDollarRate] = useState<number>(0);
   const [totalBalance, setTotalBalance] = useState<number>(0);
   const { styles, colors } = useStyles(createStyles);
@@ -33,6 +41,23 @@ const Balances = () => {
     }
   }, [data, dollarRate]);
 
+  const handleOptionsPress = () => {
+    const options: ActionSheetOption[] = [
+      {
+        label: 'Set Dollar Rate',
+        onPress: openModal,
+      },
+    ];
+
+    showCustomActionSheet(
+      {
+        options,
+        title: 'Balance Actions',
+      },
+      showActionSheetWithOptions
+    );
+  };
+
   return (
     <View style={styles.container}>
       <HeaderBar
@@ -40,6 +65,8 @@ const Balances = () => {
         subText="Here is your expenses"
         bgColor={colors.blue500}
         textColor={colors.white}
+        icon="ellipsis-vertical-circle-outline"
+        handlePress={handleOptionsPress}
       />
       <View style={styles.innerContainer}>
         <BalanceItem
@@ -57,22 +84,18 @@ const Balances = () => {
           />
         ))}
 
-        <Button
-          onPress={() => {
-            const newRate = parseFloat(
-              (Math.random() * (40 - 30) + 30).toFixed(2)
-            );
-            DollarRateStorage.saveDollarRate(newRate);
-            setDollarRate(newRate);
-          }}
-        >
-          Save Dollar Rate
-        </Button>
-
         <Text style={styles.dollarRateText}>
           1 USD = {AmountUtils.format(dollarRate, Currency.TL)}
         </Text>
       </View>
+      {modalVisible && (
+        <DollarRateModal
+          modalVisible={modalVisible}
+          hideModal={hideModal}
+          dollarRate={dollarRate}
+          setDollarRate={setDollarRate}
+        />
+      )}
     </View>
   );
 };
