@@ -59,7 +59,7 @@ const HeaderBar = ({
       </View>
       {icon && (
         <TouchableOpacity onPress={handlePress}>
-          <Ionicons name={icon} size={30} color={colors.primary} />
+          <Ionicons name={icon} size={30} color={textColor || colors.primary} />
         </TouchableOpacity>
       )}
     </View>
