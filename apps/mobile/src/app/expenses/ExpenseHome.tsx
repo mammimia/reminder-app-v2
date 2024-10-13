@@ -2,14 +2,14 @@ import { TColors, useStyles } from '@mammimia/ui';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Balances from './Balances';
-import Payments from './Payments';
+import RecentPayments from './RecentPayments';
 
 const ExpenseHome = () => {
   const { styles } = useStyles(createStyles);
   return (
     <View style={styles.container}>
       <Balances />
-      <Payments />
+      <RecentPayments />
     </View>
   );
 };
