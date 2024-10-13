@@ -2,8 +2,8 @@ import { PaymentDto, TransactionType } from '@mammimia/types';
 import { TColors, useStyles } from '@mammimia/ui';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import AmountUtils from '../../utils/AmountUtils';
-import DateUtils from '../../utils/DateUtils';
+import AmountUtils from '../../../utils/AmountUtils';
+import DateUtils from '../../../utils/DateUtils';
 
 type Props = {
   item: PaymentDto;

@@ -1,8 +1,8 @@
 import { TColors, useStyles } from '@mammimia/ui';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Balances from './Balances';
-import RecentPayments from './RecentPayments';
+import Balances from './balances/Balances';
+import RecentPayments from './payments/RecentPayments';
 
 const ExpenseHome = () => {
   const { styles } = useStyles(createStyles);

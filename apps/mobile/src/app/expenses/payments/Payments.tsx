@@ -1,8 +1,8 @@
 import { PaymentDto } from '@mammimia/types';
 import React from 'react';
 import { FlatList } from 'react-native';
-import useFetchData from '../../hooks/useFetchData';
-import PaymentService from '../services/PaymentService';
+import useFetchData from '../../../hooks/useFetchData';
+import PaymentService from '../../services/PaymentService';
 import PaymentItem from './PaymentItem';
 
 const Payments = () => {

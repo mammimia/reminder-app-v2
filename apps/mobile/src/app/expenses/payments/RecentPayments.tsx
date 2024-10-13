@@ -2,7 +2,7 @@ import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import SectionTitle from '../../components/SectionTitle';
+import SectionTitle from '../../../components/SectionTitle';
 
 const RecentPayments = () => {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();

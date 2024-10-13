@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Modal, Portal, TextInput } from 'react-native-paper';
-import { DollarRateStorage } from '../../storages/DollarRateStorage';
+import { DollarRateStorage } from '../../../storages/DollarRateStorage';
 import { TColors, useStyles } from '@mammimia/ui';
 
 type Props = {

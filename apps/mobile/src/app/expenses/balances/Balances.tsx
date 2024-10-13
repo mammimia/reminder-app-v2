@@ -7,15 +7,15 @@ import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Button } from 'react-native-paper';
-import HeaderBar from '../../components/HeaderBar';
-import useEditorModal from '../../hooks/useEditorModal';
-import useFetchData from '../../hooks/useFetchData';
-import { DollarRateStorage } from '../../storages/DollarRateStorage';
-import AmountUtils from '../../utils/AmountUtils';
+import HeaderBar from '../../../components/HeaderBar';
+import useEditorModal from '../../../hooks/useEditorModal';
+import useFetchData from '../../../hooks/useFetchData';
+import { DollarRateStorage } from '../../../storages/DollarRateStorage';
+import AmountUtils from '../../../utils/AmountUtils';
 import showCustomActionSheet, {
   ActionSheetOption,
-} from '../../utils/showCustomActionSheet';
-import BalanceService from '../services/BalanceService';
+} from '../../../utils/showCustomActionSheet';
+import BalanceService from '../../services/BalanceService';
 import DollarRateModal from './DollarRateModal';
 
 const Balances = () => {
