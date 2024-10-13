@@ -9,13 +9,14 @@ import React from 'react';
 import { StatusBar, TouchableOpacity } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import Categories from './ categories/Categories';
+import BalanceDetails from './expenses/BalanceDetails';
+import ExpenseHome from './expenses/ExpenseHome';
 import FolderDetails from './folders/FolderDetails';
 import FolderList from './folders/FolderList';
 import Folders from './folders/Folders';
 import ReminderCalendar from './reminders/ReminderCalendar';
 import Reminders from './reminders/Reminders';
 import RemindersHome from './reminders/RemindersHome';
-import ExpenseHome from './expenses/ExpenseHome';
 
 const ReminderStack = createStackNavigator();
 
@@ -74,6 +75,7 @@ function ExpenseStackScreen() {
           headerShown: false,
         }}
       />
+      <ExpenseStack.Screen name="BalanceDetails" component={BalanceDetails} />
     </ExpenseStack.Navigator>
   );
 }

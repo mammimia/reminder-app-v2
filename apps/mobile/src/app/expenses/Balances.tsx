@@ -1,26 +1,33 @@
 import { BalanceDto, Currency } from '@mammimia/types';
 import { TColors, useStyles } from '@mammimia/ui';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { useActionSheet } from '@expo/react-native-action-sheet';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Button } from 'react-native-paper';
 import HeaderBar from '../../components/HeaderBar';
+import useEditorModal from '../../hooks/useEditorModal';
 import useFetchData from '../../hooks/useFetchData';
 import { DollarRateStorage } from '../../storages/DollarRateStorage';
 import AmountUtils from '../../utils/AmountUtils';
-import BalanceService from '../services/BalanceService';
 import showCustomActionSheet, {
   ActionSheetOption,
 } from '../../utils/showCustomActionSheet';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import useEditorModal from '../../hooks/useEditorModal';
+import BalanceService from '../services/BalanceService';
 import DollarRateModal from './DollarRateModal';
 
 const Balances = () => {
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+
   const { showActionSheetWithOptions } = useActionSheet();
   const { modalVisible, hideModal, openModal } = useEditorModal();
+  const { styles, colors } = useStyles(createStyles);
+
   const [dollarRate, setDollarRate] = useState<number>(0);
   const [totalBalance, setTotalBalance] = useState<number>(0);
-  const { styles, colors } = useStyles(createStyles);
+
   const { data } = useFetchData<BalanceDto>({
     fetchMethod: BalanceService.get,
   });
@@ -58,6 +65,10 @@ const Balances = () => {
     );
   };
 
+  const handleDetailsPress = () => {
+    navigation.navigate('BalanceDetails');
+  };
+
   return (
     <View style={styles.container}>
       <HeaderBar
@@ -87,6 +98,16 @@ const Balances = () => {
         <Text style={styles.dollarRateText}>
           1 USD = {AmountUtils.format(dollarRate, Currency.TL)}
         </Text>
+        <TouchableOpacity>
+          <Button
+            mode="outlined"
+            style={styles.detailsButton}
+            onPress={handleDetailsPress}
+            labelStyle={styles.detailsButtonText}
+          >
+            Details
+          </Button>
+        </TouchableOpacity>
       </View>
       {modalVisible && (
         <DollarRateModal
@@ -155,5 +176,16 @@ const createStyles = (colors: TColors) =>
       fontWeight: 'bold',
       color: colors.white,
       alignSelf: 'flex-end',
+    },
+    detailsButton: {
+      alignSelf: 'center',
+      backgroundColor: colors.white,
+      borderColor: colors.white,
+      borderWidth: 1,
+      width: 100,
+    },
+    detailsButtonText: {
+      fontSize: 14,
+      color: colors.blue500,
     },
   });
