@@ -1,6 +1,7 @@
 import {
   CreatePaymentDto,
   PaymentDto,
+  PaymentFilterDto,
   UpdatePaymentDto,
 } from '@mammimia/types';
 import {
@@ -14,6 +15,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { PaymentAdapter } from './payment.adapter';
 import { PaymentService } from './payment.service';
@@ -23,8 +25,8 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Get()
-  async getAll(): Promise<PaymentDto[]> {
-    const payments = await this.paymentService.getAll();
+  async getAll(@Query() filterDto: PaymentFilterDto): Promise<PaymentDto[]> {
+    const payments = await this.paymentService.getAll(filterDto);
     return PaymentAdapter.toDtoArray(payments);
   }
 

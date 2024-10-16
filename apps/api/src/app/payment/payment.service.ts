@@ -1,9 +1,14 @@
-import { CreatePaymentDto, UpdatePaymentDto } from '@mammimia/types';
+import {
+  CreatePaymentDto,
+  PaymentFilterDto,
+  UpdatePaymentDto,
+} from '@mammimia/types';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Payment } from '@prisma/client';
 import { BalanceService } from '../balance/balance.service';
 import { PaymentTypeService } from '../payment-type/payment-type.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { prismaUtils } from '../utils/prisma.utils';
 
 @Injectable()
 export class PaymentService {
@@ -13,13 +18,17 @@ export class PaymentService {
     private balanceService: BalanceService
   ) {}
 
-  async getAll(): Promise<Payment[]> {
+  async getAll(filterDto: PaymentFilterDto): Promise<Payment[]> {
+    const { where, take, skip, orderBy } =
+      prismaUtils.buildQueryOptionsWithPagination(filterDto, PaymentFilterDto);
+
     const payments = await this.prisma.payment.findMany({
+      where,
+      take,
+      skip,
+      orderBy: orderBy ? orderBy : { paymentDate: 'desc' },
       include: {
         type: true,
-      },
-      orderBy: {
-        paymentDate: 'desc',
       },
     });
 
