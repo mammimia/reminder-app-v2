@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { PaymentTypeDto } from './payment-type';
 import { Currency } from './balance';
+import { PaginationDto } from './base';
 
 export enum TransactionType {
   INCOME = 'INCOME',
@@ -52,6 +53,14 @@ export const UpdatePaymentDto = z.object({
   typeId: z.string().optional(),
 });
 
+export const PaymentFilterDto = PaginationDto.extend({
+  title: z.string().optional(),
+  transactionType: z.nativeEnum(TransactionType).optional(),
+  method: z.nativeEnum(PaymentMethod).optional(),
+  typeId: z.string().optional(),
+});
+
 export type PaymentDto = z.infer<typeof PaymentDto>;
 export type CreatePaymentDto = z.infer<typeof CreatePaymentDto>;
 export type UpdatePaymentDto = z.infer<typeof UpdatePaymentDto>;
+export type PaymentFilterDto = z.infer<typeof PaymentFilterDto>;
