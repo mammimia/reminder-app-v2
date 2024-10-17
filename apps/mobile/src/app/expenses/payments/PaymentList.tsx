@@ -33,8 +33,7 @@ export default PaymentList;
 
 const styles = StyleSheet.create({
   container: {
-    gap: 10,
-    padding: 10,
+    paddingVertical: 10,
   },
   listEmptyComponent: {
     textAlign: 'center',
