@@ -3,9 +3,11 @@ import {
   Currency,
   PaymentDto,
   PaymentMethod,
+  PaymentTypeDto,
   TransactionType,
   UpdatePaymentDto,
 } from '@mammimia/types';
+import useFetchData from '../../../hooks/useFetchData';
 import { Formik } from 'formik';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -15,6 +17,7 @@ import Picker from '../../../components/Picker';
 import useEditorModalActions from '../../../hooks/useEditorModalActions';
 import StringUtils from '../../../utils/StringUtils';
 import PaymentService from '../../services/PaymentService';
+import PaymentTypeService from '../../services/PaymentTypeService';
 
 type Props = {
   defaultValues?: PaymentDto | null;
@@ -36,6 +39,10 @@ const PaymentEditorModal = ({
     defaultValues,
     createSchema: CreatePaymentDto,
     updateSchema: UpdatePaymentDto,
+  });
+
+  const { data: paymentTypes } = useFetchData<PaymentTypeDto>({
+    fetchMethod: PaymentTypeService.get,
   });
 
   const submitForm = async (values: any) => {
@@ -66,7 +73,7 @@ const PaymentEditorModal = ({
             transactionType: TransactionType.EXPENSE,
             paymentDate: new Date().toISOString(),
             method: PaymentMethod.CARD,
-            typeId: '',
+            typeId: paymentTypes?.[0]?.id || '',
           }
         }
         onSubmit={submitForm}
@@ -124,6 +131,24 @@ const PaymentEditorModal = ({
                 </Pressable>
               )}
             </DateTimePicker>
+            <Picker
+              label="Payment Method"
+              value={values.method}
+              items={Object.values(PaymentMethod).map((method) => ({
+                label: StringUtils.convertToTitleCase(method),
+                value: method,
+              }))}
+              handleChange={handleChange('method')}
+            />
+            <Picker
+              label="Payment Type"
+              value={values.typeId}
+              items={paymentTypes?.map((type) => ({
+                label: StringUtils.convertToTitleCase(type.name),
+                value: type.id,
+              }))}
+              handleChange={handleChange('typeId')}
+            />
             <Button
               onPress={handleSubmit}
               loading={isOperating}
