@@ -1,6 +1,8 @@
 import { FolderDto } from '@mammimia/types';
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
+import ListEmptyComponent from '../../components/list/ListEmptyComponent';
+import ListPageContainer from '../../components/list/ListPageContainer';
 import FolderSliderItem from './FolderSliderItem';
 
 type Props = {
@@ -23,7 +25,7 @@ const FolderList = ({
   openEditModal,
 }: Props) => {
   return (
-    <View style={styles.container}>
+    <ListPageContainer isFetching={isFetching}>
       <FlatList
         style={flatListStyle}
         data={data}
@@ -40,8 +42,9 @@ const FolderList = ({
         horizontal={horizontal}
         onRefresh={refetch}
         refreshing={isFetching}
+        ListEmptyComponent={() => <ListEmptyComponent text="No folders" />}
       />
-    </View>
+    </ListPageContainer>
   );
 };
 

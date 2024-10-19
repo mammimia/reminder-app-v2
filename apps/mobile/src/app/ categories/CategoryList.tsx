@@ -1,6 +1,8 @@
 import { CategoryDto } from '@mammimia/types';
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native';
+import ListEmptyComponent from '../../components/list/ListEmptyComponent';
+import ListPageContainer from '../../components/list/ListPageContainer';
 import CategorySliderItem from './CategorySliderItem';
 
 type Props = {
@@ -17,7 +19,7 @@ const CategoryList = ({
   openEditModal,
 }: Props) => {
   return (
-    <View style={styles.container}>
+    <ListPageContainer isFetching={isFetching}>
       <FlatList
         data={data}
         renderItem={({ item }) => (
@@ -30,16 +32,10 @@ const CategoryList = ({
         keyExtractor={(item) => item.id}
         onRefresh={onRefresh}
         refreshing={isFetching}
+        ListEmptyComponent={() => <ListEmptyComponent text="No categories" />}
       />
-    </View>
+    </ListPageContainer>
   );
 };
 
 export default CategoryList;
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 10,
-    padding: 10,
-  },
-});
