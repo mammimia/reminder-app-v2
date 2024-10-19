@@ -55,6 +55,12 @@ const Balances = () => {
         onPress: openModal,
       },
       {
+        label: 'Payment Types',
+        onPress: () => {
+          navigation.navigate('PaymentTypes');
+        },
+      },
+      {
         label: 'Close',
         onPress: () => {
           /* Do nothing */

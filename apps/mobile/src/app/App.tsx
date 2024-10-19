@@ -11,13 +11,14 @@ import { PaperProvider } from 'react-native-paper';
 import Categories from './ categories/Categories';
 import BalanceDetails from './expenses/balances/BalanceDetails';
 import ExpenseHome from './expenses/ExpenseHome';
+import Payments from './expenses/payments/Payments';
+import PaymentTypes from './expenses/payment-types/PaymentTypes';
 import FolderDetails from './folders/FolderDetails';
 import FolderList from './folders/FolderList';
 import Folders from './folders/Folders';
 import ReminderCalendar from './reminders/ReminderCalendar';
 import Reminders from './reminders/Reminders';
 import RemindersHome from './reminders/RemindersHome';
-import Payments from './expenses/payments/Payments';
 
 const ReminderStack = createStackNavigator();
 
@@ -78,6 +79,7 @@ function ExpenseStackScreen() {
       />
       <ExpenseStack.Screen name="BalanceDetails" component={BalanceDetails} />
       <ExpenseStack.Screen name="Payments" component={Payments} />
+      <ExpenseStack.Screen name="PaymentTypes" component={PaymentTypes} />
     </ExpenseStack.Navigator>
   );
 }
