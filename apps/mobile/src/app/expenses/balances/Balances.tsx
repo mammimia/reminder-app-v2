@@ -54,6 +54,13 @@ const Balances = () => {
         label: 'Set Dollar Rate',
         onPress: openModal,
       },
+      {
+        label: 'Close',
+        onPress: () => {
+          /* Do nothing */
+        },
+        isCancel: true,
+      },
     ];
 
     showCustomActionSheet(
