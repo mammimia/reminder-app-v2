@@ -62,7 +62,7 @@ const PaymentEditorModal = ({
       onDismiss={hideModal}
       contentContainerStyle={containerStyle}
     >
-      <Text style={styles.formTitle}>Reminder Editor</Text>
+      <Text style={styles.formTitle}>Payment Editor</Text>
       <Formik
         initialValues={
           defaultValues || {
