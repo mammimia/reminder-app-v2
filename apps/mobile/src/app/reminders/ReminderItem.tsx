@@ -9,6 +9,7 @@ import showCustomActionSheet, {
 } from '../../utils/showCustomActionSheet';
 import ReminderService from '../services/ReminderService';
 import ReminderStatusChip from './ReminderStatusChip';
+import ColorCircle from '../../components/ColorCircle';
 
 type Props = {
   reminder: ReminderDto;
@@ -96,14 +97,7 @@ const ReminderItem = ({
         <Text style={styles.content}>{reminder.content}</Text>
         <View style={styles.bottomContainer}>
           <View style={styles.folder}>
-            <View
-              style={[
-                styles.folderColorCircle,
-                {
-                  backgroundColor: reminder?.folder?.color,
-                },
-              ]}
-            />
+            <ColorCircle color={reminder.folder?.color} />
             <Text style={styles.content}>{reminder.folder?.name}</Text>
           </View>
           <ReminderStatusChip style={styles.status} status={reminder.status} />
@@ -149,12 +143,5 @@ const createStyles = (colors: TColors) =>
       flexDirection: 'row',
       alignItems: 'center',
       gap: 5,
-    },
-    folderColorCircle: {
-      width: 16,
-      height: 16,
-      borderRadius: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
     },
   });
