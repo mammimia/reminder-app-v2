@@ -1,7 +1,7 @@
 import { FolderDto } from '@mammimia/types';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import AddFab from '../../components/AddFab';
+import { StyleSheet } from 'react-native';
+import AddablePage from '../../components/AddablePage';
 import useEditorModal from '../../hooks/useEditorModal';
 import useFetchData from '../../hooks/useFetchData';
 import FolderService from '../services/FolderService';
@@ -17,7 +17,7 @@ const Folders = () => {
 
   return (
     <>
-      <View style={styles.container}>
+      <AddablePage onPress={openModal}>
         <FolderList
           data={data}
           onRefresh={refetch}
@@ -26,8 +26,7 @@ const Folders = () => {
           horizontal={false}
           flatListStyle={styles.flatListStyle}
         />
-        <AddFab onPress={() => openModal()} />
-      </View>
+      </AddablePage>
       <FolderEditorModal
         visible={modalVisible}
         hideModal={hideModal}
@@ -41,9 +40,6 @@ const Folders = () => {
 export default Folders;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   folderItemStyle: {
     flex: 1,
   },

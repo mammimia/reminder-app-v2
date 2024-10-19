@@ -1,7 +1,6 @@
 import { PaymentDto } from '@mammimia/types';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import AddFab from '../../../components/AddFab';
+import AddablePage from '../../../components/AddablePage';
 import useEditorModal from '../../../hooks/useEditorModal';
 import useFetchData from '../../../hooks/useFetchData';
 import PaymentService from '../../services/PaymentService';
@@ -18,14 +17,13 @@ const Payments = () => {
 
   return (
     <>
-      <View style={styles.container}>
+      <AddablePage onPress={openModal}>
         <PaymentList
           payments={data}
           isFetching={isFetching}
           onRefresh={refetch}
         />
-        <AddFab onPress={() => openModal()} />
-      </View>
+      </AddablePage>
       <PaymentEditorModal
         visible={modalVisible}
         hideModal={hideModal}
@@ -37,11 +35,3 @@ const Payments = () => {
 };
 
 export default Payments;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    gap: 10,
-    padding: 10,
-  },
-});

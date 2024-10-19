@@ -1,12 +1,11 @@
-import React from 'react';
-import CategoryList from './CategoryList';
-import CategoryEditorModal from './CategoryEditorModal';
-import useFetchData from '../../hooks/useFetchData';
 import { CategoryDto } from '@mammimia/types';
-import CategoryService from '../services/CategoryService';
+import React from 'react';
+import AddablePage from '../../components/AddablePage';
 import useEditorModal from '../../hooks/useEditorModal';
-import AddFab from '../../components/AddFab';
-import { StyleSheet, View } from 'react-native';
+import useFetchData from '../../hooks/useFetchData';
+import CategoryService from '../services/CategoryService';
+import CategoryEditorModal from './CategoryEditorModal';
+import CategoryList from './CategoryList';
 
 const Categories = () => {
   const { data, isFetching, refetch } = useFetchData<CategoryDto>({
@@ -17,15 +16,14 @@ const Categories = () => {
 
   return (
     <>
-      <View style={styles.container}>
+      <AddablePage onPress={openModal}>
         <CategoryList
           data={data}
           isFetching={isFetching}
           onRefresh={refetch}
           openEditModal={openModal}
         />
-        <AddFab onPress={() => openModal()} />
-      </View>
+      </AddablePage>
       <CategoryEditorModal
         visible={modalVisible}
         hideModal={hideModal}
@@ -37,11 +35,3 @@ const Categories = () => {
 };
 
 export default Categories;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    gap: 10,
-    padding: 10,
-  },
-});
