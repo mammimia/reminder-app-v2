@@ -52,12 +52,14 @@ const ReminderEditorModal = ({
       <Text style={styles.formTitle}>Reminder Editor</Text>
       <Formik
         initialValues={
-          defaultValues || {
-            title: '',
-            content: '',
-            expiresAt: new Date().toISOString(),
-            folderId: data?.[0]?.id || '',
-          }
+          defaultValues
+            ? { ...defaultValues, folderId: defaultValues.folder?.id }
+            : {
+                title: '',
+                content: '',
+                expiresAt: new Date().toISOString(),
+                folderId: data?.[0]?.id || '',
+              }
         }
         onSubmit={handleFormSubmit}
       >
@@ -102,7 +104,7 @@ const ReminderEditorModal = ({
             />
 
             <Button
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
               loading={isOperating}
               disabled={isOperating}
             >

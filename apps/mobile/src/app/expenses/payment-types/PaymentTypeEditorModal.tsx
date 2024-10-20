@@ -76,7 +76,7 @@ const PaymentTypeEditorModal = ({
               value={values.color}
             />
             <Button
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
               loading={isOperating}
               disabled={isOperating}
             >

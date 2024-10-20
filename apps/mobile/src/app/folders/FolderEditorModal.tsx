@@ -36,7 +36,7 @@ const FolderEditorModal = ({
     updateSchema: UpdateFolderDto,
   });
 
-  const { data } = useFetchData<CategoryDto>({
+  const { data: categories } = useFetchData<CategoryDto>({
     fetchMethod: CategoryService.get,
   });
 
@@ -51,11 +51,16 @@ const FolderEditorModal = ({
       <Text style={styles.formTitle}>Folder Editor</Text>
       <Formik
         initialValues={
-          defaultValues || {
-            name: '',
-            color: '',
-            categoryId: null,
-          }
+          defaultValues
+            ? {
+                ...defaultValues,
+                categoryId: defaultValues.category?.id,
+              }
+            : {
+                name: '',
+                color: '',
+                categoryId: categories?.[0]?.id,
+              }
         }
         onSubmit={handleFormSubmit}
       >
@@ -76,14 +81,14 @@ const FolderEditorModal = ({
             <Picker
               label="Category"
               value={values.categoryId}
-              items={data?.map((category) => ({
+              items={categories?.map((category) => ({
                 label: category.name,
                 value: category.id,
               }))}
               handleChange={handleChange('categoryId')}
             />
             <Button
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
               loading={isOperating}
               disabled={isOperating}
             >
