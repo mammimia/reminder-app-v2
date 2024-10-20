@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { TCrudService } from '../app/services/TCrudService';
 import { ZodSchema } from 'zod';
+import { TCrudService } from '../app/services/TCrudService';
 
-type Props<T, CreateDto, UpdateDto> = {
-  service: TCrudService<T, CreateDto, UpdateDto>;
+type Props<T, CreateDto, UpdateDto = void, FilterDto = void> = {
+  service: TCrudService<T, CreateDto, UpdateDto, FilterDto>;
   refetch: () => void;
   hideModal: () => void;
-  defaultValues?: T;
+  defaultValues?: (T & { id: string }) | null;
   createSchema: ZodSchema<CreateDto>;
   updateSchema: ZodSchema<UpdateDto>;
 };
@@ -17,14 +17,17 @@ type ReturnType<CreateDto, UpdateDto> = {
   handleFormSubmit: (values: CreateDto | UpdateDto) => void;
 };
 
-const useEditorModalActions = <T, CreateDto, UpdateDto>({
+const useEditorModalActions = <T, CreateDto, UpdateDto, FilterDto>({
   service,
   refetch,
   hideModal,
   defaultValues,
   createSchema,
   updateSchema,
-}: Props<T, CreateDto, UpdateDto>): ReturnType<CreateDto, UpdateDto> => {
+}: Props<T, CreateDto, UpdateDto, FilterDto>): ReturnType<
+  CreateDto,
+  UpdateDto
+> => {
   const [isOperating, setIsOperating] = useState(false);
   const isEditing = !!defaultValues;
 
