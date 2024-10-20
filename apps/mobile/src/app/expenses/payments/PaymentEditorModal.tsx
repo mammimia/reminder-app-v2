@@ -7,7 +7,6 @@ import {
   TransactionType,
   UpdatePaymentDto,
 } from '@mammimia/types';
-import useFetchData from '../../../hooks/useFetchData';
 import { Formik } from 'formik';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -15,6 +14,7 @@ import { Button, Modal, TextInput } from 'react-native-paper';
 import DateTimePicker from '../../../components/DateTimePicker';
 import Picker from '../../../components/Picker';
 import useEditorModalActions from '../../../hooks/useEditorModalActions';
+import useFetchData from '../../../hooks/useFetchData';
 import StringUtils from '../../../utils/StringUtils';
 import PaymentService from '../../services/PaymentService';
 import PaymentTypeService from '../../services/PaymentTypeService';
@@ -65,16 +65,22 @@ const PaymentEditorModal = ({
       <Text style={styles.formTitle}>Payment Editor</Text>
       <Formik
         initialValues={
-          defaultValues || {
-            title: '',
-            description: '',
-            amount: 0,
-            currency: Currency.TL,
-            transactionType: TransactionType.EXPENSE,
-            paymentDate: new Date().toISOString(),
-            method: PaymentMethod.CARD,
-            typeId: paymentTypes?.[0]?.id || '',
-          }
+          defaultValues
+            ? {
+                ...defaultValues,
+                paymentDate: new Date(defaultValues.paymentDate).toISOString(),
+                typeId: defaultValues.type?.id,
+              }
+            : {
+                title: '',
+                description: '',
+                amount: 0,
+                currency: Currency.TL,
+                transactionType: TransactionType.EXPENSE,
+                paymentDate: new Date().toISOString(),
+                method: PaymentMethod.CARD,
+                typeId: paymentTypes?.[0]?.id || '',
+              }
         }
         onSubmit={submitForm}
       >
@@ -96,7 +102,7 @@ const PaymentEditorModal = ({
               label="Amount"
               onChangeText={handleChange('amount')}
               onBlur={handleBlur('amount')}
-              value={values.amount}
+              value={values.amount.toString()}
             />
             <Picker
               label="Currency"
@@ -150,7 +156,7 @@ const PaymentEditorModal = ({
               handleChange={handleChange('typeId')}
             />
             <Button
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
               loading={isOperating}
               disabled={isOperating}
             >

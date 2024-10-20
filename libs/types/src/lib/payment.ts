@@ -31,13 +31,14 @@ export const CreatePaymentDto = z.object({
   title: z.string(),
   description: z.string().optional(),
   amount: z.number(),
-  currency: z.nativeEnum(Currency).default(Currency.TL),
+  currency: z.nativeEnum(Currency).default(Currency.TL).optional(),
   transactionType: z
     .nativeEnum(TransactionType)
-    .default(TransactionType.EXPENSE),
-  paymentDate: z.string().default(new Date().toISOString()),
+    .default(TransactionType.EXPENSE)
+    .optional(),
+  paymentDate: z.string().default(new Date().toISOString()).optional(),
   paidDate: z.string().optional(),
-  method: z.nativeEnum(PaymentMethod).default(PaymentMethod.CASH),
+  method: z.nativeEnum(PaymentMethod).default(PaymentMethod.CASH).optional(),
   typeId: z.string(),
 });
 
