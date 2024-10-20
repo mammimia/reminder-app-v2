@@ -12,7 +12,7 @@ type PickerItem = {
 
 type Props = {
   label: string;
-  handleChange: (e: string | ChangeEvent<any> | null) => void;
+  handleChange: (e: string | ChangeEvent<any>) => void;
   items: PickerItem[];
   value: string | undefined;
 };
@@ -27,7 +27,7 @@ const Picker = ({ label, value, items, handleChange }: Props) => {
         label={label}
         value={selectedValue?.label || ''}
         items={items}
-        handleChange={handleChange}
+        handleChange={(value) => handleChange(value ?? '')}
       />
     );
   }
