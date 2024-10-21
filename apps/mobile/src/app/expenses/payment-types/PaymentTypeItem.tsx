@@ -13,7 +13,7 @@ import PaymentTypeService from '../../services/PaymentTypeService';
 type Props = {
   item: PaymentTypeDto;
   openEditModal?: (paymentType: PaymentTypeDto) => void;
-  refetch: () => void;
+  refetch?: () => void;
 };
 
 const PaymentTypeItem = ({ item, openEditModal, refetch }: Props) => {
@@ -22,11 +22,13 @@ const PaymentTypeItem = ({ item, openEditModal, refetch }: Props) => {
 
   const handleDelete = () => {
     PaymentTypeService.remove?.(item.id)
-      .then(() => refetch())
+      .then(() => refetch?.())
       .catch((error) => console.error(error));
   };
 
   const handleLongPress = () => {
+    if (!openEditModal) return;
+
     const options: ActionSheetOption[] = [
       {
         label: 'Edit',
