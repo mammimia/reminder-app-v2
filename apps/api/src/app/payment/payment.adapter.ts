@@ -3,7 +3,7 @@ import { Payment, PaymentType } from '@prisma/client';
 import { PaymentTypeAdapter } from '../payment-type/payment-type.adapter';
 
 export type PaymentWithType = Payment & {
-  paymentType?: PaymentType | null;
+  type?: PaymentType | null;
 };
 
 const toDto = (payment: PaymentWithType): PaymentDto => {
@@ -18,9 +18,7 @@ const toDto = (payment: PaymentWithType): PaymentDto => {
     paidDate: payment.paidDate?.toISOString(),
     isPaid: payment.paidDate !== null,
     method: payment.method,
-    paymentType: payment.paymentType
-      ? PaymentTypeAdapter.toDto(payment.paymentType)
-      : null,
+    type: payment.type ? PaymentTypeAdapter.toDto(payment.type) : null,
   };
 
   return PaymentDto.parse(dto);
