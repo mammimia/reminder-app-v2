@@ -67,6 +67,21 @@ export class BalanceService {
     return balance;
   }
 
+  async increaseBalanceWithCurrency(
+    currency: Currency,
+    amount: number
+  ): Promise<Balance> {
+    const balance = await this.getBalanceWithCurrency(currency);
+
+    if (balance === null) {
+      throw new NotFoundException(
+        `Balance with currency ${currency} does not exist`
+      );
+    }
+
+    return this.increaseBalance(balance.id, amount);
+  }
+
   async reduceBalance(id: string, amount: number): Promise<Balance> {
     const balance = await this.get(id);
 
@@ -86,5 +101,20 @@ export class BalanceService {
     });
 
     return balance;
+  }
+
+  async reduceBalanceWithCurrency(
+    currency: Currency,
+    amount: number
+  ): Promise<Balance> {
+    const balance = await this.getBalanceWithCurrency(currency);
+
+    if (balance === null) {
+      throw new NotFoundException(
+        `Balance with currency ${currency} does not exist`
+      );
+    }
+
+    return this.reduceBalance(balance.id, amount);
   }
 }
