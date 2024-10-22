@@ -10,15 +10,23 @@ import StringUtils from '../../../utils/StringUtils';
 import showCustomActionSheet, {
   ActionSheetOption,
 } from '../../../utils/showCustomActionSheet';
+import PaymentService from '../../services/PaymentService';
 
 type Props = {
   item: PaymentDto;
   pressable?: boolean;
+  refetch: () => void;
 };
 
-const PaymentItem = ({ item, pressable }: Props) => {
+const PaymentItem = ({ item, pressable, refetch }: Props) => {
   const { styles, colors } = useStyles(createStyles);
   const { showActionSheetWithOptions } = useActionSheet();
+
+  const handleDelete = () => {
+    PaymentService.remove(item.id)
+      .then(() => refetch())
+      .catch((error) => console.error(error));
+  };
 
   const handleLongPress = () => {
     if (!pressable) return;
@@ -30,7 +38,7 @@ const PaymentItem = ({ item, pressable }: Props) => {
       },
       {
         label: 'Delete',
-        onPress: () => console.log('Delete'),
+        onPress: handleDelete,
         isDestructive: true,
       },
       {

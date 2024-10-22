@@ -20,7 +20,7 @@ const PaymentList = ({ payments, isFetching, onRefresh, pressable }: Props) => {
         refreshing={isFetching}
         onRefresh={onRefresh}
         renderItem={({ item }) => (
-          <PaymentItem item={item} pressable={pressable} />
+          <PaymentItem item={item} pressable={pressable} refetch={onRefresh} />
         )}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={() => <ListEmptyComponent text="No payments" />}
