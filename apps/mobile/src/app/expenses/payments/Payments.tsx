@@ -22,6 +22,7 @@ const Payments = () => {
           payments={data}
           isFetching={isFetching}
           onRefresh={refetch}
+          pressable={true}
         />
       </AddablePage>
       <PaymentEditorModal

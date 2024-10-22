@@ -9,16 +9,19 @@ type Props = {
   payments: PaymentDto[];
   isFetching: boolean;
   onRefresh: () => void;
+  pressable?: boolean;
 };
 
-const PaymentList = ({ payments, isFetching, onRefresh }: Props) => {
+const PaymentList = ({ payments, isFetching, onRefresh, pressable }: Props) => {
   return (
     <ListPageContainer isFetching={isFetching}>
       <FlatList
         data={payments}
         refreshing={isFetching}
         onRefresh={onRefresh}
-        renderItem={({ item }) => <PaymentItem item={item} />}
+        renderItem={({ item }) => (
+          <PaymentItem item={item} pressable={pressable} />
+        )}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={() => <ListEmptyComponent text="No payments" />}
       />

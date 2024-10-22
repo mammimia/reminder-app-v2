@@ -27,6 +27,7 @@ const RecentPayments = () => {
         payments={data}
         isFetching={isFetching}
         onRefresh={refetch}
+        pressable={false}
       />
     </View>
   );
