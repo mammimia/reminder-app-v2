@@ -4,7 +4,7 @@ import {
   UpdatePaymentDto,
 } from '@mammimia/types';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Payment } from '@prisma/client';
+import { Payment, PaymentMethod, TransactionType } from '@prisma/client';
 import { BalanceService } from '../balance/balance.service';
 import { PaymentTypeService } from '../payment-type/payment-type.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -78,7 +78,21 @@ export class PaymentService {
   }
 
   async delete(id: string): Promise<void> {
-    await this.get(id);
+    const payment = await this.get(id);
+
+    if (payment.paidDate != null && payment.method == PaymentMethod.CASH) {
+      if (payment.transactionType == TransactionType.EXPENSE) {
+        await this.balanceService.increaseBalanceWithCurrency(
+          payment.currency,
+          payment.amount
+        );
+      } else {
+        await this.balanceService.reduceBalanceWithCurrency(
+          payment.currency,
+          payment.amount
+        );
+      }
+    }
 
     await this.prisma.payment.delete({
       where: { id: id },
@@ -94,15 +108,8 @@ export class PaymentService {
 
     const paidDate = new Date().toISOString();
 
-    const balanceWithCurrency =
-      await this.balanceService.getBalanceWithCurrency(payment.currency);
-
-    if (!balanceWithCurrency) {
-      throw new Error('Balance with currency not found');
-    }
-
-    await this.balanceService.reduceBalance(
-      balanceWithCurrency.id,
+    await this.balanceService.reduceBalanceWithCurrency(
+      payment.currency,
       payment.amount
     );
 
