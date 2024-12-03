@@ -1,5 +1,5 @@
 import { useActionSheet } from '@expo/react-native-action-sheet';
-import { PaymentDto, TransactionType } from '@mammimia/types';
+import { PaymentDto, PaymentMethod, TransactionType } from '@mammimia/types';
 import { TColors, useStyles } from '@mammimia/ui';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -11,6 +11,7 @@ import showCustomActionSheet, {
   ActionSheetOption,
 } from '../../../utils/showCustomActionSheet';
 import PaymentService from '../../services/PaymentService';
+import { Ionicons } from '@expo/vector-icons';
 
 type Props = {
   item: PaymentDto;
@@ -85,14 +86,21 @@ const PaymentItem = ({ item, pressable, refetch }: Props) => {
             {item.transactionType === TransactionType.INCOME ? ' + ' : ' - '}
             {AmountUtils.format(item.amount, item.currency)}
           </Text>
-          {item.type && (
-            <View style={styles.paymentType}>
-              <ColorCircle color={item.type.color} size={12} />
-              <Text style={styles.description}>
-                {StringUtils.convertToTitleCase(item.type.name)}
-              </Text>
-            </View>
-          )}
+          <View style={styles.paymentTypeContainer}>
+            {item.method === PaymentMethod.CARD ? (
+              <Ionicons name="card-outline" size={16} />
+            ) : (
+              <Ionicons name="cash-outline" size={16} />
+            )}
+            {item.type && (
+              <View style={styles.paymentType}>
+                <ColorCircle color={item.type.color} size={12} />
+                <Text style={styles.description}>
+                  {StringUtils.convertToTitleCase(item.type.name)}
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -129,6 +137,7 @@ const createStyles = (colors: TColors) =>
       alignItems: 'center',
     },
     amount: {
+      marginLeft: 'auto',
       textAlign: 'right',
       fontSize: 15,
       fontWeight: 'bold',
@@ -136,8 +145,13 @@ const createStyles = (colors: TColors) =>
     paymentType: {
       flexDirection: 'row',
       alignItems: 'center',
-      alignSelf: 'flex-end',
-      marginTop: 5,
-      gap: 5,
+      gap: 4,
+    },
+    paymentTypeContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: 'auto',
+      gap: 10,
+      marginTop: 6,
     },
   });
