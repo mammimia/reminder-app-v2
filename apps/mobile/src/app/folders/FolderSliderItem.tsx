@@ -30,7 +30,7 @@ const FolderSliderItem = ({
   const { styles } = useStyles(createStyles);
 
   const handleDelete = () => {
-    FolderService.remove(folder.id)
+    FolderService.remove?.(folder.id)
       .then(() => refetch())
       .catch((error) => console.error(error));
   };

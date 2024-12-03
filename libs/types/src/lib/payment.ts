@@ -36,7 +36,7 @@ export const CreatePaymentDto = z.object({
     .nativeEnum(TransactionType)
     .default(TransactionType.EXPENSE)
     .optional(),
-  paymentDate: z.string().default(new Date().toISOString()),
+  paymentDate: z.string(),
   paidDate: z.string().optional(),
   method: z.nativeEnum(PaymentMethod).default(PaymentMethod.CASH).optional(),
   typeId: z.string(),

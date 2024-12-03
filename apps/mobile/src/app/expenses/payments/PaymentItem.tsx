@@ -24,7 +24,7 @@ const PaymentItem = ({ item, pressable, refetch }: Props) => {
   const { showActionSheetWithOptions } = useActionSheet();
 
   const handleDelete = () => {
-    PaymentService.remove(item.id)
+    PaymentService.remove?.(item.id)
       .then(() => refetch())
       .catch((error) => console.error(error));
   };

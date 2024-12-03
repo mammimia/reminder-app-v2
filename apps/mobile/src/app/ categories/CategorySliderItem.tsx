@@ -19,7 +19,7 @@ const CategorySliderItem = ({ category, openEditModal, refetch }: Props) => {
   const { showActionSheetWithOptions } = useActionSheet();
 
   const handleDelete = () => {
-    CategoryService.remove(category.id)
+    CategoryService.remove?.(category.id)
       .then(() => refetch())
       .catch((error) => console.error(error));
   };
