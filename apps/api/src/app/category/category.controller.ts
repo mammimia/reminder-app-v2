@@ -56,6 +56,6 @@ export class CategoryController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
-    this.categoryService.delete(id);
+    await this.categoryService.delete(id);
   }
 }

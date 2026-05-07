@@ -65,3 +65,9 @@ tools/
 
 # Environment variables
 .env
+
+# Project documentation (local only)
+Documents/
+
+# Claude Code
+.claude/

@@ -1,7 +1,6 @@
 import {
   ArgumentMetadata,
   BadRequestException,
-  NotFoundException,
   PipeTransform,
 } from '@nestjs/common';
 import { ZodError, ZodSchema } from 'zod';
@@ -14,7 +13,7 @@ export class ZodValidationPipe implements PipeTransform {
       return this.schema.parse(value);
     } catch (error) {
       if (error instanceof ZodError) {
-        throw new NotFoundException(
+        throw new BadRequestException(
           'Validation failed: ' + error.errors.map((e) => e.message).join(', ')
         );
       }

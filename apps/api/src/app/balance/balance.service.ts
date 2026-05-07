@@ -39,7 +39,6 @@ export class BalanceService {
 
   async create(data: CreateBalanceDto): Promise<Balance> {
     const existingBalance = await this.getBalanceWithCurrency(data.currency);
-    console.log(existingBalance);
 
     if (existingBalance !== null) {
       throw new ConflictException(

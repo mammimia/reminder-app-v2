@@ -59,7 +59,6 @@ export class BalanceController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() changeBalanceDto: ChangeBalanceDto
   ): Promise<BalanceDto> {
-    console.log(changeBalanceDto);
     const balance = await this.balanceService.reduceBalance(
       id,
       changeBalanceDto.amount

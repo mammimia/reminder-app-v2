@@ -3,7 +3,7 @@ import {
   PaymentFilterDto,
   UpdatePaymentDto,
 } from '@mammimia/types';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { Payment, PaymentMethod, TransactionType } from '@prisma/client';
 import { BalanceService } from '../balance/balance.service';
 import { PaymentTypeService } from '../payment-type/payment-type.service';
@@ -36,18 +36,18 @@ export class PaymentService {
   }
 
   async get(id: string): Promise<Payment> {
-    const payments = await this.prisma.payment.findUnique({
+    const payment = await this.prisma.payment.findUnique({
       where: { id: id },
       include: {
         type: true,
       },
     });
 
-    if (!payments) {
+    if (!payment) {
       throw new NotFoundException(`Payment with ID ${id} not found`);
     }
 
-    return payments;
+    return payment;
   }
 
   async create(data: CreatePaymentDto): Promise<Payment> {
@@ -103,7 +103,7 @@ export class PaymentService {
     const payment = await this.get(id);
 
     if (payment.paidDate) {
-      throw new Error('Payment is already paid');
+      throw new ConflictException('Payment is already paid');
     }
 
     const paidDate = new Date().toISOString();
